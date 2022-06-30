@@ -13,16 +13,17 @@ const Header = () => {
   };
   return (
     <nav>
-      <span>Header</span>
+      <div>Header</div>
       <div>
+          <div><Link to="/">Home</Link></div>
         {loginData ? <>
-          <span><Link to="/" onClick={onLogout}>Logout</Link></span>
-          <span><Link to="/profile">{loginData.user.username}</Link></span>
+          <div><Link to="/" onClick={onLogout}>Logout</Link></div>
+          <div><Link to="/profile">{loginData.user.username}</Link></div>
         </>
           :
           <>
-            <span><Link to="/login">Login</Link></span>
-            <span><Link to="/register">Register</Link></span>
+            <div><Link to="/login">Login</Link></div>
+            <div><Link to="/register">Register</Link></div>
           </>
         }
       </div>
