@@ -23,25 +23,49 @@ const Header = () => {
   };
 
   return (
-    <nav>
-      <div>Header</div>
-      <div>
-        <div>
-          <input onKeyUp={handleChange} placeholder="Search post" name="text" />
+    <>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
         </div>
-        <div><Link to="/">Home</Link></div>
-        {loginData ? <>
-          <div><Link to="/" onClick={onLogout}>Logout</Link></div>
-          <div><Link to="/profile">{loginData.user.username}</Link></div>
-        </>
-          :
-          <>
-            <div><Link to="/login">Login</Link></div>
-            <div><Link to="/register">Register</Link></div>
+      </nav>
+      <nav>
+        <div>Header</div>
+        <div>
+          <div>
+            <input onKeyUp={handleChange} placeholder="Search post" name="text" />
+          </div>
+          <div><Link to="/">Home</Link></div>
+          {loginData ? <>
+            <div><Link to="/" onClick={onLogout}>Logout</Link></div>
+            <div><Link to="/profile">{loginData.user.username}</Link></div>
+            {loginData.user.role === 'admin' ?
+              <div><Link to="/admin">Admin</Link></div> :
+              null
+            }
           </>
-        }
-      </div>
-    </nav>
+            :
+            <>
+              <div><Link to="/login">Login</Link></div>
+              <div><Link to="/register">Register</Link></div>
+            </>
+          }
+        </div>
+      </nav>
+    </>
   );
 };
 

@@ -40,6 +40,17 @@ export const getPostsByTitle = createAsyncThunk(
   }
 );
 
+export const deletePost = createAsyncThunk(
+  "posts/deletePosts",
+  async (id) => {
+    try {
+      return await postsService.deletePost(id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -67,6 +78,11 @@ export const postsSlice = createSlice({
       })
       .addCase(getPostsByTitle.pending, (state) => {
         state.isLoading = true;
+      }).
+      addCase(deletePost.fulfilled, (state, action) => {
+        console.log(action.payload);
+        const posts = state.posts?.posts.filter(p => p._id !== action.payload._id);
+        state.posts = { ...state.posts, posts }
       })
   },
 });
