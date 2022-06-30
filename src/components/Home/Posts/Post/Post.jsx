@@ -8,15 +8,17 @@ const Post = () => {
   const post = posts.posts?.map((post) => {
     return (
       <div key={post._id}>
-        <Link to={"/post/" + post.id}>
-          <div>{post.title}</div>
-        </Link>
+        <Link to={"/post/" + post._id}>{post.title}</Link>
       </div>
     );
   });
 
-  return (
+  return (<>
+    <div>Total posts: {posts.total}</div>
+    <div>Current page: {posts.page}</div>
+    <div>Max Pages: {posts.maxPages}</div>
     <div>{post}</div>
+  </>
   )
 }
 

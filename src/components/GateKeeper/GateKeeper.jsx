@@ -5,6 +5,7 @@ import Header from "../Header/Header";
 import Home from "../Home/Home";
 import Profile from "../Profile/Profile";
 import PostDetail from "../Home/Posts/PostDetail/PostDetail";
+import Search from "../Search/Search";
 
 const GateKeeper = () => {
   return (
@@ -16,6 +17,7 @@ const GateKeeper = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/post/:id" element={<PostDetail />} />
+        <Route path="/search/:postTitle" element={<Search />} />
       </Routes>
     </BrowserRouter>
   )
