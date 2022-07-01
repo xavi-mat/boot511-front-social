@@ -36,10 +36,9 @@ const Login = () => {
 
   return (<>
     <Form onFinish={onFinish}>
-    <div className="d-flex">
+    <div>
       <Form.Item
         // label="Email"
-        // className="form-control"
         name="email"
         rules={[
           { required: true, message: 'Please input your email', },
@@ -50,7 +49,6 @@ const Login = () => {
 
       <Form.Item
         // label="Password"
-        // className="form-control"
         name="password"
         rules={[
           { required: true, message: 'Please input your password!', },
@@ -59,7 +57,7 @@ const Login = () => {
         <Input.Password placeholder="Password" />
       </Form.Item>
 
-        <button className='btn btn-primary' type="submit">
+        <button type="submit">
           Login
         </button>
       </div>
