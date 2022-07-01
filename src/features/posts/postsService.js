@@ -24,12 +24,23 @@ const deletePost = async (id) => {
     { headers: { Authorization: loginData?.token } }
   );
   return res.data;
-}
+};
+
+const cleanAll = async () => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.delete(
+    API_URL + "/users/clean-all",
+    { headers: { Authorization: loginData?.token } }
+    );
+  return res.data;
+};
+
 const postsService = {
   getAll,
   getById,
   getPostsByTitle,
   deletePost,
+  cleanAll,
 };
 
 export default postsService;

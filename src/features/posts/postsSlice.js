@@ -51,6 +51,17 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+export const cleanAll = createAsyncThunk(
+  "posts/cleanAll",
+  async () => {
+    try {
+      return await postsService.cleanAll();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+)
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -80,7 +91,6 @@ export const postsSlice = createSlice({
         state.isLoading = true;
       }).
       addCase(deletePost.fulfilled, (state, action) => {
-        console.log(action.payload);
         const posts = state.posts?.posts.filter(p => p._id !== action.payload._id);
         state.posts = { ...state.posts, posts }
       })

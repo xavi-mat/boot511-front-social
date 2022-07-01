@@ -12,7 +12,6 @@ const Register = () => {
   const { isSuccess, isError, message } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    console.log({hola:"HOLA SOY EL HOOK!"})
     if (isSuccess) {
       notification.success({
         message: "Success",

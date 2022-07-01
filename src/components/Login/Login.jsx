@@ -1,14 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
 import { login, reset } from "../../features/auth/authSlice";
-import { notification } from "antd";
+import { notification, Form, Input } from "antd";
 
 const Login = () => {
 
-  const initialForm = { email: '', password: '' };
-  const [formData, setFormData] = useState(initialForm);
-  const { email, password } = formData;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSuccess, isError, message } = useSelector((state) => state.auth);
@@ -27,30 +24,48 @@ const Login = () => {
         description: message,
         placement:"bottomRight",
       });
-      navigate("/profile");
+      navigate("/");
     }
     dispatch(reset());
   // eslint-disable-next-line
   }, [isError, isSuccess, message]);
 
-  const onChange = (ev) => {
-    setFormData(prevState => ({
-      ...prevState,
-      [ev.target.name]: ev.target.value,
-    }));
+  const onFinish = (values) => {
+    dispatch(login(values));
   };
 
-  const onSubmit = (ev) => {
-    ev.preventDefault();
-    dispatch(login(formData));
-  };
+  return (<>
+    <Form onFinish={onFinish}>
+    <div className="d-flex">
+      <Form.Item
+        // label="Email"
+        // className="form-control"
+        name="email"
+        rules={[
+          { required: true, message: 'Please input your email', },
+        ]}
+      >
+        <Input placeholder='Email'  />
+      </Form.Item>
 
-  return (
-    <form onSubmit={onSubmit}>
-      <input type="email" name="email" value={email} onChange={onChange} />
-      <input type="password" name="password" value={password} onChange={onChange} />
-      <button type="submit">Login</button>
-    </form>
+      <Form.Item
+        // label="Password"
+        // className="form-control"
+        name="password"
+        rules={[
+          { required: true, message: 'Please input your password!', },
+        ]}
+      >
+        <Input.Password placeholder="Password" />
+      </Form.Item>
+
+        <button className='btn btn-primary' type="submit">
+          Login
+        </button>
+      </div>
+    </Form>
+
+        </>
   )
 }
 

@@ -1,21 +1,23 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getAll, reset } from "../../features/posts/postsSlice";
+import { getAll, reset, cleanAll } from "../../features/posts/postsSlice";
 import PostAdmin from "./PostAdmin/PostAdmin";
 
 const Admin = () => {
 
   const { isLoading } = useSelector((state) => state.posts);
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
 
   const getPostsAndReset = async () => {
-    await dispach(getAll());
-    dispach(reset());
+    await dispatch(getAll());
+    dispatch(reset());
   };
 
   useEffect(() => {
     getPostsAndReset();
   }, []);
+
+ 
 
   if (isLoading) {
     return <h1>Cargando posts...</h1>;
@@ -24,6 +26,7 @@ const Admin = () => {
   return (
     <div>
       <h1>Admin</h1>
+      <button onClick={() => dispatch(cleanAll())}>CLEAN ALL</button>
       <PostAdmin />
     </div>
   )
