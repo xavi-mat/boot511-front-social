@@ -30,7 +30,7 @@ const LeftSider = () => {
     { key: "/", icon: <HomeOutlined />, label: <NavLink to="/">Home</NavLink> },
   ];
 
-  if (loginData) {
+  if (loginData?.user) {
     items.push(
       { key: "/profile", icon: <UserOutlined />, label: <NavLink to="/profile">{loginData.user.username}</NavLink> }
     );

@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom";
+import LogRegButtons from "./LogRegButtons/LogRegButtons";
 import NewPost from "./NewPost/NewPost";
 import Posts from "./Posts/Posts"
 
@@ -10,7 +11,6 @@ const Home = () => {
 
   return (
     <div>
-
       {
         loginData?.user ?
         <>
@@ -20,10 +20,7 @@ const Home = () => {
           :
           <div className="home-top">
           <h1 className="text-header">Home</h1>
-          <div className="home-buttons-box">
-            <Button className="round-button" type="primary" size="large"><Link to="/login">Login</Link></Button>
-            <Button className="round-button" type="primary" size="large"><Link to="/register">Register</Link></Button>
-          </div>
+          <LogRegButtons />
           </div>
       }
       <Posts />

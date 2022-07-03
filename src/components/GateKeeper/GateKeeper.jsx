@@ -35,7 +35,7 @@ const GateKeeper = () => {
             <Route path="/post/:id" element={<PostDetail />} />
             <Route path="/search/:postText" element={<Search />} />
             <Route path="/admin" element={
-              loginData?.user.role === "admin" ?
+              loginData?.user?.role === "admin" ?
                 <Admin />
                 :
                 <Home />
