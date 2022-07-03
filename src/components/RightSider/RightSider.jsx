@@ -16,7 +16,7 @@ const RightSider = () => {
   };
 
   return (
-    <div>
+    <div className="right-container">
     <Input type="text" placeholder="Search" onKeyUp={handleChange} name="text" />
     </div>
   )

@@ -1,4 +1,4 @@
-import { Checkbox, notification } from "antd";
+import { Button, Checkbox, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register, reset } from "../../features/auth/authSlice";
@@ -52,6 +52,7 @@ const Register = () => {
   };
 
   return (
+    <Form>
     <form onSubmit={onSubmit}>
       <input type="text" name="username" value={username} onChange={onChange} />
       <input type="email" name="email" value={email} onChange={onChange} />
@@ -67,7 +68,11 @@ const Register = () => {
           <Checkbox>I accept the Terms and Conditions.</Checkbox>
         </Form.Item>
       <button type="submit">Register</button>
+      <Form.Item>
+              <Button htmlType="reset">Clear</Button>
+            </Form.Item>
     </form>
+    </Form>
   )
 }
 

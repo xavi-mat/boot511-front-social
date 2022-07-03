@@ -3,11 +3,14 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { Menu, Popconfirm } from 'antd';
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
+  SettingOutlined,
+  HomeOutlined,
+  UsergroupAddOutlined ,
   UserOutlined,
-  VideoCameraOutlined,
+  LogoutOutlined,
+  LoginOutlined,
+  UserAddOutlined,
+  TeamOutlined
 } from '@ant-design/icons';
 
 const LeftSider = () => {
@@ -23,7 +26,8 @@ const LeftSider = () => {
   };
 
   const items = [
-    { key: "/", icon: <MenuUnfoldOutlined />, label: <NavLink to="/">Home</NavLink> },
+    // { key: "/", icon: <img src="/logo.png" alt="Tuitah" className="avatar" />, label: <NavLink to="/">Tuitah</NavLink> },
+    { key: "/", icon: <HomeOutlined />, label: <NavLink to="/">Home</NavLink> },
   ];
 
   if (loginData) {
@@ -31,20 +35,20 @@ const LeftSider = () => {
       { key: "/profile", icon: <UserOutlined />, label: <NavLink to="/profile">{loginData.user.username}</NavLink> }
     );
     items.push(
-      { key: "following", icon: <UserOutlined />, label: <NavLink to="/">Following</NavLink> }
+      { key: "following", icon: <UsergroupAddOutlined  />, label: <NavLink to="/">Following</NavLink> }
     );
     items.push(
-      { key: "followers", icon: <UserOutlined />, label: <NavLink to="/">Followers</NavLink> }
+      { key: "followers", icon: <TeamOutlined />, label: <NavLink to="/">Followers</NavLink> }
     );
     if (loginData.user.role === "admin") {
       items.push(
-        { key: "admin", icon: <MenuFoldOutlined />, label: <NavLink to="/admin">Admin</NavLink> }
+        { key: "admin", icon: <SettingOutlined />, label: <NavLink to="/admin">Admin</NavLink> }
       );
     }
     items.push(
       {
         key: "logout",
-        icon: <UserOutlined />,
+        icon: <LogoutOutlined />,
         label: <Popconfirm placement="right" title={"Are you sure you watn to logout?"} onConfirm={onLogout}>
           <NavLink to="/">Logout</NavLink>
         </Popconfirm>
@@ -52,15 +56,18 @@ const LeftSider = () => {
     );
   } else {
     items.push(
-      { key: "/login", icon: <UserOutlined />, label: <NavLink to="/login">Login</NavLink> }
+      { key: "/login", icon: <LoginOutlined />, label: <NavLink to="/login">Login</NavLink> }
     );
     items.push(
-      { key: "/register", icon: <UserOutlined />, label: <NavLink to="/register">Register</NavLink> }
+      { key: "/register", icon: <UserAddOutlined />, label: <NavLink to="/register">Register</NavLink> }
     );
   }
 
   return (
     <>
+      <div className="center-box">
+        <img src="/logo.png" alt="Tuitah" className="avatar" />
+      </div>
       <Menu
         mode="vertical"
         items={items}

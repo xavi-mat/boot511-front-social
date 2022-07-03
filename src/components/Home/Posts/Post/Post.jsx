@@ -40,7 +40,7 @@ const Post = () => {
   });
 
   const paginationBar = (
-    <div>
+    <div className="pagination-box">
       <Pagination
         current={currentPage}
         onChange={onPageChange}

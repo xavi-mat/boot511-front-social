@@ -57,3 +57,41 @@
 .input {
   border-radius: 15px;
 }
+.text-header {
+  margin-left: 12px;
+}
+.pagination-box {
+  padding: 12px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+.bordered{
+  border: 1px solid blue;
+
+}
+.right-container {
+  margin-left: 12px;
+}
+.home-top {
+  display: flex;
+}
+.home-buttons-box {
+  flex: 1;
+  padding: 0 0px 12px 0px;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.round-button {
+  border-radius: 20px;
+  min-width: 120px;
+}
+.center-box {
+  display: flex;
+  justify-content: center;
+}
+.newpost-buttons {
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}

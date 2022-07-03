@@ -1,6 +1,6 @@
 const MiniFooter = () => {
   return (
-    <div>
+    <div className="right-container">
       <p>&copy; Xavimat</p>
     </div>
   )
