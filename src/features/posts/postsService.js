@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const getAll = async () => {
-  const res = await axios.get(API_URL + "/posts");
+const getAll = async (page) => {
+  const res = await axios.get(API_URL + "/posts?page=" + page);
   return res.data;
 };
 
@@ -12,8 +12,8 @@ const getById = async (id) => {
   return res.data;
 }
 
-const getPostsByTitle = async (postTitle) => {
-  const res = await axios.get(API_URL + "/posts/search?title=" + postTitle);
+const getPostsByText = async (postText) => {
+  const res = await axios.get(API_URL + "/posts/search?text=" + postText);
   return res.data;
 };
 
@@ -31,16 +31,27 @@ const cleanAll = async () => {
   const res = await axios.delete(
     API_URL + "/users/clean-all",
     { headers: { Authorization: loginData?.token } }
-    );
+  );
+  return res.data;
+};
+
+const createPost = async (postData) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.post(
+    API_URL + "/posts",
+    postData,
+    { headers: { Authorization: loginData?.token } }
+  );
   return res.data;
 };
 
 const postsService = {
   getAll,
   getById,
-  getPostsByTitle,
+  getPostsByText,
   deletePost,
   cleanAll,
+  createPost,
 };
 
 export default postsService;

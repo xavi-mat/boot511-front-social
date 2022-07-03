@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, NavLink } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
-import { Menu } from 'antd';
+import { Menu, Popconfirm } from 'antd';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -23,32 +23,48 @@ const LeftSider = () => {
   };
 
   const items = [
-    { key: "home", icon: <UserOutlined/>, label: <NavLink to="/">Home</NavLink> },
+    { key: "/", icon: <MenuUnfoldOutlined />, label: <NavLink to="/">Home</NavLink> },
   ];
 
   if (loginData) {
     items.push(
-      { key: "profile", label: <NavLink to="/profile">{loginData.user.username}</NavLink> }
+      { key: "/profile", icon: <UserOutlined />, label: <NavLink to="/profile">{loginData.user.username}</NavLink> }
     );
     items.push(
-      { key: "logout", label: <NavLink to="/" onClick={onLogout}>Logout</NavLink> }
+      { key: "following", icon: <UserOutlined />, label: <NavLink to="/">Following</NavLink> }
+    );
+    items.push(
+      { key: "followers", icon: <UserOutlined />, label: <NavLink to="/">Followers</NavLink> }
+    );
+    if (loginData.user.role === "admin") {
+      items.push(
+        { key: "admin", icon: <MenuFoldOutlined />, label: <NavLink to="/admin">Admin</NavLink> }
+      );
+    }
+    items.push(
+      {
+        key: "logout",
+        icon: <UserOutlined />,
+        label: <Popconfirm placement="right" title={"Are you sure you watn to logout?"} onConfirm={onLogout}>
+          <NavLink to="/">Logout</NavLink>
+        </Popconfirm>
+      }
     );
   } else {
     items.push(
-      { key: "login", label: <NavLink to="/login">Login</NavLink> }
+      { key: "/login", icon: <UserOutlined />, label: <NavLink to="/login">Login</NavLink> }
     );
     items.push(
-      { key: "register", label: <NavLink to="/register">Register</NavLink> }
+      { key: "/register", icon: <UserOutlined />, label: <NavLink to="/register">Register</NavLink> }
     );
   }
 
   return (
     <>
-        <div className="logo" />
-        <Menu
-          mode="vertical"
-          items={items}
-        />
+      <Menu
+        mode="vertical"
+        items={items}
+      />
       {/* <div>
         <NavLink to="/">Logo</NavLink>
         <div id="navbarColor02">

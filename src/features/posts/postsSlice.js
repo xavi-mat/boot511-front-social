@@ -2,16 +2,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import postsService from "./postsService";
 
 const initialState = {
-  posts: [],
+  posts: {},
   isLoading: false,
   post: {},
 };
 
 export const getAll = createAsyncThunk(
   "posts/getAll",
-  async () => {
+  async (page=1) => {
     try {
-      return await postsService.getAll();
+      return await postsService.getAll(page);
     } catch (error) {
       console.error(error);
     }
@@ -29,11 +29,11 @@ export const getById = createAsyncThunk(
   }
 );
 
-export const getPostsByTitle = createAsyncThunk(
-  "post/getPostByTitle",
-  async (postTitle) => {
+export const getPostsByText = createAsyncThunk(
+  "post/getPostByText",
+  async (postText) => {
     try {
-      return await postsService.getPostsByTitle(postTitle);
+      return await postsService.getPostsByText(postText);
     } catch (error) {
       console.error(error);
     }
@@ -62,6 +62,19 @@ export const cleanAll = createAsyncThunk(
   }
 )
 
+export const createPost = createAsyncThunk(
+  "posts/createPost",
+  async (postData) => {
+    try {
+      return await postsService.createPost(postData);
+    } catch (error) {
+      console.error(error);
+      // const message = error.response.data.msg;
+      // return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -84,15 +97,20 @@ export const postsSlice = createSlice({
       .addCase(getById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getPostsByTitle.fulfilled, (state, action) => {
+      .addCase(getPostsByText.fulfilled, (state, action) => {
         state.posts = action.payload;
       })
-      .addCase(getPostsByTitle.pending, (state) => {
+      .addCase(getPostsByText.pending, (state) => {
         state.isLoading = true;
       }).
       addCase(deletePost.fulfilled, (state, action) => {
         const posts = state.posts?.posts.filter(p => p._id !== action.payload._id);
         state.posts = { ...state.posts, posts }
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.posts?.posts.pop();
+        state.posts?.posts.unshift(action.payload.post);
+        state.posts = { ...state.posts };
       })
   },
 });

@@ -20,13 +20,13 @@ const Posts = () => {
 
   if (isLoading) {
     return (
-      <div><h1>Loading...</h1></div>
+      <div><h2>What's new</h2><h3>Loading...</h3></div>
     );
   }
 
   return (
     <div>
-      <h1>Posts</h1>
+      <h2>What's new</h2>
       <Post />
     </div>
   )

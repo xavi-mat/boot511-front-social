@@ -10,7 +10,7 @@ const PostAdmin = () => {
   const post = posts.posts?.map((post) => {
     return (
       <div key={post._id}>
-        <div>{post.title}</div>
+        <div>{post.text}</div>
         {loginData?.user._id === post.author._id ?
           <button onClick={() => dispatch(deletePost(post._id))}>🗑️</button>
           :

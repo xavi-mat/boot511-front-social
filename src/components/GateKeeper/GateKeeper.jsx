@@ -9,9 +9,9 @@ import Search from "../Search/Search";
 import Admin from "../Admin/Admin";
 import { useSelector } from "react-redux";
 import MiniFooter from "../MiniFooter/MiniFooter";
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { Layout } from 'antd';
 import RightSider from "../RightSider/RightSider";
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const GateKeeper = () => {
 
@@ -26,14 +26,14 @@ const GateKeeper = () => {
         >
           <LeftSider />
         </Sider>
-        <Content>
+        <Content className="main-container">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/post/:id" element={<PostDetail />} />
-            <Route path="/search/:postTitle" element={<Search />} />
+            <Route path="/search/:postText" element={<Search />} />
             <Route path="/admin" element={
               loginData?.user.role === "admin" ?
                 <Admin />

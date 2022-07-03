@@ -18,20 +18,56 @@ const PostDetail = () => {
     getPost(id);
   }, []);
 
+  if (isLoading) {
+    return (
+      <div>
+        <h1>Post detail</h1>
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
+  const comment = post.comments?.map(comment => (
+    <div className="post-box" key={comment._id}>
+      <div className="avatar-box">
+        <img
+          src={comment.author?.avatar}
+          className="avatar"
+          alt={comment.author?.username} />
+      </div>
+      <div className="content-box">
+        <div className="post-author">{comment.author?.username}</div>
+        <div>{comment.text}</div>
+        {comment.image ?
+          <div><img className="post-image" src={comment.image} alt="" /></div>
+          :
+          null
+        }
+      </div>
+    </div>
+  ))
+
   return (
     <div>
       <h1>Post detail</h1>
-      {isLoading ?
-        <h1>Loading...</h1>
-        :
-        <>
-          <div><img src={post.image} /></div>
-          <div>{post.title}</div>
-          <div>{post.body}</div>
-          <div>By {post.author?.username}</div>
-          <div><img src={post.author?.avatar} /></div>
-        </>
-      }
+      <div className="post-box" key={post._id}>
+        <div className="avatar-box">
+          <img
+            src={post.author?.avatar}
+            className="avatar"
+            alt={post.author?.username} />
+        </div>
+        <div className="content-box">
+          <div className="post-author">{post.author?.username}</div>
+          <div>{post.text}</div>
+          {post.image ?
+            <div><img className="post-image" src={post.image} alt="" /></div>
+            :
+            null
+          }
+        </div>
+      </div>
+      <div>{comment}</div>
     </div>
   )
 }

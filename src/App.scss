@@ -1,0 +1,59 @@
+.App {
+  max-width: 992px;
+  display: flex;
+  margin: 2rem auto;
+}
+.main-container {
+  background-color: #ffffff;
+}
+.site-layout-content {
+  min-height: 280px;
+  padding: 24px;
+  background: #ffffff;
+}
+#components-layout-demo-top .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+.post-box{
+  padding: 12px 16px;
+  border: 1px solid #eeeeee;
+  display: flex;
+}
+.avatar-box {
+  margin-right: 12px;
+  width: 48px;
+}
+.avatar {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+}
+.content-box {
+  flex: 1;
+}
+.post-author {
+  font-weight: bold;
+  cursor: pointer;
+}
+.post-author:hover {
+  text-decoration: underline;
+}
+.post-image {
+  border-radius: 15px;
+  width: 100%;
+  margin-top: 12px;
+}
+.form-box {
+  padding: 12px 16px;
+}
+.input {
+  border-radius: 15px;
+}

@@ -1,7 +1,8 @@
-import { notification } from "antd";
+import { Checkbox, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register, reset } from "../../features/auth/authSlice";
+import {Form} from "antd";
 
 const Register = () => {
 
@@ -56,6 +57,15 @@ const Register = () => {
       <input type="email" name="email" value={email} onChange={onChange} />
       <input type="password" name="password" value={password} onChange={onChange} />
       <input type="password" name="pass2" value={pass2} onChange={onChange} />
+      <Form.Item
+          name="acceptTerms"
+          valuePropName="checked"
+          rules={[
+            { required: true, message: 'Please accept terms and conditions.' },
+          ]}
+        >
+          <Checkbox>I accept the Terms and Conditions.</Checkbox>
+        </Form.Item>
       <button type="submit">Register</button>
     </form>
   )

@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.min.css';
-import './App.css';
+import './App.scss';
 import GateKeeper from './components/GateKeeper/GateKeeper';
 
 function App() {
