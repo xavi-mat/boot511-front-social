@@ -1,5 +1,6 @@
 import { Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import { createComment } from "../../../../../features/posts/postsSlice";
 const { TextArea } = Input;
 
 const NewComment = () => {
@@ -7,15 +8,12 @@ const NewComment = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { loginData } = useSelector((state) => state.auth);
+  const { post } = useSelector((state) => state.posts);
 
-  const doCreateComment = async (values) => {
-    // await dispatch(createComment(values));
-    console.log("TODO: await dispatch(createComment(values));")
+  const onFinish = async (values) => {
+    values.postId = post._id;
+    await dispatch(createComment(values));
     form.resetFields();
-  }
-
-  const onFinish = (values) => {
-    doCreateComment(values);
   };
 
   return (

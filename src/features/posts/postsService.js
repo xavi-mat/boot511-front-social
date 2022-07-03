@@ -45,6 +45,16 @@ const createPost = async (postData) => {
   return res.data;
 };
 
+const createComment = async (commentData) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.post(
+    API_URL + "/comments",
+    commentData,
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+}
+
 const postsService = {
   getAll,
   getById,
@@ -52,6 +62,7 @@ const postsService = {
   deletePost,
   cleanAll,
   createPost,
+  createComment,
 };
 
 export default postsService;

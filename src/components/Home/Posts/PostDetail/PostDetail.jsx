@@ -45,10 +45,14 @@ const PostDetail = () => {
           <NewComment />
         </>
         :
-        <div className="home-top">
-          <h1 className="text-header">Post detail</h1>
-          <LogRegButtons />
-        </div>
+        <>
+
+          <div className="home-top">
+            <h1 className="text-header">Post detail</h1>
+            <LogRegButtons />
+          </div>
+          <PostCommentBox post={post} />
+        </>
       }
       <div>{comment}</div>
     </div>

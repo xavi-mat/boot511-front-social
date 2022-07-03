@@ -49,7 +49,7 @@ const LeftSider = () => {
       {
         key: "logout",
         icon: <LogoutOutlined />,
-        label: <Popconfirm placement="right" title={"Are you sure you watn to logout?"} onConfirm={onLogout}>
+        label: <Popconfirm placement="right" title={"Are you sure you want to logout?"} onConfirm={onLogout}>
           <NavLink to="/">Logout</NavLink>
         </Popconfirm>
       }

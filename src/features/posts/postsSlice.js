@@ -75,6 +75,17 @@ export const createPost = createAsyncThunk(
   }
 );
 
+export const createComment = createAsyncThunk(
+  "comments/createComment",
+  async (commentData) => {
+    try {
+      return await postsService.createComment(commentData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -104,13 +115,16 @@ export const postsSlice = createSlice({
         state.isLoading = true;
       }).
       addCase(deletePost.fulfilled, (state, action) => {
-        const posts = state.posts?.posts.filter(p => p._id !== action.payload._id);
+        const posts = state.posts.posts?.filter(p => p._id !== action.payload._id);
         state.posts = { ...state.posts, posts }
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts?.posts.pop();
         state.posts?.posts.unshift(action.payload.post);
         state.posts = { ...state.posts };
+      })
+      .addCase(createComment.fulfilled, (state, action) => {
+        state.post.comments = [action.payload.comment, ...state.post.comments]
       })
   },
 });

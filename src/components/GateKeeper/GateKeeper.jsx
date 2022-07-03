@@ -23,7 +23,7 @@ const GateKeeper = () => {
         <Sider
           theme="light"
           breakpoint="lg"
-        >
+          className="sider-box">
           <LeftSider />
         </Sider>
         <Content className="main-container">
@@ -50,7 +50,7 @@ const GateKeeper = () => {
           onCollapse={(collapsed, type) => {
             console.log(collapsed, type);
           }}
-        >
+          className="sider-box">
           <RightSider />
           <MiniFooter />
         </Sider>
