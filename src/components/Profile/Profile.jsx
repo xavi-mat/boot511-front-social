@@ -23,16 +23,16 @@ const Profile = () => {
 
   const getUser = async () => {
     await dispatch(getSomeUser(userId));
+    await onPageChange(1)
   }
   const onPageChange = async (page) => {
     setCurrentPage(page);
-    await dispatch(getPostsByUserId({ userId: user._id, page }));
+    await dispatch(getPostsByUserId({ userId, page }));
     dispatch(reset());
   }
 
   useEffect(() => {
     getUser();
-    onPageChange(1)
     // eslint-disable-next-line
   }, [userId]);
 

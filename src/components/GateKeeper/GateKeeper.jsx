@@ -34,9 +34,7 @@ const GateKeeper = () => {
             <Route path="/user/:userId" element={<Profile />} />
 
             {loginData.user ?
-              <>
-                {/* <Route path="/prof ile" element={<Profile user={loginData.user} />} /> */}
-              </>
+              null
               :
               <>
                 <Route path="/login" element={<Login />} />

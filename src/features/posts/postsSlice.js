@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { notification } from "antd";
 import postsService from "./postsService";
 
 const initialState = {
@@ -54,11 +55,13 @@ export const getPostsByUserId = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
   "posts/deletePosts",
-  async (id) => {
+  async (id, thunkAPI) => {
     try {
       return await postsService.deletePost(id);
     } catch (error) {
-      console.error(error);
+      console.info(error);
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -100,11 +103,13 @@ export const createComment = createAsyncThunk(
 
 export const getSomeUser = createAsyncThunk(
   "users/getSomeUser",
-  async (id) => {
+  async (id, thunkAPI) => {
     try {
       return await postsService.getSomeUser(id);
     } catch (error) {
-      console.error(error);
+      console.log("error.response.data", error.response.data)
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
     }
   }
 )
@@ -146,6 +151,10 @@ export const postsSlice = createSlice({
       .addCase(deletePost.fulfilled, (state, action) => {
         const posts = state.posts.posts?.filter(p => p._id !== action.payload.post._id);
         state.posts = { ...state.posts, posts }
+        notification.success({message: "Deleted"});
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        notification.error({message: action.payload});
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts?.posts.pop();
@@ -160,6 +169,9 @@ export const postsSlice = createSlice({
       })
       .addCase(getSomeUser.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(getSomeUser.rejected, (state, action)=> {
+        notification.error({message: action.payload});
       })
   },
 });
