@@ -51,7 +51,7 @@ export const getPostsByUserId = createAsyncThunk(
       console.error(error)
     }
   }
-)
+);
 
 export const deletePost = createAsyncThunk(
   "posts/deletePosts",
@@ -112,7 +112,33 @@ export const getSomeUser = createAsyncThunk(
       return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
+
+export const deleteComment = createAsyncThunk(
+  "comments/delete",
+  async (id, thunkAPI) => {
+    try {
+      return await postsService.deleteComment(id);
+    } catch (error) {
+      console.log("error.response.data", error.response.data)
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updatePost = createAsyncThunk(
+  "posts/update",
+  async (postData, thunkAPI) => {
+    try {
+      return await postsService.updatePost(postData);
+    } catch (error) {
+      console.log("Slice: updatePost", error.response.data)
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const postsSlice = createSlice({
   name: "posts",
@@ -151,10 +177,10 @@ export const postsSlice = createSlice({
       .addCase(deletePost.fulfilled, (state, action) => {
         const posts = state.posts.posts?.filter(p => p._id !== action.payload.post._id);
         state.posts = { ...state.posts, posts }
-        notification.success({message: "Deleted"});
+        notification.success({ message: "Deleted" });
       })
       .addCase(deletePost.rejected, (state, action) => {
-        notification.error({message: action.payload});
+        notification.error({ message: action.payload });
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts?.posts.pop();
@@ -170,8 +196,19 @@ export const postsSlice = createSlice({
       .addCase(getSomeUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getSomeUser.rejected, (state, action)=> {
-        notification.error({message: action.payload});
+      .addCase(getSomeUser.rejected, (state, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        const comments = state.post.comments
+          .filter(c => c._id !== action.payload.comment._id);
+        state.post = { ...state.post, comments };
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.post = action.payload.post;
       })
   },
 });

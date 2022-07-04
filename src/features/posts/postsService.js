@@ -17,7 +17,7 @@ const getPostsByText = async (postText) => {
   return res.data;
 };
 
-const getPostsByUserId = async ({userId, page = 1}) => {
+const getPostsByUserId = async ({ userId, page = 1 }) => {
   const res = await axios.get(
     API_URL + "/posts/user-id/" + userId + "?page=" + page
   );
@@ -60,10 +60,28 @@ const createComment = async (commentData) => {
     { headers: { Authorization: loginData?.token } }
   );
   return res.data;
-}
+};
 
 const getSomeUser = async (id) => {
   const res = await axios.get(API_URL + "/users/id/" + id);
+  return res.data;
+};
+
+const deleteComment = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.delete(API_URL + "/comments/id/" + id,
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+};
+
+const updatePost = async (postData) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.put(
+    API_URL + "/posts/id/" + postData.id,
+    postData,
+    { headers: { Authorization: loginData?.token } }
+  );
   return res.data;
 }
 
@@ -77,6 +95,8 @@ const postsService = {
   createComment,
   getPostsByUserId,
   getSomeUser,
+  deleteComment,
+  updatePost,
 };
 
 export default postsService;

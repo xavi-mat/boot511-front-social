@@ -3,17 +3,27 @@ import {
   MessageOutlined,
   LikeOutlined,
   DeleteOutlined,
-  FormOutlined
+  FormOutlined,
+  LoadingOutlined
 } from '@ant-design/icons';
-import { Button } from "antd";
-import { useSelector } from "react-redux";
+import { Button, Form, Input, Modal, Popconfirm } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { deleteComment, deletePost, updatePost } from "../../features/posts/postsSlice";
+const { TextArea } = Input;
 
-const PostCommentBox = ({ post }) => {
+const PostCommentBox = ({ post, isDetail }) => {
 
   const { user } = useSelector((state) => state.auth.loginData);
   const isAuthor = post.author?._id === user?._id;
-
+  const isPost = typeof post === "object" && 'commentsCount' in post;
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isEditorOn, setIsEditorOn] = useState(false);
+  const [postData, setPostData] = useState({ id: post._id, text: "" });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const date = new Date(post.updatedAt)
     .toLocaleString(
       undefined,
@@ -25,14 +35,36 @@ const PostCommentBox = ({ post }) => {
     navigate("/user/" + post.author?._id);
   }
 
-  const handleDelete = (ev) => {
+  const handleDelete = async (ev) => {
     ev.preventDefault();
-    console.log("HANDLE DELETE", post._id);
+    setIsDeleting(true);
+    if (isPost) {
+      await dispatch(deletePost(post._id));
+      navigate("/");
+    } else {
+      await dispatch(deleteComment(post._id))
+    }
+    setIsDeleting(false);
   }
 
-  const handleEdit = (ev) => {
+  const toggleEditForm = (ev) => {
     ev.preventDefault();
-    console.log("HANDLE EDIT", post._id);
+    setIsEditorOn(!isEditorOn);
+  }
+
+  const handleOnChange = (ev) => {
+    setPostData({ ...postData, text: ev.target.value })
+  }
+
+  const handleEdit = async () => {
+    setIsEditing(true);
+    if (isPost) {
+      await dispatch(updatePost(postData))
+    } else {
+      console.log("UPDATE COMMENT")
+    }
+    setIsEditing(false);
+    setIsEditorOn(false);
   }
 
   return (
@@ -59,7 +91,7 @@ const PostCommentBox = ({ post }) => {
           null
         }
         <div className="post-info-box">
-          {'commentsCount' in post ?
+          {isPost ?
             <div><MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span></div>
             :
             null}
@@ -68,10 +100,37 @@ const PostCommentBox = ({ post }) => {
           </div>
         </div>
         {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}
-        {isAuthor ?
-          <div className="post-info-box post-buttons-box">
-            <Button danger onClick={handleDelete}><DeleteOutlined /></Button> <Button onClick={handleEdit}><FormOutlined /></Button>
-          </div>
+        {isAuthor && isDetail ?
+          <>
+            <div className="post-info-box post-buttons-box">
+              <Popconfirm
+                placement="bottomRight"
+                title={"Are you sure you want to delete this?"}
+                onConfirm={handleDelete}
+                okText="Delete"
+                okButtonProps={{ danger: true }}>
+                <Button danger>{isDeleting ? <LoadingOutlined /> : <DeleteOutlined />}</Button>
+              </Popconfirm>
+              <Button onClick={toggleEditForm}><FormOutlined /></Button>
+            </div>
+            <Modal
+              title="Edit"
+              visible={isEditorOn}
+              okText="Edit"
+              onOk={handleEdit}
+              onCancel={toggleEditForm}
+              confirmLoading={isEditing}>
+              <Form initialValues={{ text: post.text }}>
+                <Form.Item name="text">
+                  <TextArea showCount
+                    maxLength={280}
+                    autoSize
+                    onChange={handleOnChange}
+                  />
+                </Form.Item>
+              </Form>
+            </Modal>
+          </>
           : null}
       </div>
     </div>

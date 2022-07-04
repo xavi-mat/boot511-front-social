@@ -20,6 +20,7 @@ const PostDetail = () => {
 
   useEffect(() => {
     getPost(id);
+  // eslint-disable-next-line
   }, []);
 
   if (isLoading) {
@@ -32,7 +33,7 @@ const PostDetail = () => {
   }
   const comment = post.comments?.map(comment => (
     <div key={comment._id}>
-      <PostCommentBox post={comment} />
+      <PostCommentBox post={comment} isDetail={true} />
     </div>
   ))
 
@@ -41,7 +42,7 @@ const PostDetail = () => {
       {loginData?.user ?
         <>
           <h1 className="text-header">Post detail</h1>
-          <PostCommentBox post={post} />
+          <PostCommentBox post={post} isDetail={true} />
           <NewComment />
         </>
         :
@@ -50,7 +51,7 @@ const PostDetail = () => {
             <h1 className="text-header">Post detail</h1>
             <LogRegButtons />
           </div>
-          <PostCommentBox post={post} />
+          <PostCommentBox post={post} isDetail={true} />
         </>
       }
       <div>{comment}</div>
