@@ -46,7 +46,6 @@ const PostDetail = () => {
         </>
         :
         <>
-
           <div className="home-top">
             <h1 className="text-header">Post detail</h1>
             <LogRegButtons />

@@ -4,7 +4,7 @@ import {
   UsergroupAddOutlined,
   TeamOutlined,
   CopyOutlined,
-  TagsOutlined,
+  MessageOutlined,
   SkinOutlined,
 } from '@ant-design/icons';
 import { Col, Pagination, Row, Skeleton } from "antd";
@@ -92,7 +92,7 @@ const Profile = () => {
             <div className="icon-big"><CopyOutlined /> {user.postsCount} <span className="tone-down">posts</span></div>
           </Col>
           <Col span={12}>
-            <div className="icon-big"><TagsOutlined /> {user.commentsCount} <span className="tone-down">comments</span></div>
+            <div className="icon-big"><MessageOutlined /> {user.commentsCount} <span className="tone-down">comments</span></div>
           </Col>
         </Row>
         <Row>

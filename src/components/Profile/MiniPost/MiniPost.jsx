@@ -6,7 +6,7 @@ import {
   EyeOutlined,
   DeleteOutlined,
   LoadingOutlined,
-  TagsOutlined,
+  MessageOutlined,
   LikeOutlined
 } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
@@ -18,8 +18,11 @@ const MiniPost = ({ post }) => {
   const { user } = useSelector((state) => state.auth.loginData);
 
   const isAuthor = post.author === user?._id;
-  const dateCreated = (new Date(post.createdAt)).toLocaleString();
-  const dateUpdated = (new Date(post.updatedAt)).toLocaleString();
+  const date = (new Date(post.updatedAt))
+    .toLocaleString(
+      undefined,
+      { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+    );
 
   const doDeletePost = async (id) => {
     setIsDeleting(true);
@@ -33,9 +36,13 @@ const MiniPost = ({ post }) => {
         <img className="mini-post-image" src={post.image} alt="" />
         : null}
       <div className="mini-post-text">
+        <div className="tone-down go-right">{date}</div>
         <div>{post.text}</div>
-        <div className="tone-down">{dateCreated} {dateUpdated}</div>
-        <div className="tone-down"><LikeOutlined /> {post.likesCount} <TagsOutlined />{post.commentsCount}</div>
+        <div className="go-right">
+          <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes </span>
+          &nbsp;&nbsp;&nbsp;
+          <MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span>
+        </div>
       </div>
       <div className="mini-post-buttons">
         <Button><Link to={"/post/" + post._id}><EyeOutlined /></Link></Button>

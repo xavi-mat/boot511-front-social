@@ -1,13 +1,38 @@
 import { useNavigate } from "react-router-dom";
+import {
+  MessageOutlined,
+  LikeOutlined,
+  DeleteOutlined,
+  FormOutlined
+} from '@ant-design/icons';
+import { Button } from "antd";
+import { useSelector } from "react-redux";
 
 const PostCommentBox = ({ post }) => {
 
+  const { user } = useSelector((state) => state.auth.loginData);
+  const isAuthor = post.author?._id === user?._id;
+
   const navigate = useNavigate();
-  const date = new Date(post.updatedAt).toLocaleString('ca');
+  const date = new Date(post.updatedAt)
+    .toLocaleString(
+      undefined,
+      { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+    );
 
   const handleAuthorClick = (ev) => {
     ev.preventDefault();
     navigate("/user/" + post.author?._id);
+  }
+
+  const handleDelete = (ev) => {
+    ev.preventDefault();
+    console.log("HANDLE DELETE", post._id);
+  }
+
+  const handleEdit = (ev) => {
+    ev.preventDefault();
+    console.log("HANDLE EDIT", post._id);
   }
 
   return (
@@ -33,6 +58,21 @@ const PostCommentBox = ({ post }) => {
           :
           null
         }
+        <div className="post-info-box">
+          {'commentsCount' in post ?
+            <div><MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span></div>
+            :
+            null}
+          <div>
+            <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes</span>
+          </div>
+        </div>
+        {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}
+        {isAuthor ?
+          <div className="post-info-box post-buttons-box">
+            <Button danger onClick={handleDelete}><DeleteOutlined /></Button> <Button onClick={handleEdit}><FormOutlined /></Button>
+          </div>
+          : null}
       </div>
     </div>
   )
