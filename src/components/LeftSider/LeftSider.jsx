@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, Link } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { Menu, Popconfirm } from 'antd';
 import {
@@ -32,7 +32,7 @@ const LeftSider = () => {
 
   if (loginData?.user) {
     items.push(
-      { key: "/profile", icon: <UserOutlined />, label: <NavLink to="/profile">{loginData.user.username}</NavLink> }
+      { key: loginData.user._id, icon: <UserOutlined />, label: <Link to={"/user/"+loginData.user._id}>{loginData.user.username}</Link> }
     );
     items.push(
       { key: "following", icon: <UsergroupAddOutlined />, label: <NavLink to="/">Following</NavLink> }
@@ -76,50 +76,6 @@ const LeftSider = () => {
         mode="vertical"
         items={items}
       />
-      {/* <div>
-        <NavLink to="/">Logo</NavLink>
-        <div id="navbarColor02">
-          <ul>
-            <li>
-              <NavLink to="/">Home</NavLink>
-            </li>
-            {
-              loginData ? <>
-
-                <li>
-
-                  <div>
-                    <NavLink to="/profile">Profile</NavLink>
-                    <div></div>
-                    <NavLink to="/" onClick={onLogout}>Logout</NavLink>
-                  </div>
-                </li>
-                {
-                  loginData.user.role === 'admin' ?
-                    <li>
-                      <NavLink to="/admin">Admin</NavLink>
-                    </li>
-                    :
-                    null
-                }
-              </>
-                :
-                <>
-                  <li>
-                    <NavLink to="/login">Login</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/register">Register</NavLink>
-                  </li>
-                </>
-            }
-          </ul>
-          <div >
-            <input type="text" placeholder="Search" onKeyUp={handleChange} name="text" />
-            <button type="submit" onClick={handleChange}>Search</button>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };

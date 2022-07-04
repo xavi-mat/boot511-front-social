@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import { Layout } from 'antd';
 import RightSider from "../RightSider/RightSider";
-import User from "../User/User";
 const { Content, Sider } = Layout;
 
 const GateKeeper = () => {
@@ -32,11 +31,11 @@ const GateKeeper = () => {
             <Route path="/" element={<Home />} />
             <Route path="/post/:id" element={<PostDetail />} />
             <Route path="/search/:postText" element={<Search />} />
-            <Route path="/user/:id" element={<User />} />
+            <Route path="/user/:userId" element={<Profile />} />
 
             {loginData.user ?
               <>
-                <Route path="/profile" element={<Profile user={loginData.user} />} />
+                {/* <Route path="/prof ile" element={<Profile user={loginData.user} />} /> */}
               </>
               :
               <>

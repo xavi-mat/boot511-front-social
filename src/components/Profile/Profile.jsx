@@ -8,17 +8,22 @@ import {
   SkinOutlined,
 } from '@ant-design/icons';
 import { Col, Pagination, Row, Skeleton } from "antd";
-import { getPostsByUserId, reset } from "../../features/posts/postsSlice";
+import { getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
+import { useParams } from "react-router-dom";
 
-const Profile = ({ user }) => {
+const Profile = () => {
 
-  // const { user } = useSelector((state) => state.auth.loginData);
+  const { userId } = useParams();
+  const { user } = useSelector((state) => state.posts);
   const { posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(posts.page);
 
+  const getUser = async () => {
+    await dispatch(getSomeUser(userId));
+  }
   const onPageChange = async (page) => {
     setCurrentPage(page);
     await dispatch(getPostsByUserId({ userId: user._id, page }));
@@ -26,10 +31,12 @@ const Profile = ({ user }) => {
   }
 
   useEffect(() => {
+    getUser();
     onPageChange(1)
-  }, []);
+    // eslint-disable-next-line
+  }, [userId]);
 
-  if (isLoading) {
+  if (isLoading || !user) {
     return (
       <div>
         <div className="profile-top">
