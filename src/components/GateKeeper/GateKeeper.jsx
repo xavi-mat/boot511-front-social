@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import LeftSider from "../LeftSider/LeftSider";
@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import { Layout } from 'antd';
 import RightSider from "../RightSider/RightSider";
+import User from "../User/User";
 const { Content, Sider } = Layout;
 
 const GateKeeper = () => {
@@ -29,18 +30,28 @@ const GateKeeper = () => {
         <Content className="main-container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/post/:id" element={<PostDetail />} />
             <Route path="/search/:postText" element={<Search />} />
-            <Route path="/admin" element={
-              loginData?.user?.role === "admin" ?
-                <Admin />
-                :
-                <Home />
-            } />
-            <Route path="*" element={<Home />} />
+            <Route path="/user/:id" element={<User />} />
+
+            {loginData.user ?
+              <>
+                <Route path="/profile" element={<Profile user={loginData.user} />} />
+              </>
+              :
+              <>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </>
+            }
+
+            {loginData.user?.role === "admin" ?
+              <Route path="/admin" element={<Admin />} />
+              :
+              null
+            }
+
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Content>
         <Sider

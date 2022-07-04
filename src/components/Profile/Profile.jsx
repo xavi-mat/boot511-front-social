@@ -1,23 +1,48 @@
 import { useDispatch, useSelector } from "react-redux"
 import {
   CalendarOutlined,
-  MailOutlined,
   UsergroupAddOutlined,
   TeamOutlined,
   CopyOutlined,
   TagsOutlined,
   SkinOutlined,
-  EyeOutlined,
-  DeleteOutlined
 } from '@ant-design/icons';
-import { Button, Col, Popconfirm, Row } from "antd";
-import { Link } from "react-router-dom";
-import { deletePost } from "../../features/posts/postsSlice";
+import { Col, Pagination, Row, Skeleton } from "antd";
+import { getPostsByUserId, reset } from "../../features/posts/postsSlice";
+import { useEffect, useState } from "react";
+import MiniPost from "./MiniPost/MiniPost";
 
-const Profile = () => {
+const Profile = ({ user }) => {
 
-  const { user } = useSelector((state) => state.auth.loginData);
+  // const { user } = useSelector((state) => state.auth.loginData);
+  const { posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(posts.page);
+
+  const onPageChange = async (page) => {
+    setCurrentPage(page);
+    await dispatch(getPostsByUserId({ userId: user._id, page }));
+    dispatch(reset());
+  }
+
+  useEffect(() => {
+    onPageChange(1)
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div>
+        <div className="profile-top">
+          <div><Skeleton active avatar={{ size: 100 }} /></div>
+          <h1><Skeleton.Input active title={{ width: 200 }} /></h1>
+        </div>
+        <div className="profile-data">
+          <Skeleton active />
+        </div>
+        <div><Skeleton active /></div>
+      </div>
+    );
+  }
 
   const date = (new Date(user.createdAt))
     .toLocaleDateString(
@@ -25,65 +50,56 @@ const Profile = () => {
       { year: 'numeric', month: 'long', day: 'numeric' }
     );
 
-  const doDeletePost = async (id) => {
-    console.log("first")
-    await dispatch(deletePost(id));
-    console.log("2")
-  }
-
-  const post = user.posts.map(post => (
-    <div key={post._id} className="mini-post">
-      {post.image ?
-        <img className="mini-post-image" src={post.image} alt="" />
-        : null}
-      <div className="mini-post-text">{post.text}</div>
-      <div>
-        <div><Button><Link to={"/post/" + post._id}><EyeOutlined /></Link></Button></div>
-        <div>
-          <Popconfirm
-          placement="bottomRight"
-          title={"Are you sure you want to delete the post?"}
-          onConfirm={()=>{doDeletePost(post._id)}}
-          okText="Delete"
-          okButtonProps={{danger:true}}>
-            <Button danger><DeleteOutlined /></Button>
-          </Popconfirm>
-        </div>
-      </div>
-    </div>
+  const post = posts.posts?.map(post => (
+    <MiniPost key={post._id} post={post} />
   ))
+
+  const paginationBar = (
+    <div className="pagination-box">
+      <Pagination
+        current={currentPage}
+        onChange={onPageChange}
+        total={posts.total}
+        showSizeChanger={false}
+      />
+    </div>
+  );
+
   return (
     <div>
       <div className="profile-top">
         <div><img className="avatar-big" src={user.avatar} alt="" /></div>
         <h1><strong>{user.username}</strong></h1>
       </div>
-      {/* <div className="icon-big"><MailOutlined /> {user.email}</div> */}
-      <Row>
-        <Col span={12}>
-          <div className="icon-big"><UsergroupAddOutlined /> {user.followingCount} <span className="tone-down">following</span></div>
-        </Col>
-        <Col span={12}>
-          <div className="icon-big"><TeamOutlined /> {user.followersCount} <span className="tone-down">followers</span></div>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={12}>
-          <div className="icon-big"><CopyOutlined /> {user.postsCount} <span className="tone-down">posts</span></div>
-        </Col>
-        <Col span={12}>
-          <div className="icon-big"><TagsOutlined /> {user.commentsCount} <span className="tone-down">comments</span></div>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={12}>
-          <div className="icon-big"><SkinOutlined /> <span className="tone-down">Role:</span> {user.role}</div>
-        </Col>
-        <Col span={12}>
-          <div className="icon-big"><CalendarOutlined /> <span className="tone-down">Joined</span> {date}</div>
-        </Col>
-      </Row>
+      <div className="profile-data">
+        <Row>
+          <Col span={12}>
+            <div className="icon-big"><UsergroupAddOutlined /> {user.followingCount} <span className="tone-down">following</span></div>
+          </Col>
+          <Col span={12}>
+            <div className="icon-big"><TeamOutlined /> {user.followersCount} <span className="tone-down">followers</span></div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <div className="icon-big"><CopyOutlined /> {user.postsCount} <span className="tone-down">posts</span></div>
+          </Col>
+          <Col span={12}>
+            <div className="icon-big"><TagsOutlined /> {user.commentsCount} <span className="tone-down">comments</span></div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <div className="icon-big"><SkinOutlined /> <span className="tone-down">Role:</span> {user.role}</div>
+          </Col>
+          <Col span={12}>
+            <div className="icon-big"><CalendarOutlined /> <span className="tone-down">Joined</span> {date}</div>
+          </Col>
+        </Row>
+      </div>
+      {paginationBar}
       <div>{post}</div>
+      {paginationBar}
     </div>
   )
 }

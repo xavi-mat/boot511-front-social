@@ -5,7 +5,7 @@ import { Menu, Popconfirm } from 'antd';
 import {
   SettingOutlined,
   HomeOutlined,
-  UsergroupAddOutlined ,
+  UsergroupAddOutlined,
   UserOutlined,
   LogoutOutlined,
   LoginOutlined,
@@ -35,7 +35,7 @@ const LeftSider = () => {
       { key: "/profile", icon: <UserOutlined />, label: <NavLink to="/profile">{loginData.user.username}</NavLink> }
     );
     items.push(
-      { key: "following", icon: <UsergroupAddOutlined  />, label: <NavLink to="/">Following</NavLink> }
+      { key: "following", icon: <UsergroupAddOutlined />, label: <NavLink to="/">Following</NavLink> }
     );
     items.push(
       { key: "followers", icon: <TeamOutlined />, label: <NavLink to="/">Followers</NavLink> }
@@ -49,7 +49,11 @@ const LeftSider = () => {
       {
         key: "logout",
         icon: <LogoutOutlined />,
-        label: <Popconfirm placement="right" title={"Are you sure you want to logout?"} onConfirm={onLogout}>
+        label: <Popconfirm
+          placement="right"
+          title={"Are you sure you want to logout?"}
+          onConfirm={onLogout}
+          okText="Logout">
           <NavLink to="/">Logout</NavLink>
         </Popconfirm>
       }

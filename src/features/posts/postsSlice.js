@@ -5,11 +5,12 @@ const initialState = {
   posts: {},
   isLoading: false,
   post: {},
+  user: null,
 };
 
 export const getAll = createAsyncThunk(
   "posts/getAll",
-  async (page=1) => {
+  async (page = 1) => {
     try {
       return await postsService.getAll(page);
     } catch (error) {
@@ -39,6 +40,17 @@ export const getPostsByText = createAsyncThunk(
     }
   }
 );
+
+export const getPostsByUserId = createAsyncThunk(
+  "post/getPostsByUserId",
+  async ({ userId, page = 1 }) => {
+    try {
+      return await postsService.getPostsByUserId({ userId, page });
+    } catch (error) {
+      console.error(error)
+    }
+  }
+)
 
 export const deletePost = createAsyncThunk(
   "posts/deletePosts",
@@ -86,6 +98,17 @@ export const createComment = createAsyncThunk(
   }
 );
 
+export const getSomeUser = createAsyncThunk(
+  "users/getSomeUser",
+  async (id) => {
+    try {
+      return await postsService.getSomeUser(id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+)
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -113,9 +136,15 @@ export const postsSlice = createSlice({
       })
       .addCase(getPostsByText.pending, (state) => {
         state.isLoading = true;
-      }).
-      addCase(deletePost.fulfilled, (state, action) => {
-        const posts = state.posts.posts?.filter(p => p._id !== action.payload._id);
+      })
+      .addCase(getPostsByUserId.fulfilled, (state, action) => {
+        state.posts = action.payload;
+      })
+      .addCase(getPostsByUserId.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        const posts = state.posts.posts?.filter(p => p._id !== action.payload.post._id);
         state.posts = { ...state.posts, posts }
       })
       .addCase(createPost.fulfilled, (state, action) => {
@@ -125,6 +154,12 @@ export const postsSlice = createSlice({
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.post.comments = [action.payload.comment, ...state.post.comments]
+      })
+      .addCase(getSomeUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+      })
+      .addCase(getSomeUser.pending, (state) => {
+        state.isLoading = true;
       })
   },
 });

@@ -65,7 +65,7 @@ const Register = () => {
           <a href="http://localhost:8080/fakeEmail.html" target="_blank">ACCESS EMAIL HERE</a>
         </h1>
         : null}
-      <Form onFinish={onFinish} autoComplete={false}>
+      <Form onFinish={onFinish} autoComplete="off">
         <Form.Item
           name="username"
           rules={[

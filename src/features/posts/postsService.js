@@ -17,6 +17,13 @@ const getPostsByText = async (postText) => {
   return res.data;
 };
 
+const getPostsByUserId = async ({userId, page = 1}) => {
+  const res = await axios.get(
+    API_URL + "/posts/user-id/" + userId + "?page=" + page
+  );
+  return res.data;
+}
+
 const deletePost = async (id) => {
   const loginData = JSON.parse(localStorage.getItem("loginData"));
   const res = await axios.delete(
@@ -55,6 +62,11 @@ const createComment = async (commentData) => {
   return res.data;
 }
 
+const getSomeUser = async (id) => {
+  const res = await axios.get(API_URL + "/users/id/" + id);
+  return res.data;
+}
+
 const postsService = {
   getAll,
   getById,
@@ -63,6 +75,8 @@ const postsService = {
   cleanAll,
   createPost,
   createComment,
+  getPostsByUserId,
+  getSomeUser,
 };
 
 export default postsService;
