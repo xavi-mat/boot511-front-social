@@ -2,7 +2,7 @@ import { Pagination } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAll, reset } from "../../../../features/posts/postsSlice";
+import { getAllPosts, reset } from "../../../../features/posts/postsSlice";
 import PostCommentBox from "../../../PostCommentBox/PostCommentBox";
 
 const Post = () => {
@@ -13,7 +13,7 @@ const Post = () => {
 
   const onPageChange = async (page) => {
     setCurrentPage(page);
-    await dispatch(getAll(page));
+    await dispatch(getAllPosts(page));
     dispatch(reset());
   }
 

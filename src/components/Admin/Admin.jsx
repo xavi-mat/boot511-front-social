@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getAll, reset, cleanAll } from "../../features/posts/postsSlice";
+import { getAllPosts, reset, cleanAll } from "../../features/posts/postsSlice";
 import PostAdmin from "./PostAdmin/PostAdmin";
+import TryScroll from "./TryScroll/TryScroll";
 
 const Admin = () => {
 
@@ -9,7 +10,7 @@ const Admin = () => {
   const dispatch = useDispatch();
 
   const getPostsAndReset = async () => {
-    await dispatch(getAll());
+    await dispatch(getAllPosts());
     dispatch(reset());
   };
 
@@ -17,7 +18,7 @@ const Admin = () => {
     getPostsAndReset();
   }, []);
 
- 
+
 
   if (isLoading) {
     return <h1>Cargando posts...</h1>;
@@ -26,6 +27,9 @@ const Admin = () => {
   return (
     <div>
       <h1>Admin</h1>
+      <hr/>
+        <TryScroll/>
+      <hr/>
       <button onClick={() => dispatch(cleanAll())}>CLEAN ALL</button>
       <PostAdmin />
     </div>

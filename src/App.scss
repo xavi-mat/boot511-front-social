@@ -126,7 +126,7 @@
 .newcomment-box {
   margin: 12px 0;
   padding: 12px 16px 0 16px;
-  border: 3px solid rgb(0, 121, 202);
+  border: 3px solid #0079ca88;
   border-radius: 15px;
   display: flex;
   transition: 0.3s;
@@ -204,4 +204,12 @@
 }
 .post-buttons-box {
   justify-content: flex-end;
+}
+.no-more-box {
+  text-align: center;
+  background-color: #f0f0f0;
+  margin: 2rem 0;
+  padding: 1px;
+  border-radius: 15px;
+  color: grey;
 }

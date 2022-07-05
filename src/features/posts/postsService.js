@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const getAll = async (page) => {
+const getAllPosts = async (page) => {
   const res = await axios.get(API_URL + "/posts?page=" + page);
   return res.data;
 };
@@ -95,8 +95,15 @@ const updateComment = async (commentData) => {
   return res.data;
 }
 
+const getCommentsByPostId = async (data) => {
+  const res = await axios.get(
+    API_URL + "/comments/post-id/" + data.postId + "?page=" + data.page
+  )
+  return res.data;
+}
+
 const postsService = {
-  getAll,
+  getAllPosts,
   getById,
   getPostsByText,
   deletePost,
@@ -108,6 +115,7 @@ const postsService = {
   deleteComment,
   updatePost,
   updateComment,
+  getCommentsByPostId
 };
 
 export default postsService;

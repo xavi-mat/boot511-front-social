@@ -1,20 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
-import { act } from "react-dom/test-utils";
 import postsService from "./postsService";
 
 const initialState = {
   posts: {},
   isLoading: false,
   post: {},
+  commentsData: {},
   user: null,
 };
 
-export const getAll = createAsyncThunk(
-  "posts/getAll",
+export const getAllPosts = createAsyncThunk(
+  "posts/getAllPosts",
   async (page = 1) => {
     try {
-      return await postsService.getAll(page);
+      return await postsService.getAllPosts(page);
     } catch (error) {
       console.error(error);
     }
@@ -93,9 +93,9 @@ export const createPost = createAsyncThunk(
 
 export const createComment = createAsyncThunk(
   "comments/createComment",
-  async (commentData, thunkAPI) => {
+  async (commentsData, thunkAPI) => {
     try {
-      return await postsService.createComment(commentData);
+      return await postsService.createComment(commentsData);
     } catch (error) {
       console.error("comments/createComment", error.response.data);
       const message = error.response.data.msg;
@@ -145,11 +145,24 @@ export const updatePost = createAsyncThunk(
 
 export const updateComment = createAsyncThunk(
   "comments/update",
-  async (commentData, thunkAPI) => {
+  async (commentsData, thunkAPI) => {
     try {
-      return await postsService.updateComment(commentData);
+      return await postsService.updateComment(commentsData);
     } catch (error) {
-      console.log("Slide: updateComment", error.response.data);
+      console.log("Slice: updateComment", error.response.data);
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getCommentsByPostId = createAsyncThunk(
+  "comments/getByPostId",
+  async (data, thunkAPI) => {
+    try {
+      return await postsService.getCommentsByPostId(data);
+    } catch (error) {
+      console.log("Slice: getByPostId", error.response.data);
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
@@ -166,10 +179,10 @@ export const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAll.fulfilled, (state, action) => {
+      .addCase(getAllPosts.fulfilled, (state, action) => {
         state.posts = action.payload;
       })
-      .addCase(getAll.pending, (state) => {
+      .addCase(getAllPosts.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getById.fulfilled, (state, action) => {
@@ -207,7 +220,8 @@ export const postsSlice = createSlice({
         notification.error({ message: action.payload });
       })
       .addCase(createComment.fulfilled, (state, action) => {
-        state.post.comments = [action.payload.comment, ...state.post.comments]
+        state.commentsData.comments = state.commentsData.comments ?? [];
+        state.commentsData.comments = [action.payload.comment, ...state.commentsData.comments]
       })
       .addCase(createComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -222,9 +236,11 @@ export const postsSlice = createSlice({
         notification.error({ message: action.payload });
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
-        const comments = state.post.comments
-          .filter(c => c._id !== action.payload.comment._id);
-        state.post = { ...state.post, comments };
+        state.commentsData.comments = state.commentsData.comments ?? [];
+        const comments = state.commentsData.comments.filter(
+          c => c._id !== action.payload.comment._id
+        );
+        state.commentsData.comments = [...comments];
       })
       .addCase(deleteComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -236,11 +252,22 @@ export const postsSlice = createSlice({
         notification.error({ message: action.payload });
       })
       .addCase(updateComment.fulfilled, (state, action) => {
-        const comments = state.post.comments
+        state.commentsData.comments = state.commentsData.comments ?? [];
+        const comments = state.commentsData.comments
           .filter(c => c._id !== action.payload.comment._id);
-        state.post.comments = [action.payload.comment, ...comments];
+        state.commentsData.comments = [action.payload.comment, ...comments];
       })
       .addCase(updateComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(getCommentsByPostId.fulfilled, (state, action) => {
+        state.commentsData.total = action.payload.total;
+        state.commentsData.page = action.payload.page;
+        state.commentsData.maxPages = action.payload.maxPages;
+        state.commentsData.comments = state.commentsData.comments ?? [];
+        state.commentsData.comments = [...state.commentsData.comments, ...action.payload.comments];
+      })
+      .addCase(getCommentsByPostId.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
   },
