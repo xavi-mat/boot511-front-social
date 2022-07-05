@@ -7,6 +7,7 @@ import PostCommentBox from "../../../PostCommentBox/PostCommentBox";
 import LogRegButtons from "../../LogRegButtons/LogRegButtons";
 import NewComment from "./NewComment/NewComment";
 import { Skeleton } from "antd";
+import NotFound from "../../../NotFound/NotFound";
 
 const PostDetail = () => {
 
@@ -50,6 +51,11 @@ const PostDetail = () => {
       </div>
     );
   }
+
+  if (!post) {
+    return <NotFound />
+  }
+
   const comment = commentsData.comments?.map((comment, i) => (
     <div key={i}>
       <PostCommentBox post={comment} isDetail={true} />

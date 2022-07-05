@@ -1,8 +1,8 @@
 import { useState } from "react";
-import {Input} from "antd";
+import { Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const RightSider = () => {
+const RightSider = ({ autoFocus = false }) => {
 
   const navigate = useNavigate();
   const [text, setText] = useState("");
@@ -17,7 +17,7 @@ const RightSider = () => {
 
   return (
     <div className="right-container">
-    <Input type="text" placeholder="Search" onKeyUp={handleChange} name="text" />
+      <Input type="text" placeholder="Search" onKeyUp={handleChange} name="text" autoFocus={autoFocus} />
     </div>
   )
 }

@@ -62,7 +62,12 @@ const Register = () => {
       <h1>Register</h1>
       {emailLink ?
         <h1 className="center-box">
-          <a href="http://localhost:8080/fakeEmail.html" target="_blank">ACCESS EMAIL HERE</a>
+          <a
+            href="http://localhost:8080/fakeEmail.html"
+            target="_blank"
+            rel="noreferrer">
+            ACCESS EMAIL HERE
+          </a>
         </h1>
         : null}
       <Form onFinish={onFinish} autoComplete="off">

@@ -16,6 +16,7 @@ const Admin = () => {
 
   useEffect(() => {
     getPostsAndReset();
+  // eslint-disable-next-line
   }, []);
 
 

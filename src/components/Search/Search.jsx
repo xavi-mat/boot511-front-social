@@ -15,6 +15,7 @@ const Search = () => {
 
   useEffect(() => {
     getData(postText);
+  // eslint-disable-next-line
   }, [postText]);
 
   return (

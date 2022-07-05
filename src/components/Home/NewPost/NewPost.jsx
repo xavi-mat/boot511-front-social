@@ -49,6 +49,7 @@ const NewPost = () => {
               maxLength={280}
               autoSize
               placeholder="What are you thinking?"
+              autoFocus
             />
           </Form.Item>
 
