@@ -1,4 +1,4 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment } from "../../../../../features/posts/postsSlice";
 const { TextArea } = Input;
@@ -11,9 +11,17 @@ const NewComment = () => {
   const { post } = useSelector((state) => state.posts);
 
   const onFinish = async (values) => {
-    values.postId = post._id;
-    await dispatch(createComment(values));
-    form.resetFields();
+    values.text = values.text.trim();
+    if (values.text.length < 3) {
+      notification.error({
+        message: "Error",
+        description: "Please, input at least three valid characters."
+      });
+    } else {
+      values.postId = post._id;
+      await dispatch(createComment(values));
+      form.resetFields();
+    }
   };
 
   return (

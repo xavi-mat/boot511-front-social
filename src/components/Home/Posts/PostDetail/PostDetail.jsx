@@ -31,8 +31,8 @@ const PostDetail = () => {
       </div>
     );
   }
-  const comment = post.comments?.map(comment => (
-    <div key={comment._id}>
+  const comment = post.comments?.map((comment, i) => (
+    <div key={i}>
       <PostCommentBox post={comment} isDetail={true} />
     </div>
   ))

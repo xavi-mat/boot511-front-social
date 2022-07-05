@@ -1,4 +1,4 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../../features/posts/postsSlice";
 const { TextArea } = Input;
@@ -15,7 +15,15 @@ const NewPost = () => {
   }
 
   const onFinish = (values) => {
-    doCreatePost(values);
+    values.text = values.text.trim();
+    if (values.text.length < 3) {
+      notification.error({
+        message: "Error",
+        description: "Please, input at least three valid characters."
+      });
+    } else {
+      doCreatePost(values);
+    }
   };
 
   return (

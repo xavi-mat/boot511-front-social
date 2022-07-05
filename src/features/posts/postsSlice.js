@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
+import { act } from "react-dom/test-utils";
 import postsService from "./postsService";
 
 const initialState = {
@@ -133,7 +134,20 @@ export const updatePost = createAsyncThunk(
     try {
       return await postsService.updatePost(postData);
     } catch (error) {
-      console.log("Slice: updatePost", error.response.data)
+      console.log("Slice: updatePost", error.response.data);
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateComment = createAsyncThunk(
+  "comments/update",
+  async (commentData, thunkAPI) => {
+    try {
+      return await postsService.updateComment(commentData);
+    } catch (error) {
+      console.log("Slide: updateComment", error.response.data);
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
@@ -196,7 +210,7 @@ export const postsSlice = createSlice({
       .addCase(getSomeUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getSomeUser.rejected, (state, action) => {
+      .addCase(getSomeUser.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
@@ -204,11 +218,22 @@ export const postsSlice = createSlice({
           .filter(c => c._id !== action.payload.comment._id);
         state.post = { ...state.post, comments };
       })
-      .addCase(deleteComment.rejected, (state, action) => {
+      .addCase(deleteComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
       .addCase(updatePost.fulfilled, (state, action) => {
         state.post = action.payload.post;
+      })
+      .addCase(updatePost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(updateComment.fulfilled, (state, action) => {
+        const comments = state.post.comments
+          .filter(c => c._id !== action.payload.comment._id);
+        state.post.comments = [action.payload.comment, ...comments];
+      })
+      .addCase(updateComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
       })
   },
 });

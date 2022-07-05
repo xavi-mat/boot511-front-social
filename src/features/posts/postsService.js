@@ -85,6 +85,16 @@ const updatePost = async (postData) => {
   return res.data;
 }
 
+const updateComment = async (commentData) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.put(
+    API_URL + "/comments/id/" + commentData.id,
+    commentData,
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+}
+
 const postsService = {
   getAll,
   getById,
@@ -97,6 +107,7 @@ const postsService = {
   getSomeUser,
   deleteComment,
   updatePost,
+  updateComment,
 };
 
 export default postsService;

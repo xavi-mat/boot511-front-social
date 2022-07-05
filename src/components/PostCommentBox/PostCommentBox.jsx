@@ -6,10 +6,15 @@ import {
   FormOutlined,
   LoadingOutlined
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Popconfirm } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { deleteComment, deletePost, updatePost } from "../../features/posts/postsSlice";
+import {
+  deleteComment,
+  deletePost,
+  updateComment,
+  updatePost
+} from "../../features/posts/postsSlice";
 const { TextArea } = Input;
 
 const PostCommentBox = ({ post, isDetail }) => {
@@ -57,11 +62,20 @@ const PostCommentBox = ({ post, isDetail }) => {
   }
 
   const handleEdit = async () => {
+    const text = postData.text.trim();
+    if (text.length < 3) {
+      notification.error({
+        message: "Error",
+        description: "Please, input at least three valid characters."
+      });
+      return;
+    }
     setIsEditing(true);
+    const validData = { ...postData, text };
     if (isPost) {
-      await dispatch(updatePost(postData))
+      await dispatch(updatePost(validData));
     } else {
-      console.log("UPDATE COMMENT")
+      await dispatch(updateComment(validData));
     }
     setIsEditing(false);
     setIsEditorOn(false);
