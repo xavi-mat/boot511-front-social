@@ -63,10 +63,10 @@ const PostCommentBox = ({ post, isDetail }) => {
 
   const handleEdit = async () => {
     const text = postData.text.trim();
-    if (text.length < 3) {
+    if ((isPost && text.length < 3) || text.length < 1) {
       notification.error({
         message: "Error",
-        description: "Please, input at least three valid characters."
+        description: "Please, input some valid characters."
       });
       return;
     }

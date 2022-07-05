@@ -12,10 +12,10 @@ const NewComment = () => {
 
   const onFinish = async (values) => {
     values.text = values.text.trim();
-    if (values.text.length < 3) {
+    if (values.text.length < 1) {
       notification.error({
         message: "Error",
-        description: "Please, input at least three valid characters."
+        description: "Please, input some valid characters."
       });
     } else {
       values.postId = post._id;

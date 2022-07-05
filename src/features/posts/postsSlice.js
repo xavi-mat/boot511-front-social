@@ -80,24 +80,26 @@ export const cleanAll = createAsyncThunk(
 
 export const createPost = createAsyncThunk(
   "posts/createPost",
-  async (postData) => {
+  async (postData, thunkAPI) => {
     try {
       return await postsService.createPost(postData);
     } catch (error) {
-      console.error(error);
-      // const message = error.response.data.msg;
-      // return thunkAPI.rejectWithValue(message);
+      console.error("posts/createPost", error.response.data);
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const createComment = createAsyncThunk(
   "comments/createComment",
-  async (commentData) => {
+  async (commentData, thunkAPI) => {
     try {
       return await postsService.createComment(commentData);
     } catch (error) {
-      console.error(error);
+      console.error("comments/createComment", error.response.data);
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -193,7 +195,7 @@ export const postsSlice = createSlice({
         state.posts = { ...state.posts, posts }
         notification.success({ message: "Deleted" });
       })
-      .addCase(deletePost.rejected, (state, action) => {
+      .addCase(deletePost.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
       .addCase(createPost.fulfilled, (state, action) => {
@@ -201,8 +203,14 @@ export const postsSlice = createSlice({
         state.posts?.posts.unshift(action.payload.post);
         state.posts = { ...state.posts };
       })
+      .addCase(createPost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
       .addCase(createComment.fulfilled, (state, action) => {
         state.post.comments = [action.payload.comment, ...state.post.comments]
+      })
+      .addCase(createComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
       })
       .addCase(getSomeUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
