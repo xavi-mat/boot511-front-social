@@ -52,15 +52,15 @@ const NewComment = () => {
 
           <div className="newpost-buttons">
             <Form.Item>
-              <Button className="round-button" size="large" onClick={() => alert("Not working key")}>
+              <Button className="wide-button" onClick={() => alert("Not working key")}>
                 Add image
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button className="round-button" size="large" htmlType="reset">Clear</Button>
+              <Button className="wide-button" htmlType="reset">Clear</Button>
             </Form.Item>
             <Form.Item>
-              <Button className="round-button" size="large" type="primary" htmlType="submit">Send</Button>
+              <Button className="wide-button" type="primary" htmlType="submit">Send</Button>
             </Form.Item>
           </div>
         </Form>

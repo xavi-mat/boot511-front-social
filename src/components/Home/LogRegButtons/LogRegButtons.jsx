@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 const LogRegButtons = () => {
   return (
     <div className="home-buttons-box">
-      <Button className="round-button" type="primary" size="large"><Link to="/login">Login</Link></Button>
-      <Button className="round-button" type="primary" size="large"><Link to="/register">Register</Link></Button>
+      <Button className="wide-button" type="primary"><Link to="/login">Login</Link></Button>
+      <Button className="wide-button" type="primary"><Link to="/register">Register</Link></Button>
     </div>
   )
 }

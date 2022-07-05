@@ -4,14 +4,19 @@ import {
   LikeOutlined,
   DeleteOutlined,
   FormOutlined,
-  LoadingOutlined
+  LoadingOutlined,
+  LikeTwoTone,
+  LikeFilled,
+  DislikeFilled, DislikeOutlined
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Popconfirm, notification } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, notification, Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import {
   deleteComment,
   deletePost,
+  likePost,
+  unlikePost,
   updateComment,
   updatePost
 } from "../../features/posts/postsSlice";
@@ -24,6 +29,8 @@ const PostCommentBox = ({ post, isDetail }) => {
   const isPost = typeof post === "object" && 'commentsCount' in post;
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+  const [isUnliking, setIsUnliking] = useState(false);
   const [isEditorOn, setIsEditorOn] = useState(false);
   const [postData, setPostData] = useState({ id: post._id, text: "" });
   const navigate = useNavigate();
@@ -81,6 +88,18 @@ const PostCommentBox = ({ post, isDetail }) => {
     setIsEditorOn(false);
   }
 
+  const handleLike = async () => {
+    setIsLiking(true);
+    await dispatch(likePost(post._id))
+    setIsLiking(false);
+  }
+
+  const handleUnlike = async () => {
+    setIsUnliking(true);
+    await dispatch(unlikePost(post._id));
+    setIsUnliking(false);
+  }
+
   return (
     <div className="post-box">
       <div className="avatar-box">
@@ -104,13 +123,39 @@ const PostCommentBox = ({ post, isDetail }) => {
           :
           null
         }
-        <div className="post-info-box">
-          {isPost ?
-            <div><MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span></div>
-            :
-            null}
-          <div>
-            <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes</span>
+        <div className="post-below-box">
+          <div className="post-info-box">
+            {isPost ?
+              <div><MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span></div>
+              :
+              null}
+            <div>
+              <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes</span>
+            </div>
+            {user && isPost && isDetail ?
+              <div>
+                {post.youLiked ?
+                  <Tooltip title={<>You like it. Click to delete your like <DislikeOutlined /></>}>
+                    <Button
+                      shape="circle"
+                      icon={<LikeFilled style={{ color: "#52c41a" }} />}
+                      onClick={handleUnlike}
+                      loading={isUnliking}
+                    />
+                  </Tooltip>
+                  :
+                  <Tooltip title="Click to give a like">
+                    <Button
+                      shape="circle"
+                      icon={<LikeTwoTone twoToneColor="#52c41a" />}
+                      onClick={handleLike}
+                      loading={isLiking}
+                    />
+                  </Tooltip>
+                }
+              </div>
+              : null
+            }
           </div>
         </div>
         {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}

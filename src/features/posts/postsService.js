@@ -7,8 +7,11 @@ const getAllPosts = async (page) => {
   return res.data;
 };
 
-const getById = async (id) => {
-  const res = await axios.get(API_URL + "/posts/id/" + id);
+const getPostById = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const FULL_URL = API_URL + "/posts/id/" + id +
+    (loginData ? "?userId=" + loginData.user._id : '');
+  const res = await axios.get(FULL_URL);
   return res.data;
 }
 
@@ -47,7 +50,12 @@ const createPost = async (postData) => {
   const res = await axios.post(
     API_URL + "/posts",
     postData,
-    { headers: { Authorization: loginData?.token } }
+    {
+      headers: {
+        Authorization: loginData?.token,
+        'Content-Type': 'multipart/form-data'
+      }
+    }
   );
   return res.data;
 };
@@ -102,9 +110,28 @@ const getCommentsByPostId = async (data) => {
   return res.data;
 }
 
+const likePost = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.put(
+    API_URL + "/posts/like/id/" + id,
+    {},
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+}
+
+const unlikePost = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.delete(
+    API_URL + "/posts/like/id/" + id,
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+}
+
 const postsService = {
   getAllPosts,
-  getById,
+  getPostById,
   getPostsByText,
   deletePost,
   cleanAll,
@@ -115,7 +142,9 @@ const postsService = {
   deleteComment,
   updatePost,
   updateComment,
-  getCommentsByPostId
+  getCommentsByPostId,
+  likePost,
+  unlikePost,
 };
 
 export default postsService;

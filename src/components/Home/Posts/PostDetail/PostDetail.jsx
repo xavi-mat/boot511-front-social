@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
-import { getById, getCommentsByPostId, reset } from "../../../../features/posts/postsSlice";
+import { getPostById, getCommentsByPostId, reset, emptyComments } from "../../../../features/posts/postsSlice";
 import PostCommentBox from "../../../PostCommentBox/PostCommentBox";
 import LogRegButtons from "../../LogRegButtons/LogRegButtons";
 import NewComment from "./NewComment/NewComment";
@@ -18,7 +18,8 @@ const PostDetail = () => {
   const { loginData } = useSelector(state => state.auth);
 
   const getPost = async (id) => {
-    await dispatch(getById(id));
+    dispatch(emptyComments());
+    await dispatch(getPostById(id));
     dispatch(reset());
   }
 
@@ -47,7 +48,9 @@ const PostDetail = () => {
     return (
       <div>
         <h1 className="text-header">Post detail</h1>
-        <Skeleton avatar active />
+        <div className="post-box">
+          <Skeleton avatar active />
+        </div>
       </div>
     );
   }
@@ -85,7 +88,7 @@ const PostDetail = () => {
           next={loadMoreComments}
           hasMore={comment?.length < commentsData.total}
           loader={<Skeleton avatar active />}
-          endMessage={<div className="no-more-box">No more comments</div>}
+          endMessage={<div className="no-more-box">&nbsp;</div>}
         // scrollableTarget="scrollableDiv"
         >
           {comment}

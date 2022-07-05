@@ -21,13 +21,15 @@ export const getAllPosts = createAsyncThunk(
   }
 );
 
-export const getById = createAsyncThunk(
-  "posts/getById",
-  async (id) => {
+export const getPostById = createAsyncThunk(
+  "posts/getPostById",
+  async (id, thunkAPI) => {
     try {
-      return await postsService.getById(id);
+      return await postsService.getPostById(id);
     } catch (error) {
-      console.error(error);
+      console.info(error);
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -97,7 +99,6 @@ export const createComment = createAsyncThunk(
     try {
       return await postsService.createComment(commentsData);
     } catch (error) {
-      console.error("comments/createComment", error.response.data);
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
@@ -169,12 +170,39 @@ export const getCommentsByPostId = createAsyncThunk(
   }
 );
 
+export const likePost = createAsyncThunk(
+  "posts/like",
+  async (id, thunkAPI) => {
+    try {
+      return await postsService.likePost(id);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const unlikePost = createAsyncThunk(
+  "posts/unlike",
+  async (id, thunkAPI) => {
+    try {
+      return await postsService.unlikePost(id);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
     reset: (state) => {
       state.isLoading = false;
+    },
+    emptyComments: (state) => {
+      state.commentsData.comments = [];
     }
   },
   extraReducers: (builder) => {
@@ -185,11 +213,16 @@ export const postsSlice = createSlice({
       .addCase(getAllPosts.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getById.fulfilled, (state, action) => {
+      .addCase(getPostById.fulfilled, (state, action) => {
         state.post = action.payload.post;
+        state.post.youLiked = action.payload.youLiked;
       })
-      .addCase(getById.pending, (state) => {
+      .addCase(getPostById.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(getPostById.rejected, (state, action) => {
+        state.post = null;
+        notification.error({message: action.payload})
       })
       .addCase(getPostsByText.fulfilled, (state, action) => {
         state.posts = action.payload;
@@ -221,7 +254,8 @@ export const postsSlice = createSlice({
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.commentsData.comments = state.commentsData.comments ?? [];
-        state.commentsData.comments = [action.payload.comment, ...state.commentsData.comments]
+        state.commentsData.comments = [action.payload.comment, ...state.commentsData.comments];
+        state.post.commentsCount++;
       })
       .addCase(createComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -241,6 +275,7 @@ export const postsSlice = createSlice({
           c => c._id !== action.payload.comment._id
         );
         state.commentsData.comments = [...comments];
+        state.post.commentsCount--;
       })
       .addCase(deleteComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -270,8 +305,22 @@ export const postsSlice = createSlice({
       .addCase(getCommentsByPostId.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
+      .addCase(likePost.fulfilled, (state) => {
+        state.post.likesCount++;
+        state.post.youLiked = 1;
+      })
+      .addCase(likePost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(unlikePost.fulfilled, (state) => {
+        state.post.likesCount--;
+        state.post.youLiked = 0;
+      })
+      .addCase(unlikePost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
   },
 });
 
-export const { reset } = postsSlice.actions;
+export const { reset, emptyComments } = postsSlice.actions;
 export default postsSlice.reducer;

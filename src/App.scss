@@ -113,8 +113,7 @@
   gap: 2rem;
 }
 
-.round-button {
-  border-radius: 20px;
+.wide-button {
   min-width: 120px;
 }
 
@@ -153,22 +152,32 @@
 .icon-big {
   font-size: 1.3em;
 }
+
 .profile-top {
-  margin-left: 12px;
+  margin: 0 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-top-left {
   display: flex;
   align-items: center;
   gap: 2em;
 }
+
 .avatar-big {
   border-radius: 50%;
   width: 100px;
   height: 100px;
 }
+
 .mini-post {
   padding: 1rem;
   border: 1px solid #eeeeee;
   display: flex;
 }
+
 .mini-post-text {
   flex: 1;
   margin-right: 12px;
@@ -177,34 +186,49 @@
   gap: 8px;
   // align-items: flex-end;
 }
+
 .go-right {
   align-self: flex-end;
 }
+
 .mini-post-image {
   margin-right: 12px;
   max-width: 100px;
   max-height: 100px;
 }
+
 .mini-post-buttons {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .profile-data {
   margin: 8px 12px;
 }
+
 .page404 {
   font-size: xx-large;
   text-align: center;
 }
-.post-info-box {
+
+.post-below-box {
   margin: 16px 4px;
   display: flex;
-  gap: 1rem;
+  justify-content: space-between;
 }
+
+.post-info-box {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+
 .post-buttons-box {
   justify-content: flex-end;
+  margin-bottom: 12px;
 }
+
 .no-more-box {
   text-align: center;
   background-color: #f0f0f0;
@@ -213,10 +237,16 @@
   border-radius: 15px;
   color: grey;
 }
+
 .not-found-box {
   text-align: center;
   background-color: #f0f0f0;
   margin: 2rem;
   padding: 2rem;
   border-radius: 15px;
+}
+
+.active {
+  font-weight: bolder;
+  color: darkblue;
 }

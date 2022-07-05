@@ -7,7 +7,7 @@ import {
   MessageOutlined,
   SkinOutlined,
 } from '@ant-design/icons';
-import { Col, Pagination, Row, Skeleton } from "antd";
+import { Button, Col, Pagination, Row, Skeleton, Tooltip } from "antd";
 import { getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
@@ -17,6 +17,7 @@ const Profile = () => {
 
   const { userId } = useParams();
   const { user } = useSelector((state) => state.posts);
+  const { loginData } = useSelector((state) => state.auth);
   const { posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(posts.page);
@@ -75,8 +76,24 @@ const Profile = () => {
   return (
     <div>
       <div className="profile-top">
-        <div><img className="avatar-big" src={user.avatar} alt="" /></div>
-        <h1><strong>{user.username}</strong></h1>
+        <div className="profile-top-left">
+          <div><img className="avatar-big" src={user.avatar} alt="" /></div>
+          <h1><strong>{user.username}</strong></h1>
+        </div>
+        <div>
+          {loginData.user && loginData.user._id !== user._id ?
+            user.youFollow ?
+              <Tooltip title="You follow this user. Click to unfollow">
+                <Button>Unfollow</Button>
+              </Tooltip>
+              :
+              <Tooltip title="Click to follow">
+                <Button type="primary">Follow</Button>
+              </Tooltip>
+            :
+            null
+          }
+        </div>
       </div>
       <div className="profile-data">
         <Row>
