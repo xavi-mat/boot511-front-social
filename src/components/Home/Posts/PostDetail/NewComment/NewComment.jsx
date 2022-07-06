@@ -83,7 +83,7 @@ const NewComment = () => {
           </Form.Item>
 
           <div className="newpost-buttons">
-            <Form.Item>
+            <Form.Item className="to-front">
               <Upload
                 name="image"
                 beforeUpload={handleUpload}
@@ -96,18 +96,25 @@ const NewComment = () => {
                 </Button>
               </Upload>
             </Form.Item>
-            <Form.Item>
-              <Button className="wide-button" htmlType="reset">Clear</Button>
-            </Form.Item>
-            <Form.Item>
-              <Button
-                className="wide-button"
-                type="primary"
-                htmlType="submit"
-                loading={isSending}>
-                Send
-              </Button>
-            </Form.Item>
+            <div className="newpost-right-buttons">
+              <Form.Item>
+                <Button
+                  className="wide-button"
+                  htmlType="reset"
+                  onClick={() => setFileList([])}>
+                  Clear
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  className="wide-button"
+                  type="primary"
+                  htmlType="submit"
+                  loading={isSending}>
+                  Send
+                </Button>
+              </Form.Item>
+            </div>
           </div>
         </Form>
       </div>

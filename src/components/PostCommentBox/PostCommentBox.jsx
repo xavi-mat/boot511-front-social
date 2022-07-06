@@ -8,7 +8,7 @@ import {
   LikeTwoTone,
   LikeFilled,
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Popconfirm, notification, Tooltip } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, notification, Tooltip, Image } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import {
@@ -75,6 +75,7 @@ const PostCommentBox = ({ post, isDetail }) => {
   }
 
   const handleEdit = async () => {
+    setIsEditing(true);
     const text = postData.text.trim();
     if ((isPost && text.length < 3) || text.length < 1) {
       notification.error({
@@ -82,13 +83,13 @@ const PostCommentBox = ({ post, isDetail }) => {
         description: "Please, input some valid characters."
       });
       return;
-    }
-    setIsEditing(true);
-    const validData = { ...postData, text };
-    if (isPost) {
-      await dispatch(updatePost(validData));
     } else {
-      await dispatch(updateComment(validData));
+      const validData = { ...postData, text };
+      if (isPost) {
+        await dispatch(updatePost(validData));
+      } else {
+        await dispatch(updateComment(validData));
+      }
     }
     setIsEditing(false);
     setIsEditorOn(false);
@@ -153,7 +154,9 @@ const PostCommentBox = ({ post, isDetail }) => {
         </div>
         <div>{post.text}</div>
         {post.image ?
-          <div><img className="post-image" src={post.image} alt="" /></div>
+          <div>
+            <Image className="post-image" src={post.image} alt="" preview={{ maskClassName: "post-image" }} />
+          </div>
           :
           null
         }

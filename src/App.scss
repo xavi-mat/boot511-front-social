@@ -81,6 +81,7 @@
   border-radius: 15px;
   width: 100%;
   margin-top: 12px;
+  color: white;
 }
 
 .form-box {
@@ -114,7 +115,7 @@
 }
 
 .wide-button {
-  min-width: 120px;
+  min-width: 80px;
 }
 
 .center-box {
@@ -130,13 +131,21 @@
   display: flex;
   transition: 0.3s;
 }
-
+.to-front {
+  z-index: 1;
+}
 .newpost-buttons {
   padding-top: 12px;
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
-
+.newpost-right-buttons {
+  display: flex;
+  gap: 2rem;
+  position: absolute;
+  right: 10px;
+}
 .top-margin {
   margin-top: 12px;
 }

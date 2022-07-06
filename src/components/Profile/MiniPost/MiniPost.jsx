@@ -1,4 +1,4 @@
-import { Button, Popconfirm } from "antd";
+import { Button, Image, Popconfirm } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { deletePost } from "../../../features/posts/postsSlice";
@@ -33,7 +33,7 @@ const MiniPost = ({ post }) => {
   return (
     <div className="mini-post">
       {post.image ?
-        <img className="mini-post-image" src={post.image} alt="" />
+        <Image className="mini-post-image" src={post.image} alt="" preview={{ maskClassName: "mini-post-image" }} />
         : null}
       <div className="mini-post-text">
         <div className="tone-down go-right">{date}</div>
