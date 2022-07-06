@@ -43,7 +43,8 @@ export const logout = createAsyncThunk(
     } catch (error) {
       console.error(error);
     }
-});
+  });
+
 
 export const authSlice = createSlice({
   name: "auth",
@@ -53,6 +54,10 @@ export const authSlice = createSlice({
       state.isSuccess = false;
       state.isError = false;
       state.message = "";
+    },
+    updateUser: (state, action) => {
+      state.loginData.user = action.payload;
+      localStorage.setItem("loginData", JSON.stringify(state.loginData));
     }
   },
   extraReducers: (builder) => {
@@ -80,6 +85,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {reset } = authSlice.actions;
+export const { reset, updateUser } = authSlice.actions;
 
 export default authSlice.reducer;

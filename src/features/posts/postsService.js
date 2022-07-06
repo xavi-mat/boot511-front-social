@@ -8,10 +8,7 @@ const getAllPosts = async (page) => {
 };
 
 const getPostById = async (id) => {
-  const loginData = JSON.parse(localStorage.getItem("loginData"));
-  const FULL_URL = API_URL + "/posts/id/" + id +
-    (loginData ? "?userId=" + loginData.user._id : '');
-  const res = await axios.get(FULL_URL);
+  const res = await axios.get(API_URL + "/posts/id/" + id);
   return res.data;
 }
 
@@ -129,6 +126,25 @@ const unlikePost = async (id) => {
   return res.data;
 }
 
+const likeComment  = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.put(
+    API_URL + "/comments/like/" + id,
+    {},
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+}
+
+const unlikeComment = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.delete(
+    API_URL + "/comments/like/" + id,
+    { headers: { Authorization: loginData?.token } }
+  );
+  return res.data;
+}
+
 const postsService = {
   getAllPosts,
   getPostById,
@@ -145,6 +161,8 @@ const postsService = {
   getCommentsByPostId,
   likePost,
   unlikePost,
+  likeComment,
+  unlikeComment,
 };
 
 export default postsService;

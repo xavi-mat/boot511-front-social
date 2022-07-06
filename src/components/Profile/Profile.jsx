@@ -24,7 +24,7 @@ const Profile = () => {
 
   const getUser = async () => {
     await dispatch(getSomeUser(userId));
-    await onPageChange(1)
+    await onPageChange(1);
   }
   const onPageChange = async (page) => {
     setCurrentPage(page);

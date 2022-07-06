@@ -7,7 +7,6 @@ import {
   LoadingOutlined,
   LikeTwoTone,
   LikeFilled,
-  DislikeFilled, DislikeOutlined
 } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Popconfirm, notification, Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,11 +14,14 @@ import { useState } from "react";
 import {
   deleteComment,
   deletePost,
+  likeComment,
   likePost,
+  unlikeComment,
   unlikePost,
   updateComment,
   updatePost
 } from "../../features/posts/postsSlice";
+import { updateUser } from "../../features/auth/authSlice";
 const { TextArea } = Input;
 
 const PostCommentBox = ({ post, isDetail }) => {
@@ -35,6 +37,10 @@ const PostCommentBox = ({ post, isDetail }) => {
   const [postData, setPostData] = useState({ id: post._id, text: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const youLiked = isPost ?
+    user?.likedPosts?.includes(post._id) :
+    user?.likedComments?.includes(post._id);
+
 
   const date = new Date(post.updatedAt)
     .toLocaleString(
@@ -88,15 +94,43 @@ const PostCommentBox = ({ post, isDetail }) => {
     setIsEditorOn(false);
   }
 
-  const handleLike = async () => {
+  const handleLike = async (ev) => {
+    ev.preventDefault();
     setIsLiking(true);
-    await dispatch(likePost(post._id))
+    if (isPost) {
+      const res = await dispatch(likePost(post._id));
+      if (res.meta.requestStatus === "fulfilled") {
+        const updatedUser = { ...user };
+        updatedUser.likedPosts = [...updatedUser.likedPosts, post._id];
+        await dispatch(updateUser(updatedUser));
+      }
+    } else {
+      const res = await dispatch(likeComment(post._id));
+      if (res.meta.requestStatus === "fulfilled") {
+        const updatedUser = { ...user };
+        updatedUser.likedComments = [...updatedUser.likedComments, post._id];
+        await dispatch(updateUser(updatedUser));
+      }
+    }
     setIsLiking(false);
   }
 
-  const handleUnlike = async () => {
+  const handleUnlike = async (ev) => {
+    ev.preventDefault();
     setIsUnliking(true);
-    await dispatch(unlikePost(post._id));
+    if (isPost) {
+      const res = await dispatch(unlikePost(post._id));
+      if (res.meta.requestStatus === "fulfilled") {
+        const likedPosts = user.likedPosts.filter(pId => pId !== post._id)
+        await dispatch(updateUser({ ...user, likedPosts }));
+      }
+    } else {
+      const res = await dispatch(unlikeComment(post._id));
+      if (res.meta.requestStatus === "fulfilled") {
+        const likedComments = user.likedComments.filter(cId => cId !== post._id)
+        await dispatch(updateUser({ ...user, likedComments }));
+      }
+    }
     setIsUnliking(false);
   }
 
@@ -132,10 +166,10 @@ const PostCommentBox = ({ post, isDetail }) => {
             <div>
               <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes</span>
             </div>
-            {user && isPost && isDetail ?
+            {user ?
               <div>
-                {post.youLiked ?
-                  <Tooltip title={<>You like it. Click to delete your like <DislikeOutlined /></>}>
+                {youLiked ?
+                  <Tooltip title={"You like it. Click to delete your like"}>
                     <Button
                       shape="circle"
                       icon={<LikeFilled style={{ color: "#52c41a" }} />}

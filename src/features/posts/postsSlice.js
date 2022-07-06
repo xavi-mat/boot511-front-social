@@ -194,6 +194,30 @@ export const unlikePost = createAsyncThunk(
   }
 );
 
+export const likeComment = createAsyncThunk(
+  "comments/like",
+  async (id, thunkAPI) => {
+    try {
+      return await postsService.likeComment(id);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const unlikeComment = createAsyncThunk(
+  "comments/unlike",
+  async (id, thunkAPI) => {
+    try {
+      return await postsService.unlikeComment(id);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -215,14 +239,13 @@ export const postsSlice = createSlice({
       })
       .addCase(getPostById.fulfilled, (state, action) => {
         state.post = action.payload.post;
-        state.post.youLiked = action.payload.youLiked;
       })
       .addCase(getPostById.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getPostById.rejected, (state, action) => {
         state.post = null;
-        notification.error({message: action.payload})
+        notification.error({ message: action.payload })
       })
       .addCase(getPostsByText.fulfilled, (state, action) => {
         state.posts = action.payload;
@@ -305,18 +328,54 @@ export const postsSlice = createSlice({
       .addCase(getCommentsByPostId.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
-      .addCase(likePost.fulfilled, (state) => {
-        state.post.likesCount++;
-        state.post.youLiked = 1;
+      .addCase(likePost.fulfilled, (state, action) => {
+        const _id = action.payload._id;
+        if (state.post?._id === _id) {
+          state.post.likesCount++;
+        }
+        const posts = state.posts.posts?.map(p => {
+          if (p._id === _id) { p.likesCount++; }
+          return p;
+        })
+        state.posts.posts = posts;
       })
       .addCase(likePost.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
-      .addCase(unlikePost.fulfilled, (state) => {
-        state.post.likesCount--;
-        state.post.youLiked = 0;
+      .addCase(unlikePost.fulfilled, (state, action) => {
+        const _id = action.payload._id;
+        if (state.post?._id === _id) {
+          state.post.likesCount--;
+        }
+        const posts = state.posts.posts.map(p => {
+          if (p._id === _id) { p.likesCount--; }
+          return p;
+        })
+        state.posts.posts = posts;
       })
       .addCase(unlikePost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(likeComment.fulfilled, (state, action) => {
+        const _id = action.payload._id;
+        const comments = state.commentsData.comments.map(c => {
+          if (c._id === _id) { c.likesCount++;}
+          return c
+        })
+        state.commentsData.comments = comments;
+      })
+      .addCase(likeComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(unlikeComment.fulfilled, (state, action) => {
+        const _id = action.payload._id;
+        const comments = state.commentsData.comments.map(c => {
+          if (c._id === _id) { c.likesCount--; }
+          return c;
+        })
+        state.commentsData.comments = comments;
+      })
+      .addCase(unlikeComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
   },

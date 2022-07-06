@@ -40,7 +40,7 @@ const GateKeeper = () => {
         </Content>
         <Sider
           theme="light"
-          breakpoint="lg"
+          breakpoint="md"
           collapsedWidth="0"
           onCollapse={(collapsed, type) => {
             console.log(collapsed, type);
