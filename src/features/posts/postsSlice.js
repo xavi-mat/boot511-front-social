@@ -27,7 +27,6 @@ export const getPostById = createAsyncThunk(
     try {
       return await postsService.getPostById(id);
     } catch (error) {
-      console.info(error);
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }

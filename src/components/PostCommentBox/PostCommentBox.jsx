@@ -22,6 +22,8 @@ import {
   updatePost
 } from "../../features/posts/postsSlice";
 import { updateUser } from "../../features/auth/authSlice";
+import Replacer from "./Replacer/Replacer";
+
 const { TextArea } = Input;
 
 const PostCommentBox = ({ post, isDetail }) => {
@@ -152,10 +154,15 @@ const PostCommentBox = ({ post, isDetail }) => {
             {date}
           </span>
         </div>
-        <div>{post.text}</div>
+        <div><Replacer text={post.text} /></div>
         {post.image ?
           <div>
-            <Image className="post-image" src={post.image} alt="" preview={{ maskClassName: "post-image" }} />
+            <Image
+              className="post-image"
+              src={post.image}
+              alt=""
+              preview={{ maskClassName: "post-image" }}
+              onClick={(ev) => ev.preventDefault()} />
           </div>
           :
           null

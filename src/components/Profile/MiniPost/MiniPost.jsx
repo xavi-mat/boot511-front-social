@@ -10,10 +10,12 @@ import {
   LikeOutlined
 } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
+import Replacer from "../../PostCommentBox/Replacer/Replacer";
 
 const MiniPost = ({ post }) => {
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isBig, setIsBig] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth.loginData);
 
@@ -33,11 +35,21 @@ const MiniPost = ({ post }) => {
   return (
     <div className="mini-post">
       {post.image ?
-        <Image className="mini-post-image" src={post.image} alt="" preview={{ maskClassName: "mini-post-image" }} />
+        <>
+          <img className="mini-post-image" src={post.image} alt="" onClick={() => setIsBig(true)} />
+          <Image
+            src={post.image}
+            style={{ display: 'none' }}
+            alt=""
+            preview={{
+              visible: isBig,
+              onVisibleChange: (value) => { setIsBig(value); }
+            }} />
+        </>
         : null}
       <div className="mini-post-text">
         <div className="tone-down go-right">{date}</div>
-        <div>{post.text}</div>
+        <div><Replacer text={post.text} /></div>
         <div className="go-right">
           <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes </span>
           &nbsp;&nbsp;&nbsp;

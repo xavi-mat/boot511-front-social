@@ -28,12 +28,17 @@
   margin: 16px 0 16px 24px;
 }
 
+.clickable-post-box {
+  cursor: pointer;
+}
+
 .post-box {
   padding: 12px 16px 0 16px;
   border: 1px solid #eeeeee;
   display: flex;
   transition: 0.3s;
 }
+
 
 .post-box:hover {
   background-color: #f3f3f3;
@@ -48,6 +53,12 @@
   border-radius: 50%;
   width: 48px;
   height: 48px;
+}
+
+.mini-avatar {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
 }
 
 .content-box {
@@ -206,8 +217,13 @@
   max-height: 100px;
   object-fit: cover;
   border-radius: 5px;
-}
+  cursor: pointer;
+  transition: 0.3s;
 
+}
+.mini-post-image:hover {
+  filter: brightness(0.5);
+}
 .mini-post-buttons {
   display: flex;
   flex-direction: column;
@@ -260,4 +276,12 @@
 .active {
   font-weight: bolder;
   color: darkblue;
+}
+
+.mention {
+  cursor: pointer;
+}
+.mention:hover {
+  color: var(--antd-wave-shadow-color);
+  // text-decoration: underline;
 }
