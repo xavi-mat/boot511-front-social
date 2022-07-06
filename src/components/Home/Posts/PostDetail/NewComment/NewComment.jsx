@@ -1,16 +1,41 @@
-import { Form, Input, Button, notification } from "antd";
+import { Form, Input, Button, notification, Upload } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment } from "../../../../../features/posts/postsSlice";
 const { TextArea } = Input;
 
 const NewComment = () => {
 
+  const [fileList, setFileList] = useState([]);
+  const [isSending, setIsSending] = useState(false);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { loginData } = useSelector((state) => state.auth);
   const { post } = useSelector((state) => state.posts);
 
+  const handleUpload = (file) => {
+    // Validations: Type and size
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      notification.error({ message: "Please, select a jpg or png file" });
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      notification.error({ message: "Image too large" });
+    }
+    if (isJpgOrPng && isLt2M) {
+      setFileList([file]);
+    }
+    return false;
+  }
+
+  const handleRemoveImage = () => {
+    setFileList([]);
+  }
+
   const onFinish = async (values) => {
+    setIsSending(true);
     values.text = values.text.trim();
     if (values.text.length < 1) {
       notification.error({
@@ -18,10 +43,17 @@ const NewComment = () => {
         description: "Please, input some valid characters."
       });
     } else {
-      values.postId = post._id;
-      await dispatch(createComment(values));
+      const formData = new FormData();
+      if (fileList.length > 0) {
+        formData.append('image', fileList[0])
+      }
+      formData.append('text', values.text)
+      formData.append('postId', post._id)
+      await dispatch(createComment(formData));
       form.resetFields();
+      setFileList([]);
     }
+    setIsSending(false);
   };
 
   return (
@@ -52,15 +84,29 @@ const NewComment = () => {
 
           <div className="newpost-buttons">
             <Form.Item>
-              <Button className="wide-button" onClick={() => alert("Not working key")}>
-                Add image
-              </Button>
+              <Upload
+                name="image"
+                beforeUpload={handleUpload}
+                onRemove={handleRemoveImage}
+                fileList={fileList}>
+                <Button
+                  className="wide-button"
+                  icon={<UploadOutlined />}>
+                  Add image
+                </Button>
+              </Upload>
             </Form.Item>
             <Form.Item>
               <Button className="wide-button" htmlType="reset">Clear</Button>
             </Form.Item>
             <Form.Item>
-              <Button className="wide-button" type="primary" htmlType="submit">Send</Button>
+              <Button
+                className="wide-button"
+                type="primary"
+                htmlType="submit"
+                loading={isSending}>
+                Send
+              </Button>
             </Form.Item>
           </div>
         </Form>

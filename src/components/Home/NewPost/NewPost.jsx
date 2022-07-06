@@ -34,16 +34,14 @@ const NewPost = () => {
   }
 
   const onFinish = async (values) => {
-
+    setIsSending(true);
     values.text = values.text.trim();
     if (values.text.length < 3) {
       notification.error({
         message: "Error",
         description: "Please, input at least three valid characters."
       });
-
     } else {
-      setIsSending(true);
       const formData = new FormData();
       if (fileList.length > 0 ) {
         formData.append('image', fileList[0])
@@ -52,8 +50,8 @@ const NewPost = () => {
       await dispatch(createPost(formData));
       form.resetFields();
       setFileList([]);
-      setIsSending(false);
     }
+    setIsSending(false);
   };
 
   return (
