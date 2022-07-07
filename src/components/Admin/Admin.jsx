@@ -28,9 +28,9 @@ const Admin = () => {
   return (
     <div>
       <h1>Admin</h1>
-      <hr/>
+      {/* <hr/>
         <TryScroll/>
-      <hr/>
+      <hr/> */}
       <button onClick={() => dispatch(cleanAll())}>CLEAN ALL</button>
       <PostAdmin />
     </div>

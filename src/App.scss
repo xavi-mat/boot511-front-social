@@ -285,3 +285,13 @@
   color: var(--antd-wave-shadow-color);
   // text-decoration: underline;
 }
+.editor-buttons-box {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.editor-button {
+  margin: unset;
+}

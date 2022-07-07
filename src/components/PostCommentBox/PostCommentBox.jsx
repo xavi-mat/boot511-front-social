@@ -8,7 +8,7 @@ import {
   LikeTwoTone,
   LikeFilled,
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Popconfirm, notification, Tooltip, Image } from "antd";
+import { Button, Popconfirm, Tooltip, Image } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import {
@@ -17,26 +17,22 @@ import {
   likeComment,
   likePost,
   unlikeComment,
-  unlikePost,
-  updateComment,
-  updatePost
+  unlikePost
 } from "../../features/posts/postsSlice";
 import { updateUser } from "../../features/auth/authSlice";
 import Replacer from "./Replacer/Replacer";
 
-const { TextArea } = Input;
-
-const PostCommentBox = ({ post, isDetail }) => {
+const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
 
   const { user } = useSelector((state) => state.auth.loginData);
   const isAuthor = post.author?._id === user?._id;
   const isPost = typeof post === "object" && 'commentsCount' in post;
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [isUnliking, setIsUnliking] = useState(false);
-  const [isEditorOn, setIsEditorOn] = useState(false);
-  const [postData, setPostData] = useState({ id: post._id, text: "" });
+  // const [isEditorOn, setIsEditorOn] = useState(false);
+  // const [postData, setPostData] = useState({ id: post._id, text: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const youLiked = isPost ?
@@ -67,35 +63,42 @@ const PostCommentBox = ({ post, isDetail }) => {
     setIsDeleting(false);
   }
 
-  const toggleEditForm = (ev) => {
+  const openEditForm = (ev) => {
     ev.preventDefault();
-    setIsEditorOn(!isEditorOn);
+    // const visible = !editorData.visible;
+    const newEditorData = { ...editorData };
+    newEditorData.visible = true;
+    newEditorData.id = post._id;
+    newEditorData.text = post.text;
+    newEditorData.isPost = isPost;
+    setEditorData(newEditorData);
+    // setIsEditorOn(!isEditorOn);
   }
 
-  const handleOnChange = (ev) => {
-    setPostData({ ...postData, text: ev.target.value })
-  }
+  // const handleOnChange = (ev) => {
+  //   setPostData({ ...postData, text: ev.target.value })
+  // }
 
-  const handleEdit = async () => {
-    setIsEditing(true);
-    const text = postData.text.trim();
-    if ((isPost && text.length < 3) || text.length < 1) {
-      notification.error({
-        message: "Error",
-        description: "Please, input some valid characters."
-      });
-      return;
-    } else {
-      const validData = { ...postData, text };
-      if (isPost) {
-        await dispatch(updatePost(validData));
-      } else {
-        await dispatch(updateComment(validData));
-      }
-    }
-    setIsEditing(false);
-    setIsEditorOn(false);
-  }
+  // const handleEdit = async () => {
+  //   setIsEditing(true);
+  //   const text = postData.text.trim();
+  //   if ((isPost && text.length < 3) || text.length < 1) {
+  //     notification.error({
+  //       message: "Error",
+  //       description: "Please, input some valid characters."
+  //     });
+  //     return;
+  //   } else {
+  //     const validData = { ...postData, text };
+  //     if (isPost) {
+  //       await dispatch(updatePost(validData));
+  //     } else {
+  //       await dispatch(updateComment(validData));
+  //     }
+  //   }
+  //   setIsEditing(false);
+  //   setIsEditorOn(false);
+  // }
 
   const handleLike = async (ev) => {
     ev.preventDefault();
@@ -202,7 +205,6 @@ const PostCommentBox = ({ post, isDetail }) => {
             }
           </div>
         </div>
-        {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}
         {isAuthor && isDetail ?
           <>
             <div className="post-info-box post-buttons-box">
@@ -214,25 +216,11 @@ const PostCommentBox = ({ post, isDetail }) => {
                 okButtonProps={{ danger: true }}>
                 <Button danger>{isDeleting ? <LoadingOutlined /> : <DeleteOutlined />}</Button>
               </Popconfirm>
-              <Button onClick={toggleEditForm}><FormOutlined /></Button>
+              <Button
+                onClick={openEditForm}>
+                <FormOutlined />
+              </Button>
             </div>
-            <Modal
-              title="Edit"
-              visible={isEditorOn}
-              okText="Edit"
-              onOk={handleEdit}
-              onCancel={toggleEditForm}
-              confirmLoading={isEditing}>
-              <Form initialValues={{ text: post.text }}>
-                <Form.Item name="text">
-                  <TextArea showCount
-                    maxLength={280}
-                    autoSize
-                    onChange={handleOnChange}
-                  />
-                </Form.Item>
-              </Form>
-            </Modal>
           </>
           : null}
       </div>
