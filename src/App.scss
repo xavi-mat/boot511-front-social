@@ -175,12 +175,19 @@
 
 .profile-top {
   margin: 0 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
 }
-
+.username-big {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.green-notice {
+  color: darkgreen;
+}
 .profile-top-left {
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 2em;
@@ -294,4 +301,8 @@
 
 .editor-button {
   margin: unset;
+}
+
+.action-button {
+  width: 100px;
 }

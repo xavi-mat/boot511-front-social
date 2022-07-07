@@ -19,7 +19,7 @@ import {
   unlikeComment,
   unlikePost
 } from "../../features/posts/postsSlice";
-import { updateUser } from "../../features/auth/authSlice";
+import { refreshUser } from "../../features/auth/authSlice";
 import Replacer from "./Replacer/Replacer";
 
 const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
@@ -108,14 +108,14 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
       if (res.meta.requestStatus === "fulfilled") {
         const updatedUser = { ...user };
         updatedUser.likedPosts = [...updatedUser.likedPosts, post._id];
-        await dispatch(updateUser(updatedUser));
+        await dispatch(refreshUser(updatedUser));
       }
     } else {
       const res = await dispatch(likeComment(post._id));
       if (res.meta.requestStatus === "fulfilled") {
         const updatedUser = { ...user };
         updatedUser.likedComments = [...updatedUser.likedComments, post._id];
-        await dispatch(updateUser(updatedUser));
+        await dispatch(refreshUser(updatedUser));
       }
     }
     setIsLiking(false);
@@ -128,13 +128,13 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
       const res = await dispatch(unlikePost(post._id));
       if (res.meta.requestStatus === "fulfilled") {
         const likedPosts = user.likedPosts.filter(pId => pId !== post._id)
-        await dispatch(updateUser({ ...user, likedPosts }));
+        await dispatch(refreshUser({ ...user, likedPosts }));
       }
     } else {
       const res = await dispatch(unlikeComment(post._id));
       if (res.meta.requestStatus === "fulfilled") {
         const likedComments = user.likedComments.filter(cId => cId !== post._id)
-        await dispatch(updateUser({ ...user, likedComments }));
+        await dispatch(refreshUser({ ...user, likedComments }));
       }
     }
     setIsUnliking(false);

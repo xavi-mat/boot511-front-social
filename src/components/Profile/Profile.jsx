@@ -8,23 +8,33 @@ import {
   SkinOutlined,
   UploadOutlined
 } from '@ant-design/icons';
-import { Button, Col, Pagination, Row, Skeleton, Tooltip, Upload } from "antd";
+import { Button, Col, Pagination, Row, Skeleton, Tooltip, Upload, notification, Space } from "antd";
 import { getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
 import { useParams } from "react-router-dom";
+import { followUser, getRelations, updateUser } from "../../features/auth/authSlice";
 
 const Profile = () => {
 
   const { userId } = useParams();
   const { user } = useSelector((state) => state.posts);
+  const { following, followers } = useSelector((state) => state.auth);
   const { loginData } = useSelector((state) => state.auth);
   const { posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(posts.page);
+  const [fileList, setFileList] = useState([]);
+  const [readyToSend, setReadyToSend] = useState(false);
+  const [userAvatar, setUserAvatar] = useState(user?.avatar);
+  const [isSending, setIsSending] = useState(false);
+  const [tryingFollow, setTryingFollow] = useState(false);
+  const [youFollow, setYouFollow] = useState(false);
+  const [followsYou, setFollowsYou] = useState(false);
 
   const getUser = async () => {
     await dispatch(getSomeUser(userId));
+    await dispatch(getRelations());
     await onPageChange(1);
   }
   const onPageChange = async (page) => {
@@ -37,6 +47,20 @@ const Profile = () => {
     getUser();
     // eslint-disable-next-line
   }, [userId]);
+
+  useEffect(() => {
+    setUserAvatar(user?.avatar)
+  }, [user])
+
+  useEffect(() => {
+    const followingIds = following.map(f => f._id);
+    setYouFollow(followingIds.includes(userId));
+  }, [following]);
+
+  useEffect(() => {
+    const followersIds = followers.map(f => f._id);
+    setFollowsYou(followersIds.includes(userId));
+  }, [followers]);
 
   if (isLoading || !user) {
     return (
@@ -63,17 +87,82 @@ const Profile = () => {
     <MiniPost key={post._id} post={post} />
   ))
 
-  const rightButton = loginData.user ?
+  const handleRemoveImage = () => {
+    setFileList([]);
+  }
+
+  const handleAvatarChange = (info) => {
+    const file = info.file;
+    // Validations: Type and size
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      notification.error({ message: "Please, select a jpg or png file" });
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      notification.error({ message: "Image too large" });
+    }
+    if (isJpgOrPng && isLt2M) {
+      setFileList([file])
+      const url = URL.createObjectURL(file);
+      setUserAvatar(url)
+      setReadyToSend(true);
+    }
+  }
+
+  const sendNewAvatar = async () => {
+    setIsSending(true);
+    if (fileList.length > 0) {
+      const formData = new FormData();
+      formData.append('avatar', fileList[0]);
+      await dispatch(updateUser(formData));
+      setFileList([]);
+      setReadyToSend(false);
+    }
+    setIsSending(false);
+  }
+
+  const handleFollow = async () => {
+    setTryingFollow(true);
+    await dispatch(followUser(userId))
+    setTryingFollow(false);
+  }
+
+  const actionButton = loginData.user ?
     loginData.user._id === userId ?
-    <Button icon={<UploadOutlined />}>Change avatar</Button>
+      <Space>
+        <Upload
+          name="avatar"
+          showUploadList={false}
+          beforeUpload={() => false}
+          onRemove={handleRemoveImage}
+          onChange={handleAvatarChange}
+          customRequest={(a) => console.log(a)}
+          fileList={fileList}>
+          <Button className="action-button" icon={<UploadOutlined />}>Change</Button>
+        </Upload>
+        <Button
+          hidden={!readyToSend}
+          type="primary"
+          onClick={sendNewAvatar}
+          loading={isSending}>
+          Click to send image
+        </Button>
+      </Space>
       :
-      user.youFollow ?
+      youFollow ?
         <Tooltip title="You follow this user. Click to unfollow">
-          <Button>Unfollow</Button>
+          <Button className="action-button">Unfollow</Button>
         </Tooltip>
         :
         <Tooltip title="Click to follow">
-          <Button type="primary">Follow</Button>
+          <Button
+            className="action-button"
+            onClick={handleFollow}
+            loading={tryingFollow}
+            type="primary">
+            Follow
+          </Button>
         </Tooltip>
     :
     null;
@@ -93,24 +182,13 @@ const Profile = () => {
     <div>
       <div className="profile-top">
         <div className="profile-top-left">
-          <div><img className="avatar-big" src={user.avatar} alt="" /></div>
-          <h1><strong>{user.username}</strong></h1>
+          <div><img className="avatar-big" src={userAvatar} alt="" /></div>
+          <div>
+            <h1 className="username-big">{user.username}</h1>
+            <div className="green-notice">{followsYou ? "Follows you!" : null}</div>
+          </div>
         </div>
-        <div>
-          {/* {loginData.user && loginData.user._id !== user._id ?
-            user.youFollow ?
-              <Tooltip title="You follow this user. Click to unfollow">
-                <Button>Unfollow</Button>
-              </Tooltip>
-              :
-              <Tooltip title="Click to follow">
-                <Button type="primary">Follow</Button>
-              </Tooltip>
-            :
-            null
-          } */}
-          {rightButton}
-        </div>
+        <div>{actionButton}</div>
       </div>
       <div className="profile-data">
         <Row>
