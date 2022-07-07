@@ -6,8 +6,9 @@ import {
   CopyOutlined,
   MessageOutlined,
   SkinOutlined,
+  UploadOutlined
 } from '@ant-design/icons';
-import { Button, Col, Pagination, Row, Skeleton, Tooltip } from "antd";
+import { Button, Col, Pagination, Row, Skeleton, Tooltip, Upload } from "antd";
 import { getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
@@ -62,6 +63,21 @@ const Profile = () => {
     <MiniPost key={post._id} post={post} />
   ))
 
+  const rightButton = loginData.user ?
+    loginData.user._id === userId ?
+    <Button icon={<UploadOutlined />}>Change avatar</Button>
+      :
+      user.youFollow ?
+        <Tooltip title="You follow this user. Click to unfollow">
+          <Button>Unfollow</Button>
+        </Tooltip>
+        :
+        <Tooltip title="Click to follow">
+          <Button type="primary">Follow</Button>
+        </Tooltip>
+    :
+    null;
+
   const paginationBar = (
     <div className="pagination-box">
       <Pagination
@@ -81,7 +97,7 @@ const Profile = () => {
           <h1><strong>{user.username}</strong></h1>
         </div>
         <div>
-          {loginData.user && loginData.user._id !== user._id ?
+          {/* {loginData.user && loginData.user._id !== user._id ?
             user.youFollow ?
               <Tooltip title="You follow this user. Click to unfollow">
                 <Button>Unfollow</Button>
@@ -92,7 +108,8 @@ const Profile = () => {
               </Tooltip>
             :
             null
-          }
+          } */}
+          {rightButton}
         </div>
       </div>
       <div className="profile-data">
