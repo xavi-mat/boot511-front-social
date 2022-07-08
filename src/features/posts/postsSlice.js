@@ -277,9 +277,14 @@ export const postsSlice = createSlice({
         notification.error({ message: action.payload });
       })
       .addCase(createPost.fulfilled, (state, action) => {
-        state.posts?.posts.pop();
-        state.posts?.posts.unshift(action.payload.post);
-        state.posts = { ...state.posts };
+        // Just update array if page 1 is showing
+        if (state.posts.page == 1) {
+          state.posts?.posts.pop();
+          state.posts?.posts.unshift(action.payload.post);
+          state.posts = { ...state.posts };
+        } else {
+          notification.success({ message: action.payload.msg });
+        }
       })
       .addCase(createPost.rejected, (_, action) => {
         notification.error({ message: action.payload });
