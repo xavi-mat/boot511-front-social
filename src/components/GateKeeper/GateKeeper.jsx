@@ -9,7 +9,7 @@ import Search from "../Search/Search";
 import Admin from "../Admin/Admin";
 import { useDispatch, useSelector } from "react-redux";
 import MiniFooter from "../MiniFooter/MiniFooter";
-import { Layout} from 'antd';
+import { Layout } from 'antd';
 import RightSider from "../RightSider/RightSider";
 import AdminZone from "../../guards/AdminZone";
 import UnloggedZone from "../../guards/UnloggedZone";
@@ -27,7 +27,7 @@ const GateKeeper = () => {
 
   return (
     <BrowserRouter>
-      <Layout style={{backgroundColor:"white"}}>
+      <Layout className="main-layout">
         {isCollapsed ?
           null
           :
@@ -48,6 +48,7 @@ const GateKeeper = () => {
             null}
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/page/:page" element={<Home />} />
             <Route path="/post/:id" element={<PostDetail />} />
             <Route path="/search/:postText" element={<Search />} />
             <Route path="/user/:userId" element={<Profile />} />

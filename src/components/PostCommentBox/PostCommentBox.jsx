@@ -146,7 +146,9 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
         <img
           src={post.author?.avatar}
           className="avatar"
-          alt={post.author?.username} />
+          alt={post.author?.username}
+          onClick={handleAuthorClick}
+        />
       </div>
       <div className="content-box">
         <div className="author-date-box">
