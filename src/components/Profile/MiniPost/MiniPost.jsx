@@ -10,7 +10,7 @@ import {
   LikeOutlined
 } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
-import Replacer from "../../PostCommentBox/Replacer/Replacer";
+import Replacer from "../../Replacer/Replacer";
 
 const MiniPost = ({ post }) => {
 

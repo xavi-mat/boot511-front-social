@@ -3,12 +3,14 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment } from "../../../../../features/posts/postsSlice";
+import PostPreviewer from "../../../../PostPreviewer/PostPreviewer";
 const { TextArea } = Input;
 
 const NewComment = () => {
 
   const [fileList, setFileList] = useState([]);
   const [isSending, setIsSending] = useState(false);
+  const [text, setText] = useState("");
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { loginData } = useSelector((state) => state.auth);
@@ -30,8 +32,17 @@ const NewComment = () => {
     return false;
   }
 
+  const handleChangeText = (ev) => {
+    setText(ev.target.value);
+  }
+
   const handleRemoveImage = () => {
     setFileList([]);
+  }
+
+  const handleClear = () => {
+    handleRemoveImage();
+    setText("");
   }
 
   const onFinish = async (values) => {
@@ -79,9 +90,10 @@ const NewComment = () => {
               maxLength={280}
               autoSize
               placeholder="Write an answer"
+              onChange={handleChangeText}
             />
           </Form.Item>
-
+          <PostPreviewer text={text} />
           <div className="newpost-buttons">
             <Form.Item className="to-front">
               <Upload
@@ -101,7 +113,7 @@ const NewComment = () => {
                 <Button
                   className="wide-button"
                   htmlType="reset"
-                  onClick={() => setFileList([])}>
+                  onClick={handleClear}>
                   Clear
                 </Button>
               </Form.Item>

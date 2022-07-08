@@ -5,6 +5,14 @@ const Replacer = ({ text }) => {
 
   const navigate = useNavigate();
 
+  text = reactStringReplace(text, /\*\*(.{1,}?)\*\*/g, (match, i) => (
+    <strong key={match + i}>{match}</strong>
+  ));
+
+  text = reactStringReplace(text, /__(.{1,}?)__/g, (match, i) => (
+    <em key={match + i}>{match}</em>
+  ));
+
   text = reactStringReplace(text, /(@.{3,40}<[0-9a-f]{24}>)/gi, (match, i) => {
     match.match(/@(.{3,40})<([0-9a-f]{24})>/gi);
     const username = <><strong>{RegExp.$1}</strong></>;

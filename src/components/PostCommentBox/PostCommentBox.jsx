@@ -20,7 +20,7 @@ import {
   unlikePost
 } from "../../features/posts/postsSlice";
 import { refreshUser } from "../../features/auth/authSlice";
-import Replacer from "./Replacer/Replacer";
+import Replacer from "../Replacer/Replacer";
 
 const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
 

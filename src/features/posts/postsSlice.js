@@ -33,11 +33,11 @@ export const getPostById = createAsyncThunk(
   }
 );
 
-export const getPostsByText = createAsyncThunk(
-  "post/getPostByText",
-  async (postText) => {
+export const searchPostsByText = createAsyncThunk(
+  "post/searchPostsByText",
+  async (postData) => {
     try {
-      return await postsService.getPostsByText(postText);
+      return await postsService.searchPostsByText(postData);
     } catch (error) {
       console.error(error);
     }
@@ -229,6 +229,9 @@ export const postsSlice = createSlice({
     },
     changeFollowersNum: (state, action) => {
       state.user.followersCount += action.payload;
+    },
+    resetPostsData: (state) => {
+      state.posts = {};
     }
   },
   extraReducers: (builder) => {
@@ -249,10 +252,15 @@ export const postsSlice = createSlice({
         state.post = null;
         notification.error({ message: action.payload })
       })
-      .addCase(getPostsByText.fulfilled, (state, action) => {
-        state.posts = action.payload;
+      .addCase(searchPostsByText.fulfilled, (state, action) => {
+        state.posts.total = action.payload.total;
+        state.posts.page = action.payload.page;
+        state.posts.maxPages = action.payload.maxPages;
+        state.posts.posts = state.posts.posts ?? [];
+        state.posts.posts = [...state.posts.posts, ...action.payload.posts];
+        // state.posts = action.payload;
       })
-      .addCase(getPostsByText.pending, (state) => {
+      .addCase(searchPostsByText.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getPostsByUserId.fulfilled, (state, action) => {
@@ -361,7 +369,7 @@ export const postsSlice = createSlice({
       .addCase(likeComment.fulfilled, (state, action) => {
         const _id = action.payload._id;
         const comments = state.commentsData.comments.map(c => {
-          if (c._id === _id) { c.likesCount++;}
+          if (c._id === _id) { c.likesCount++; }
           return c
         })
         state.commentsData.comments = comments;
@@ -383,5 +391,5 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { reset, emptyComments, changeFollowersNum } = postsSlice.actions;
+export const { reset, emptyComments, changeFollowersNum, resetPostsData } = postsSlice.actions;
 export default postsSlice.reducer;

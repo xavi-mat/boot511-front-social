@@ -1,21 +1,28 @@
 import { Modal, Form, Input, Button, notification } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateComment, updatePost } from "../../../../../features/posts/postsSlice";
+import PostPreviewer from "../../../../PostPreviewer/PostPreviewer";
 const { TextArea } = Input;
 
 const UpdaterModal = ({ editorData, setEditorData }) => {
 
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const [text, setText] = useState("");
 
   useEffect(() => {
     form.setFieldsValue(editorData)
-  // eslint-disable-next-line
+    setText(editorData.text);
+    // eslint-disable-next-line
   }, [editorData]);
 
+  const handleChangeText = (ev) => {
+    setText(ev.target.value);
+  }
+
   const onFinish = async (values) => {
-    setEditorData({ ...editorData, text:values.text, loading: true })
+    setEditorData({ ...editorData, text: values.text, loading: true })
     const text = values.text.trim();
     if ((editorData.isPost && text.length < 3) || text.length < 1) {
       notification.error({
@@ -39,26 +46,20 @@ const UpdaterModal = ({ editorData, setEditorData }) => {
       title="Edit"
       visible={editorData.visible}
       footer={[]}
-      // okText="Edit"
-      // onOk={onFinish}
-      // okButtonProps={{className:"wide-button"}}
-      // cancelButtonProps={{className:"wide-button"}}
-      // confirmLoading={editorData.loading}
-      onCancel={() => { setEditorData({ ...editorData, visible: false }) }}
-    >
+      onCancel={() => { setEditorData({ ...editorData, visible: false }) }}>
       <Form
         form={form}
-        onFinish={onFinish}
-      // initialValues={{ text: post.text }}
-      >
+        onFinish={onFinish}>
         <Form.Item name="id" hidden={true}><Input /></Form.Item>
         <Form.Item name="text">
           <TextArea showCount
             maxLength={280}
             autoSize
-          // onChange={handleOnChange}
+            onChange={handleChangeText}
+            autoFocus
           />
         </Form.Item>
+        <PostPreviewer text={text} />
         <div className="editor-buttons-box">
           <Button
             className="editor-button wide-button"

@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../../features/posts/postsSlice";
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from "react";
+import PostPreviewer from "../../PostPreviewer/PostPreviewer";
+
 const { TextArea } = Input;
 
 const NewPost = () => {
 
   const [fileList, setFileList] = useState([]);
   const [isSending, setIsSending] = useState(false);
+  const [text, setText] = useState("");
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { loginData } = useSelector((state) => state.auth);
@@ -33,6 +36,15 @@ const NewPost = () => {
     setFileList([]);
   }
 
+  const handleClearForm = () => {
+    setText("");
+    handleRemoveImage();
+  }
+
+  const handleChangeText = async (ev) => {
+    setText(ev.target.value);
+  }
+
   const onFinish = async (values) => {
     setIsSending(true);
     values.text = values.text.trim();
@@ -48,6 +60,7 @@ const NewPost = () => {
       }
       formData.append('text', values.text)
       await dispatch(createPost(formData));
+      setText("");
       form.resetFields();
       setFileList([]);
     }
@@ -64,6 +77,8 @@ const NewPost = () => {
             alt={loginData.user.username} />
         </div>
         <div className="content-box top-margin">
+
+
           <Form
             name="newPost"
             form={form}
@@ -78,10 +93,11 @@ const NewPost = () => {
                 maxLength={280}
                 autoSize
                 placeholder="What are you thinking?"
+                onChange={handleChangeText}
                 autoFocus
               />
             </Form.Item>
-
+            <PostPreviewer text={text} />
             <div className="newpost-buttons">
               <Form.Item className="to-front">
                 <Upload
@@ -101,7 +117,7 @@ const NewPost = () => {
                   <Button
                     className="wide-button"
                     htmlType="reset"
-                    onClick={handleRemoveImage}>
+                    onClick={handleClearForm}>
                     Clear
                   </Button>
                 </Form.Item>

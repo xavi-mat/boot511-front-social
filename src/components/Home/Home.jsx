@@ -9,18 +9,11 @@ const Home = () => {
 
   return (
     <div>
-      {
-        loginData.user ?
-        <>
+      <div className="home-top">
         <h1 className="text-header">Home</h1>
-          <NewPost />
-        </>
-          :
-          <div className="home-top">
-          <h1 className="text-header">Home</h1>
-          <LogRegButtons />
-          </div>
-      }
+        {loginData.user ? null : <LogRegButtons />}
+      </div>
+      {loginData.user ? <NewPost /> : null}
       <Posts />
     </div>
   )

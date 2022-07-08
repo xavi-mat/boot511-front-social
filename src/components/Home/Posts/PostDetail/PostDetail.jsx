@@ -38,12 +38,10 @@ const PostDetail = () => {
   const loadMoreComments = async () => {
     if (loadingComments) { return; }
     setLoadingComments(true);
-    setTimeout(async () => {
-      await dispatch(getCommentsByPostId({
-        postId: id, page: commentsData.page + 1
-      }));
-      setLoadingComments(false);
-    }, 2000);
+    await dispatch(getCommentsByPostId({
+      postId: id, page: commentsData.page + 1
+    }));
+    setLoadingComments(false);
   }
 
   if (isLoading) {
@@ -85,33 +83,13 @@ const PostDetail = () => {
           setEditorData={setEditorData} />
         {loginData?.user ? <NewComment /> : null}
       </>
-
-      {/* <hr/>
-      {loginData?.user ?
-        <>
-          <h1 className="text-header">Post detail</h1>
-          <PostCommentBox post={post} isDetail={true} />
-          <NewComment />
-        </>
-        :
-        <>
-          <div className="home-top">
-            <h1 className="text-header">Post detail</h1>
-            <LogRegButtons />
-          </div>
-          <PostCommentBox post={post} isDetail={true} />
-        </>
-      } */}
-
       <div>
         <InfiniteScroll
           dataLength={comment?.length ?? 0}
           next={loadMoreComments}
           hasMore={comment?.length < commentsData.total}
           loader={<Skeleton avatar active />}
-          endMessage={<div className="no-more-box">&nbsp;</div>}
-        // scrollableTarget="scrollableDiv"
-        >
+          endMessage={<div className="no-more-box">&nbsp;</div>}>
           {comment}
         </InfiniteScroll>
         {editorData.visible ?

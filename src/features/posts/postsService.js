@@ -12,8 +12,9 @@ const getPostById = async (id) => {
   return res.data;
 }
 
-const getPostsByText = async (postText) => {
-  const res = await axios.get(API_URL + "/posts/search?text=" + postText);
+const searchPostsByText = async (postData) => {
+  const res = await axios.get(
+    API_URL + "/posts/search?text=" + postData.postText + "&page=" + postData.page);
   return res.data;
 };
 
@@ -148,7 +149,7 @@ const unlikeComment = async (id) => {
 const postsService = {
   getAllPosts,
   getPostById,
-  getPostsByText,
+  searchPostsByText,
   deletePost,
   cleanAll,
   createPost,
