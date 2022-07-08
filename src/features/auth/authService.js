@@ -64,6 +64,19 @@ const followUser = async (id) => {
   return res.data;
 }
 
+const unfollowUser = async (id) => {
+  const loginData = JSON.parse(localStorage.getItem("loginData"));
+  const res = await axios.delete(
+    API_URL + "/users/follow/" + id,
+    { headers: { Authorization: loginData?.token } }
+  );
+  if (res.data) {
+    loginData.user.followingCount--;
+    localStorage.setItem("loginData", JSON.stringify(loginData));
+  }
+  return res.data;
+}
+
 const authService = {
   register,
   login,
@@ -71,6 +84,7 @@ const authService = {
   updateUser,
   getRelations,
   followUser,
+  unfollowUser,
 };
 
 export default authService;

@@ -1,7 +1,7 @@
 const MiniFooter = () => {
   return (
     <div className="right-container">
-      <p>&copy; Xavimat</p>
+      <p>&copy; 2022 by Xavimat</p>
     </div>
   )
 }

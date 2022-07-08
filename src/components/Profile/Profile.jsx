@@ -8,12 +8,12 @@ import {
   SkinOutlined,
   UploadOutlined
 } from '@ant-design/icons';
-import { Button, Col, Pagination, Row, Skeleton, Tooltip, Upload, notification, Space } from "antd";
-import { getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
+import { Button, Col, Pagination, Row, Skeleton, Tooltip, Upload, notification, Space, Popconfirm } from "antd";
+import { changeFollowersNum, getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
 import { useParams } from "react-router-dom";
-import { followUser, getRelations, updateUser } from "../../features/auth/authSlice";
+import { followUser, getRelations, unfollowUser, updateUser } from "../../features/auth/authSlice";
 
 const Profile = () => {
 
@@ -55,11 +55,13 @@ const Profile = () => {
   useEffect(() => {
     const followingIds = following.map(f => f._id);
     setYouFollow(followingIds.includes(userId));
+    // eslint-disable-next-line
   }, [following]);
 
   useEffect(() => {
     const followersIds = followers.map(f => f._id);
     setFollowsYou(followersIds.includes(userId));
+    // eslint-disable-next-line
   }, [followers]);
 
   if (isLoading || !user) {
@@ -125,9 +127,18 @@ const Profile = () => {
   const handleFollow = async () => {
     setTryingFollow(true);
     await dispatch(followUser(userId))
+    dispatch(changeFollowersNum(1))
     setTryingFollow(false);
   }
 
+  const handleUnfollow = async () => {
+    setTryingFollow(true);
+    await dispatch(unfollowUser(userId))
+    dispatch(changeFollowersNum(-1))
+    setTryingFollow(false);
+  }
+
+  // Action button under avatar: Follow/Unfollow/ChangeMyAvatar/Nothing
   const actionButton = loginData.user ?
     loginData.user._id === userId ?
       <Space>
@@ -152,7 +163,19 @@ const Profile = () => {
       :
       youFollow ?
         <Tooltip title="You follow this user. Click to unfollow">
-          <Button className="action-button">Unfollow</Button>
+          <Popconfirm
+            placement="right"
+            title={"Are you sure you want to unfollow this user?"}
+            onConfirm={handleUnfollow}
+            okText="Unfollow"
+            okButtonProps={{danger:true}}>
+            <Button
+              className="action-button"
+              // onClick={handleUnfollow}
+              loading={tryingFollow}>
+              Unfollow
+            </Button>
+          </Popconfirm>
         </Tooltip>
         :
         <Tooltip title="Click to follow">

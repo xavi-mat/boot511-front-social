@@ -84,6 +84,18 @@ export const followUser = createAsyncThunk(
   }
 );
 
+export const unfollowUser = createAsyncThunk(
+  "users/unfollow",
+  async (id, thunkAPI) => {
+    try {
+      return await authService.unfollowUser(id);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -138,6 +150,15 @@ export const authSlice = createSlice({
         state.following = [...state.following, action.payload.user]
       })
       .addCase(followUser.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(unfollowUser.fulfilled, (state, action) => {
+        state.loginData.user.followingCount--;
+        const following = state.following
+          .filter(f => f._id !== action.payload._id)
+        state.following = following;
+      })
+      .addCase(unfollowUser.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
   },

@@ -226,6 +226,9 @@ export const postsSlice = createSlice({
     },
     emptyComments: (state) => {
       state.commentsData.comments = [];
+    },
+    changeFollowersNum: (state, action) => {
+      state.user.followersCount += action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -380,5 +383,5 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { reset, emptyComments } = postsSlice.actions;
+export const { reset, emptyComments, changeFollowersNum } = postsSlice.actions;
 export default postsSlice.reducer;
