@@ -14,6 +14,7 @@ const Search = () => {
   const { loginData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isStarting, setIsStarting] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const searchForPosts = async (postText, page = 1) => {
     await dispatch(searchPostsByText({ postText, page }));
@@ -31,6 +32,24 @@ const Search = () => {
     // eslint-disable-next-line
   }, [postText]);
 
+  const loadMorePosts = async () => {
+    console.log("MORE!", posts.posts?.length, "<", posts.total)
+    if (isSearching) { return; }
+    setIsSearching(true);
+    await dispatch(searchPostsByText({ postText, page: posts.page + 1 }));
+    setIsSearching(false);
+  }
+
+  const post = posts.posts?.map((post, i) => {
+    return (
+      <div key={post._id + i}>
+        <Link to={"/post/" + post._id}>
+          <PostCommentBox post={post} />
+        </Link>
+      </div>
+    );
+  });
+
   if (isStarting) {
     return (
       <div>
@@ -44,24 +63,6 @@ const Search = () => {
       </div>
     )
   }
-
-  const loadMorePosts = async () => {
-    console.log("MORE!")
-    if (isStarting) { return; }
-    setIsStarting(true);
-    await dispatch(searchPostsByText({ postText, page: posts.page + 1 }));
-    setIsStarting(false);
-  }
-
-  const post = posts.posts?.map((post) => {
-    return (
-      <div key={post._id}>
-        <Link to={"/post/" + post._id}>
-          <PostCommentBox post={post} />
-        </Link>
-      </div>
-    );
-  });
 
   return (
     <div>

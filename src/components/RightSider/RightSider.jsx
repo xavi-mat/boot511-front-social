@@ -1,27 +1,28 @@
 import { useState } from "react";
-import { Input, Mentions } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Mentions } from "antd";
+// import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsersByName } from "../../features/users/usersSlice";
+import { getUsersByName } from "../../features/data/dataSlice";
+import SearchBox from "../SearchBox/SearchBox";
 const { Option } = Mentions;
 
 // import Replacer from "../PostCommentBox/Replacer/Replacer";
 
-const RightSider = ({ autoFocus = false }) => {
+const RightSider = () => {
 
-  const navigate = useNavigate();
-  const [text, setText] = useState("");
+  // const navigate = useNavigate();
+  // const [text, setText] = useState("");
   const [value, setValue] = useState("")
-  const { users } = useSelector((state) => state.users);
+  const { users } = useSelector((state) => state.data);
   const dispatch = useDispatch();
 
-  const handleChange = (ev) => {
-    ev.preventDefault();
-    setText(ev.target.value);
-    if (ev.key === "Enter" && text.length > 0) {
-      navigate("/search/" + text);
-    }
-  };
+  // const handleChange = (ev) => {
+  //   ev.preventDefault();
+  //   setText(ev.target.value);
+  //   if (ev.key === "Enter" && text.length > 0) {
+  //     navigate("/search/" + text);
+  //   }
+  // };
 
   const onChange = (value) => {
     setValue(value);
@@ -43,14 +44,13 @@ const RightSider = ({ autoFocus = false }) => {
     }
   }
 
-
   return (
     <div className="right-container">
-      <Input type="text" placeholder="Search" onKeyUp={handleChange} name="text" autoFocus={autoFocus} />
+      <SearchBox />
 
 
       <hr />
-      {/* <Replacer text={"RegExr @xaa<62c56fbede253af1abdc7e24> was created by gskinner.com, and is proudly hosted by Media Temple."} /> */}
+      {/* ------------------------------------------------------------ */}
 
       <h3>TESTING MENTIONS:</h3>
       <Mentions
@@ -64,9 +64,9 @@ const RightSider = ({ autoFocus = false }) => {
         defaultValue=""
         value={value}
         autoSize >
-        {users.map(u=>(
+        {users.map(u => (
           <Option key={u._id} value={u.username}>
-            <img src={u.avatar} alt={u._id} className="mini-avatar"/>
+            <img src={u.avatar} alt={u._id} className="mini-avatar" />
             <span> {u.username}</span>
           </Option>
         ))}

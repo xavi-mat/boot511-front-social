@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { notification } from 'antd';
-import usersService from './usersService';
+import dataService from './dataService';
 
 const initialState = {
   users: [],
+  isCollapsed: false,  // Controls siders layout
 }
 
 export const getUsersByName = createAsyncThunk(
-  "users/getByName",
+  "data/getUsersByName",
   async (name, thunkAPI) => {
     try {
-      return await usersService.getUsersByName(name);
+      return await dataService.getUsersByName(name);
     } catch (error) {
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
@@ -18,10 +19,14 @@ export const getUsersByName = createAsyncThunk(
   }
 );
 
-export const usersSlice = createSlice({
+export const dataSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    setIsCollapsed: (state, action) => {
+      state.isCollapsed = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUsersByName.fulfilled, (state, action) => {
@@ -33,5 +38,5 @@ export const usersSlice = createSlice({
   }
 });
 
-// export const { } = usersSlice.actions
-export default usersSlice.reducer
+export const { setIsCollapsed } = dataSlice.actions
+export default dataSlice.reducer

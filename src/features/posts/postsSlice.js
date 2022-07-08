@@ -258,7 +258,6 @@ export const postsSlice = createSlice({
         state.posts.maxPages = action.payload.maxPages;
         state.posts.posts = state.posts.posts ?? [];
         state.posts.posts = [...state.posts.posts, ...action.payload.posts];
-        // state.posts = action.payload;
       })
       .addCase(searchPostsByText.pending, (state) => {
         state.isLoading = true;

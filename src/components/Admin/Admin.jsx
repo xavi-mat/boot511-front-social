@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getAllPosts, reset, cleanAll } from "../../features/posts/postsSlice";
 import PostAdmin from "./PostAdmin/PostAdmin";
-import TryScroll from "./TryScroll/TryScroll";
+// import TryScroll from "./TryScroll/TryScroll";
 
 const Admin = () => {
 

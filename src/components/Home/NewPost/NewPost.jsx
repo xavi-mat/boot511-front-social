@@ -77,8 +77,6 @@ const NewPost = () => {
             alt={loginData.user.username} />
         </div>
         <div className="content-box top-margin">
-
-
           <Form
             name="newPost"
             form={form}
