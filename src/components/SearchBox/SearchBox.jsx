@@ -2,7 +2,7 @@ import { Input } from "antd"
 import { useNavigate } from "react-router-dom";
 const { Search } = Input;
 
-const SearchBox = () => {
+const SearchBox = ({ autoFocus = false }) => {
 
   const navigate = useNavigate();
 
@@ -15,6 +15,7 @@ const SearchBox = () => {
       <Search
         placeholder="Search"
         onSearch={handleSearch}
+        autoFocus={autoFocus}
       />
     </div>
   )

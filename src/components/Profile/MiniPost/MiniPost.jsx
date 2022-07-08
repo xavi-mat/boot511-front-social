@@ -1,51 +1,28 @@
-import { Button, Image, Popconfirm } from "antd";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { deletePost } from "../../../features/posts/postsSlice";
+import { useNavigate } from "react-router-dom";
 import {
-  EyeOutlined,
-  DeleteOutlined,
-  LoadingOutlined,
   MessageOutlined,
   LikeOutlined
 } from '@ant-design/icons';
-import { useDispatch, useSelector } from "react-redux";
 import Replacer from "../../Replacer/Replacer";
 
 const MiniPost = ({ post }) => {
 
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isBig, setIsBig] = useState(false);
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth.loginData);
+  const navigate = useNavigate();
 
-  const isAuthor = post.author === user?._id;
   const date = (new Date(post.updatedAt))
     .toLocaleString(
       undefined,
       { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
     );
 
-  const doDeletePost = async (id) => {
-    setIsDeleting(true);
-    await dispatch(deletePost(id));
-    setIsDeleting(false);
+  const goToPost = () => {
+    navigate("/post/" + post._id);
   }
 
   return (
-    <div className="mini-post">
+    <div className="mini-post" onClick={goToPost}>
       {post.image ?
-        <>
-          <img className="mini-post-image" src={post.image} alt="" onClick={() => setIsBig(true)} />
-          <Image
-            src={post.image}
-            style={{ display: 'none' }}
-            alt=""
-            preview={{
-              visible: isBig,
-              onVisibleChange: (value) => { setIsBig(value); }
-            }} />
-        </>
+        <img className="mini-post-image" src={post.image} alt="" />
         : null}
       <div className="mini-post-text">
         <div className="tone-down go-right">{date}</div>
@@ -55,21 +32,6 @@ const MiniPost = ({ post }) => {
           &nbsp;&nbsp;&nbsp;
           <MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span>
         </div>
-      </div>
-      <div className="mini-post-buttons">
-        <Button><Link to={"/post/" + post._id}><EyeOutlined /></Link></Button>
-        {isAuthor ?
-          <Popconfirm
-            placement="bottomRight"
-            title={"Are you sure you want to delete the post?"}
-            onConfirm={() => { doDeletePost(post._id) }}
-            okText="Delete"
-            okButtonProps={{ danger: true }}>
-            <Button danger>{isDeleting ? <LoadingOutlined /> : <DeleteOutlined />}</Button>
-          </Popconfirm>
-          :
-          null
-        }
       </div>
     </div>
   )
