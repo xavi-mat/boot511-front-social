@@ -33,7 +33,7 @@ const PostDetail = () => {
     getPost(id);
     getComments(id, 1);
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   const loadMoreComments = async () => {
     if (loadingComments) { return; }

@@ -8,6 +8,7 @@ const initialState = {
   post: {},
   commentsData: {},
   user: null,
+  moreLiked: [],
 };
 
 export const getAllPosts = createAsyncThunk(
@@ -217,6 +218,18 @@ export const unlikeComment = createAsyncThunk(
   }
 );
 
+export const getMoreLiked = createAsyncThunk(
+  "posts/getMoreLiked",
+  async (_, thunkAPI) => {
+    try {
+      return await postsService.getMoreLiked();
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -278,7 +291,7 @@ export const postsSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state, action) => {
         // Just update array if page 1 is showing
-        if (state.posts.page == 1) {
+        if (+state.posts.page === 1) {
           state.posts?.posts.pop();
           state.posts?.posts.unshift(action.payload.post);
           state.posts = { ...state.posts };
@@ -390,6 +403,12 @@ export const postsSlice = createSlice({
         state.commentsData.comments = comments;
       })
       .addCase(unlikeComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(getMoreLiked.fulfilled, (state, action) => {
+        state.moreLiked = action.payload.posts;
+      })
+      .addCase(getMoreLiked.rejected, (_, action)=> {
         notification.error({ message: action.payload });
       })
   },

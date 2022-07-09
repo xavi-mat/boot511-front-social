@@ -60,7 +60,7 @@ const GateKeeper = () => {
         </Content>
         <Sider
           theme="light"
-          width={300}
+          width={350}
           breakpoint="lg"
           collapsedWidth="0"
           onCollapse={(collapsed) => {

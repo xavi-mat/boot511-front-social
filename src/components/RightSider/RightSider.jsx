@@ -1,68 +1,34 @@
-import { useState } from "react";
-import { Mentions } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { getUsersByName } from "../../features/data/dataSlice";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux"
+import { getMoreLiked } from "../../features/posts/postsSlice";
 import SearchBox from "../SearchBox/SearchBox";
-const { Option } = Mentions;
+import NanoPost from "./NanoPost/NanoPost";
 
 const RightSider = () => {
 
-  const [value, setValue] = useState("")
-  const { users } = useSelector((state) => state.data);
   const dispatch = useDispatch();
+  const { moreLiked } = useSelector((state) => state.posts);
 
-  const onChange = (value) => {
-    setValue(value);
-  };
-
-  const onSelect = async (option) => {
-    const newValue = value.match(/.+@/) ?? '@';
-    await setValue(newValue + option.value + "<" + option.key + "> ")
-    // Move cursor to end
-    const mentionsBox = document.querySelector("#mentions-box")
-    const end = mentionsBox.value.length;
-    mentionsBox.setSelectionRange(end, end);
-    mentionsBox.focus();
-  };
-
-  const onSearch = async (search) => {
-    if (search.length > 0) {
-      dispatch(getUsersByName(search));
-    }
+  const getPosts = async () => {
+    await dispatch(getMoreLiked());
   }
+
+  useEffect(()=> {
+    getPosts();
+  // eslint-disable-next-line
+  }, []);
+
+  const post = moreLiked?.slice(0,4).map(post => (
+    <NanoPost key={post._id} post={post} />
+  ))
 
   return (
     <div className="right-container">
       <SearchBox />
-
-
-      <hr />
-      {/* ------------------------------------------------------------ */}
-
-      <h3>TESTING MENTIONS:</h3>
-      <Mentions
-        id="mentions-box"
-        style={{
-          width: '100%',
-        }}
-        onSearch={onSearch}
-        onChange={onChange}
-        onSelect={onSelect}
-        defaultValue=""
-        value={value}
-        autoSize >
-        {users ?
-          users.map(u => (
-            <Option key={u._id} value={u.username}>
-              <img src={u.avatar} alt={u._id} className="mini-avatar" />
-              <span> {u.username}</span>
-            </Option>
-          ))
-          : null}
-      </Mentions>
-
-
-      <hr />
+      <div>
+        <h2>What's favorite</h2>
+        {post}
+      </div>
     </div>
   )
 }

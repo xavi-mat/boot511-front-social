@@ -21,7 +21,9 @@ const LeftSider = ({ toggleDrawer }) => {
 
   const onLogout = (ev) => {
     ev.preventDefault();
-    toggleDrawer();
+    if (toggleDrawer) {
+      toggleDrawer();
+    }
     dispatch(logout());
     navigate("/");
   };

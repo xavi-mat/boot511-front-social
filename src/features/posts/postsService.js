@@ -146,6 +146,11 @@ const unlikeComment = async (id) => {
   return res.data;
 }
 
+const getMoreLiked = async () => {
+  const res = await axios.get(API_URL+"/posts/more-liked");
+  return res.data;
+}
+
 const postsService = {
   getAllPosts,
   getPostById,
@@ -164,6 +169,7 @@ const postsService = {
   unlikePost,
   likeComment,
   unlikeComment,
+  getMoreLiked,
 };
 
 export default postsService;

@@ -1,11 +1,13 @@
-import { Form, Input, Button, notification, Upload } from "antd";
+import { Form, Button, notification, Upload, Mentions } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../../features/posts/postsSlice";
+import { getUsersByName } from "../../../features/data/dataSlice";
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import PostPreviewer from "../../PostPreviewer/PostPreviewer";
+const { Option } = Mentions;
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 const NewPost = () => {
 
@@ -15,9 +17,10 @@ const NewPost = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { loginData } = useSelector((state) => state.auth);
+  const { users } = useSelector((state) => state.data);
 
   const handleUpload = (file) => {
-    // Validations: Type and size
+    // File validations: Type and size
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
       notification.error({ message: "Please, select a jpg or png file" });
@@ -41,13 +44,30 @@ const NewPost = () => {
     handleRemoveImage();
   }
 
-  const handleChangeText = async (ev) => {
-    setText(ev.target.value);
+  const handleChangeText = (value) => {
+    setText(value);
+  }
+
+  const onSelect = async (option) => {
+    const newValue = text.match(/.+@/) ?? '@';
+    const newMention = option.value + "<" + option.key + "> "
+    await setText(newValue + newMention)
+    // Move cursor to end
+    const mentionsBox = document.querySelector("#mentionable-box")
+    const end = mentionsBox.value.length;
+    mentionsBox.setSelectionRange(end, end);
+    mentionsBox.focus();
+  };
+
+  const onSearch = async (search) => {
+    if (search.length > 0) {
+      dispatch(getUsersByName(search));
+    }
   }
 
   const onFinish = async (values) => {
     setIsSending(true);
-    values.text = values.text.trim();
+    values.text = text.trim();
     if (values.text.length < 3) {
       notification.error({
         message: "Error",
@@ -81,20 +101,28 @@ const NewPost = () => {
             name="newPost"
             form={form}
             onFinish={onFinish}
-            autoComplete="off"
-            initialValues={{ text: "" }}>
-            <Form.Item
-              name="text"
-              rules={[{ required: true, message: 'Please input a text.' }]}>
-              <TextArea
-                showCount
-                maxLength={280}
-                autoSize
-                placeholder="What are you thinking?"
-                onChange={handleChangeText}
-                autoFocus
-              />
-            </Form.Item>
+            // initialValues={{ text: "" }}
+            autoComplete="off">
+            <Mentions
+              id="mentionable-box"
+              maxLength={280}
+              autoSize
+              placeholder="What are you thinking?"
+              onSearch={onSearch}
+              onChange={handleChangeText}
+              onSelect={onSelect}
+              defaultValue=""
+              value={text} >
+              {users ?
+                users.map(u => (
+                  <Option key={u._id} value={u.username}>
+                    <img src={u.avatar} alt={u._id} className="mini-avatar" />
+                    <span> {u.username}</span>
+                  </Option>
+                ))
+                : null}
+            </Mentions>
+            <div className="length-counter-box"><span className="tone-down">{text.length} / 280</span></div>
             <PostPreviewer text={text} />
             <div className="newpost-buttons">
               <Form.Item className="to-front">

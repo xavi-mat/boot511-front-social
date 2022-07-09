@@ -1,10 +1,11 @@
-import { Form, Input, Button, notification, Upload } from "antd";
+import { Form, Button, notification, Upload, Mentions } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment } from "../../../../../features/posts/postsSlice";
 import PostPreviewer from "../../../../PostPreviewer/PostPreviewer";
-const { TextArea } = Input;
+import { getUsersByName } from "../../../../../features/data/dataSlice";
+const { Option } = Mentions;
 
 const NewComment = () => {
 
@@ -15,6 +16,7 @@ const NewComment = () => {
   const [form] = Form.useForm();
   const { loginData } = useSelector((state) => state.auth);
   const { post } = useSelector((state) => state.posts);
+  const { users } = useSelector((state) => state.data);
 
   const handleUpload = (file) => {
     // Validations: Type and size
@@ -32,10 +34,6 @@ const NewComment = () => {
     return false;
   }
 
-  const handleChangeText = (ev) => {
-    setText(ev.target.value);
-  }
-
   const handleRemoveImage = () => {
     setFileList([]);
   }
@@ -45,9 +43,30 @@ const NewComment = () => {
     setText("");
   }
 
+  const handleChangeText = (value) => {
+    setText(value);
+  }
+
+  const onSelect = async (option) => {
+    const newValue = text.match(/.+@/) ?? '@';
+    const newMention = option.value + "<" + option.key + "> "
+    await setText(newValue + newMention)
+    // Move cursor to end
+    const mentionsBox = document.querySelector("#mentionable-box")
+    const end = mentionsBox.value.length;
+    mentionsBox.setSelectionRange(end, end);
+    mentionsBox.focus();
+  };
+
+  const onSearch = async (search) => {
+    if (search.length > 0) {
+      dispatch(getUsersByName(search));
+    }
+  }
+
   const onFinish = async (values) => {
     setIsSending(true);
-    values.text = values.text.trim();
+    values.text = text.trim();
     if (values.text.length < 1) {
       notification.error({
         message: "Error",
@@ -61,6 +80,7 @@ const NewComment = () => {
       formData.append('text', values.text)
       formData.append('postId', post._id)
       await dispatch(createComment(formData));
+      setText("");
       form.resetFields();
       setFileList([]);
     }
@@ -80,19 +100,39 @@ const NewComment = () => {
           name="newComment"
           form={form}
           onFinish={onFinish}
-          autoComplete="off"
-          initialValues={{ text: "" }}>
-          <Form.Item
+          // initialValues={{ text: "" }}
+          autoComplete="off">
+          {/* <Form.Item
             name="text"
-            rules={[{ required: true, message: 'Please input a text.' }]}>
-            <TextArea
+            rules={[{ required: true, message: 'Please input a text.' }]}> */}
+            {/* <TextArea
               showCount
               maxLength={280}
               autoSize
               placeholder="Write an answer"
               onChange={handleChangeText}
-            />
-          </Form.Item>
+            /> */}
+            <Mentions
+              id="mentionable-box"
+              maxLength={280}
+              autoSize
+              placeholder="Write an answer"
+              onSearch={onSearch}
+              onChange={handleChangeText}
+              onSelect={onSelect}
+              defaultValue=""
+              value={text} >
+              {users ?
+                users.map(u => (
+                  <Option key={u._id} value={u.username}>
+                    <img src={u.avatar} alt={u._id} className="mini-avatar" />
+                    <span> {u.username}</span>
+                  </Option>
+                ))
+                : null}
+            </Mentions>
+            <div className="length-counter-box"><span className="tone-down">{text.length} / 280</span></div>
+          {/* </Form.Item> */}
           <PostPreviewer text={text} />
           <div className="newpost-buttons">
             <Form.Item className="to-front">
