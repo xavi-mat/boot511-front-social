@@ -147,7 +147,7 @@ const Register = () => {
         </div>
       </Form>
     </div>
-    <Legal /><Legal /><Legal /><Legal />
+    <Legal />
   </>)
 }
 

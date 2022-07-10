@@ -20,11 +20,11 @@ const MiniPost = ({ post }) => {
   }
 
   return (
-    <div className="mini-post" onClick={goToPost}>
+    <div className="mini-box" onClick={goToPost}>
       {post.image ?
-        <img className="mini-post-image" src={post.image} alt="" />
+        <img className="mini-box-image" src={post.image} alt="" />
         : null}
-      <div className="mini-post-text">
+      <div className="mini-box-text">
         <div className="tone-down go-right">{date}</div>
         <div><Replacer text={post.text} /></div>
         <div className="go-right">

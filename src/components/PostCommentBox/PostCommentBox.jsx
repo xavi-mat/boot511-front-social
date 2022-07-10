@@ -39,7 +39,6 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
     user?.likedPosts?.includes(post._id) :
     user?.likedComments?.includes(post._id);
 
-
   const date = new Date(post.updatedAt)
     .toLocaleString(
       undefined,
@@ -65,40 +64,13 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
 
   const openEditForm = (ev) => {
     ev.preventDefault();
-    // const visible = !editorData.visible;
     const newEditorData = { ...editorData };
     newEditorData.visible = true;
     newEditorData.id = post._id;
     newEditorData.text = post.text;
     newEditorData.isPost = isPost;
     setEditorData(newEditorData);
-    // setIsEditorOn(!isEditorOn);
   }
-
-  // const handleOnChange = (ev) => {
-  //   setPostData({ ...postData, text: ev.target.value })
-  // }
-
-  // const handleEdit = async () => {
-  //   setIsEditing(true);
-  //   const text = postData.text.trim();
-  //   if ((isPost && text.length < 3) || text.length < 1) {
-  //     notification.error({
-  //       message: "Error",
-  //       description: "Please, input some valid characters."
-  //     });
-  //     return;
-  //   } else {
-  //     const validData = { ...postData, text };
-  //     if (isPost) {
-  //       await dispatch(updatePost(validData));
-  //     } else {
-  //       await dispatch(updateComment(validData));
-  //     }
-  //   }
-  //   setIsEditing(false);
-  //   setIsEditorOn(false);
-  // }
 
   const handleLike = async (ev) => {
     ev.preventDefault();

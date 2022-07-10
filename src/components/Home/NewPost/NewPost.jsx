@@ -112,6 +112,7 @@ const NewPost = () => {
               onChange={handleChangeText}
               onSelect={onSelect}
               defaultValue=""
+              autoFocus
               value={text} >
               {users ?
                 users.map(u => (

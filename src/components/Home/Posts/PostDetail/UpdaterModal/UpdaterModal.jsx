@@ -74,14 +74,6 @@ const UpdaterModal = ({ editorData, setEditorData }) => {
         onFinish={onFinish}
         autoComplete="off">
         <Form.Item name="id" hidden={true}><Input /></Form.Item>
-        {/* <Form.Item name="text">
-          <TextArea showCount
-            maxLength={280}
-            autoSize
-            onChange={handleChangeText}
-            autoFocus
-          />
-        </Form.Item> */}
         <Mentions
               id="editable-area"
               maxLength={280}

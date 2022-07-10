@@ -124,6 +124,11 @@ const Profile = () => {
     setIsSending(false);
   }
 
+  const clearImage = () => {
+    setUserAvatar(user?.avatar)
+    setReadyToSend(false);
+  }
+
   const handleFollow = async () => {
     setTryingFollow(true);
     await dispatch(followUser(userId))
@@ -158,6 +163,11 @@ const Profile = () => {
           onClick={sendNewAvatar}
           loading={isSending}>
           Click to send image
+        </Button>
+        <Button
+          hidden={!readyToSend}
+          onClick={clearImage}>
+          Clear image
         </Button>
       </Space>
       :

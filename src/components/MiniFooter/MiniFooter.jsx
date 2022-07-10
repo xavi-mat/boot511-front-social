@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom"
+
 const MiniFooter = () => {
   return (
     <div className="right-container">
-      <p>&copy; 2022 by Xavimat</p>
+      <div><Link to="/terms">Terms and conditions</Link>
+      &nbsp;&nbsp;
+      &copy; 2022 by Xavimat</div>
     </div>
   )
 }
