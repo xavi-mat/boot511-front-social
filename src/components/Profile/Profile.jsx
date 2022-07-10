@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
 import { useParams } from "react-router-dom";
 import { followUser, getRelations, unfollowUser, updateUser } from "../../features/auth/authSlice";
+import NotFound from "../NotFound/NotFound";
 
 const Profile = () => {
 
@@ -64,7 +65,7 @@ const Profile = () => {
     // eslint-disable-next-line
   }, [followers]);
 
-  if (isLoading || !user) {
+  if (isLoading) {
     return (
       <div>
         <div className="profile-top">
@@ -77,6 +78,10 @@ const Profile = () => {
         <div><Skeleton active /></div>
       </div>
     );
+  }
+
+  if (!user) {
+    return <NotFound />
   }
 
   const date = (new Date(user.createdAt))

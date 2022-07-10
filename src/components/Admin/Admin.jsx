@@ -6,6 +6,8 @@ import { cleanAll } from "../../features/posts/postsSlice";
 import PostsAdmin from "./PostsAdmin/PostsAdmin";
 import { useNavigate } from "react-router-dom";
 import { resetUser } from "../../features/auth/authSlice";
+import UsersAdmin from "./UsersAdmin/UsersAdmin";
+import CommentsAdmin from "./CommentsAdmin/CommentsAdmin";
 
 const Admin = () => {
 
@@ -14,21 +16,21 @@ const Admin = () => {
   const navigate = useNavigate();
 
   const tabs = [
-    // {
-    //   label: 'Users',
-    //   key: 'users',
-    //   icon: <UserOutlined />,
-    // },
+    {
+      label: 'Users',
+      key: 'users',
+      icon: <UserOutlined />,
+    },
     {
       label: 'Posts',
       key: 'posts',
       icon: <CopyOutlined />,
     },
-    // {
-    //   label: 'Comments',
-    //   key: 'comments',
-    //   icon: <MessageOutlined />,
-    // },
+    {
+      label: 'Comments',
+      key: 'comments',
+      icon: <MessageOutlined />,
+    },
     {
       label: 'Kaboom',
       key: 'kaboom',
@@ -53,9 +55,9 @@ const Admin = () => {
       <div className="home-top"><h1>Admin</h1></div>
       <Menu onClick={onChangeTab} selectedKeys={[currentTab]} mode="horizontal" items={tabs} />
       &nbsp;
-      {currentTab === "users" ? <>USERS COMING SOON</> : null}
+      {currentTab === "users" ? <UsersAdmin /> : null}
       {currentTab === "posts" ? <PostsAdmin /> : null}
-      {currentTab === "comments" ? <>COMMENTS COMING SOON</> : null}
+      {currentTab === "comments" ? <CommentsAdmin /> : null}
       {currentTab === "kaboom" ?
         <div className="home-buttons-box">
           <Popconfirm

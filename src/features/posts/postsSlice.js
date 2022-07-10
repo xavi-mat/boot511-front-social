@@ -316,7 +316,8 @@ export const postsSlice = createSlice({
       .addCase(getSomeUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getSomeUser.rejected, (_, action) => {
+      .addCase(getSomeUser.rejected, (state, action) => {
+        state.user = null;
         notification.error({ message: action.payload });
       })
       .addCase(deleteComment.fulfilled, (state, action) => {

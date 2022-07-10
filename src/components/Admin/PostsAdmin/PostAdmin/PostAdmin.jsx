@@ -46,8 +46,8 @@ const PostAdmin = ({ post }) => {
         <div className="admin-post-left">
           <Link className="post-author" to={"/user/" + post.author._id}>{post.author.username}</Link> &lt;{post.author.email}&gt;
           <p>{post.text}</p>
-          <div>Comments: {post.commentsCount}&nbsp;&nbsp;&nbsp;Likes: {post.likesCount}</div>
-          <div>Created: {created}&nbsp;&nbsp;&nbsp;Updated: {updated}</div>
+          <div>Comments: {post.commentsCount}&nbsp;&nbsp;Likes: {post.likesCount}</div>
+          <div>Created: {created}&nbsp;&nbsp;Updated: {updated}</div>
         </div>
         <div>
           {post.image ? <Image src={post.image} className="admin-post-image" alt="" /> : null}

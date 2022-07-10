@@ -33,7 +33,6 @@ const Search = () => {
   }, [postText]);
 
   const loadMorePosts = async () => {
-    console.log("MORE!", posts.posts?.length, "<", posts.total)
     if (isSearching) { return; }
     setIsSearching(true);
     await dispatch(searchPostsByText({ postText, page: posts.page + 1 }));
