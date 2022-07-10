@@ -52,7 +52,7 @@ const GateKeeper = () => {
   if (isLoadingMain) {
     return (
       <div className="main-loader">
-        <img src="/logo_big.png" alt="Tuitah" />
+        <img src="/logo_big.png" alt="Ribbit" />
         <Space size="large">
           <Spin size="large" />
           <Spin size="large" />

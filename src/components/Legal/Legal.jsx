@@ -2,7 +2,7 @@ const Legal = () => {
   return (
     <div className="form-box">
       <div className="center-box">
-        <img src="/logo_big.png" alt="Tuitah" />
+        <img src="/logo_big.png" alt="Ribbit" />
       </div>
       <h2>Terms and Conditions</h2>
       <h3>Lorem ipsum dolor sit amet</h3>

@@ -408,7 +408,7 @@ export const postsSlice = createSlice({
       .addCase(getMoreLiked.fulfilled, (state, action) => {
         state.moreLiked = action.payload.posts;
       })
-      .addCase(getMoreLiked.rejected, (_, action)=> {
+      .addCase(getMoreLiked.rejected, (_, action) => {
         notification.error({ message: action.payload });
       })
   },

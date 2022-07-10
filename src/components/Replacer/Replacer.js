@@ -34,7 +34,7 @@ const Replacer = ({ text, clickableMention = true }) => {
   } else {
     text = reactStringReplace(text, /(@.{3,40}<[0-9a-f]{24}>)/gi, (match, i) => {
       match.match(/@(.{3,40})<([0-9a-f]{24})>/gi);
-      const username = <><strong>{RegExp.$1}</strong></>;
+      const username = <>{RegExp.$1}</>;
       return (
         <span key={match + i}>
           @{username}

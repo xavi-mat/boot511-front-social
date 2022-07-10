@@ -14,7 +14,7 @@ const DrawerMenu = () => {
     <div className="drawer-button">
       <img
         src="/logo.png"
-        alt="Tuitah"
+        alt="Ribbit"
         className="avatar"
         onClick={toggleDrawer}
       />

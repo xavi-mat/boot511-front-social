@@ -14,15 +14,15 @@ const Following = () => {
 
   useEffect(() => {
     getUserData();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const user = following?.map(u => (<MiniProfile key={u._id} user={u} />))
 
   return (
     <div>
-      <h1 class="text-header">Following</h1>
-      {user}
+      <h1 className="text-header">Following</h1>
+      {user && user.length ? user : <div className="no-more-box">No results</div>}
     </div>
   )
 }

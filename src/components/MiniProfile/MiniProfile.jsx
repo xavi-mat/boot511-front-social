@@ -16,7 +16,7 @@ const MiniProfile = ({ user }) => {
   }
 
   return (
-    <div class="mini-box  miniprofile-content" onClick={handleAuthorClick}>
+    <div className="mini-box  miniprofile-content" onClick={handleAuthorClick}>
       <div className="avatar-box">
         <img
           src={user.avatar}

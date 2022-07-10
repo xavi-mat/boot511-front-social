@@ -84,7 +84,7 @@ const Login = () => {
       </Form>
     </div>
     <div className="center-box">
-      <img src="/logo_big.png" alt="Tuitah" />
+      <img src="/logo_big.png" alt="Ribbit" />
     </div>
   </>)
 }

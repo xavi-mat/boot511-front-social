@@ -110,7 +110,7 @@ const LeftSider = ({ toggleDrawer }) => {
     <>
       <div className="center-box">
         <NavLink to="/" onClick={toggleDrawer}>
-          <img src="/logo.png" alt="Tuitah" className="avatar" />
+          <img src="/logo.png" alt="Ribbit" className="avatar" />
         </NavLink>
       </div>
       <Menu
