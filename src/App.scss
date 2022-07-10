@@ -79,12 +79,14 @@
 .preview-box {
   padding: 0.5rem;
   font-size: 120%;
+  background-color: #f0f3f9;
   border: 2px solid lightskyblue;
   border-radius: 10px;
 }
 
 .preview-tip {
   margin-left: 10px;
+  font-family: monospace;
 }
 
 .post-author {
@@ -369,7 +371,6 @@
 
 .mention:hover {
   color: var(--antd-wave-shadow-color);
-  // text-decoration: underline;
 }
 
 .editor-buttons-box {

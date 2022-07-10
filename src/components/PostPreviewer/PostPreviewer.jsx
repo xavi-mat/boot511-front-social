@@ -8,10 +8,9 @@ const PostPreviewer = ({text}) => {
           <small className="tone-down">Preview:</small>
         </div>
         <div className="preview-box">
-          <Replacer text={text} />
+          <Replacer text={text} clickableMention={false} />
         </div>
-        <pre className="preview-tip">You can use **bold** and __italics__ markdown.</pre>
-
+        <div className="preview-tip">You can use <strong>@mentions</strong>, **<strong>bold</strong>**, and __<em>italics</em>__.</div>
       </div>
       :
       null

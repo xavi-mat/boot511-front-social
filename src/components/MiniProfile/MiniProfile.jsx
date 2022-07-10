@@ -15,7 +15,7 @@ const MiniProfile = ({ user }) => {
     navigate("/user/" + user._id);
   }
 
-  return (<>
+  return (
     <div class="mini-box  miniprofile-content" onClick={handleAuthorClick}>
       <div className="avatar-box">
         <img
@@ -35,10 +35,7 @@ const MiniProfile = ({ user }) => {
         </div>
       </div>
     </div>
-    {/* <pre>
-      {JSON.stringify(user, null, 1)}
-    </pre> */}
-  </>)
+  )
 }
 
 export default MiniProfile

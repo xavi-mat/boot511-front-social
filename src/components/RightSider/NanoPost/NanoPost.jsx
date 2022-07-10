@@ -26,7 +26,7 @@ const NanoPost = ({ post }) => {
         : null}
       <div><strong>{post.author2.username}</strong></div>
       <div className="nano-post-text">
-        <div><Replacer text={post.text} /></div>
+        <div><Replacer text={post.text} clickableMention={false} /></div>
         <div className="nano-post-bottom tone-down">
           {date}
           &nbsp;&nbsp;&nbsp;
