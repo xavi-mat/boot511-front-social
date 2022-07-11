@@ -306,6 +306,11 @@ export const postsSlice = createSlice({
         state.commentsData.comments = state.commentsData.comments ?? [];
         state.commentsData.comments = [action.payload.comment, ...state.commentsData.comments];
         state.post.commentsCount++;
+        const moreLiked = state.moreLiked.map(p => {
+          if (p._id === action.payload.comment.postId) { p.commentsCount++; }
+          return p;
+        })
+        state.moreLiked = [...moreLiked];
       })
       .addCase(createComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -326,7 +331,13 @@ export const postsSlice = createSlice({
           c => c._id !== action.payload.comment._id
         );
         state.commentsData.comments = [...comments];
+        state.commentsData.total--;
         state.post.commentsCount--;
+        const moreLiked = state.moreLiked.map(p => {
+          if (p._id === action.payload.comment.postId) { p.commentsCount--; }
+          return p;
+        })
+        state.moreLiked = [...moreLiked];
       })
       .addCase(deleteComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -339,9 +350,14 @@ export const postsSlice = createSlice({
       })
       .addCase(updateComment.fulfilled, (state, action) => {
         state.commentsData.comments = state.commentsData.comments ?? [];
-        const comments = state.commentsData.comments
-          .filter(c => c._id !== action.payload.comment._id);
-        state.commentsData.comments = [action.payload.comment, ...comments];
+        const comments = state.commentsData.comments.map(c => {
+          if (c._id === action.payload.comment._id) {
+            return action.payload.comment;
+          } else {
+            return c;
+          }
+        });
+        state.commentsData.comments = [...comments];
       })
       .addCase(updateComment.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -365,7 +381,12 @@ export const postsSlice = createSlice({
           if (p._id === _id) { p.likesCount++; }
           return p;
         })
-        state.posts.posts = posts;
+        state.posts.posts = [...posts];
+        const moreLiked = state.moreLiked.map(p => {
+          if (p._id === _id) { p.likesCount++; }
+          return p;
+        })
+        state.moreLiked = [...moreLiked];
       })
       .addCase(likePost.rejected, (_, action) => {
         notification.error({ message: action.payload });
@@ -379,7 +400,12 @@ export const postsSlice = createSlice({
           if (p._id === _id) { p.likesCount--; }
           return p;
         })
-        state.posts.posts = posts;
+        state.posts.posts = [...posts];
+        const moreLiked = state.posts.posts.map(p => {
+          if (p._id === _id) { p.likesCount--; }
+          return p;
+        })
+        state.moreLiked = [...moreLiked];
       })
       .addCase(unlikePost.rejected, (_, action) => {
         notification.error({ message: action.payload });
