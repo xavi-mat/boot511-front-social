@@ -54,7 +54,7 @@ const Login = () => {
           ]}>
           <Input className="input"
             prefix={<MailOutlined className="site-form-item-icon" />}
-            placeholder='Email' />
+            placeholder='Email' autoFocus />
         </Form.Item>
         <Form.Item
           name="password"

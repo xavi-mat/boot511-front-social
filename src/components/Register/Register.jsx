@@ -1,4 +1,4 @@
-import { Form, Button, Checkbox, Input, notification } from "antd";
+import { Form, Button, Checkbox, Input, notification, Alert } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register, reset } from "../../features/auth/authSlice";
@@ -14,9 +14,13 @@ const API_URL = process.env.REACT_APP_API_URL;
 const Register = () => {
 
   const dispatch = useDispatch();
-  const { isSuccess, isError, message } = useSelector((state) => state.auth);
+  const {
+    isSuccess,
+    isError,
+    message,
+    confirmLink
+  } = useSelector((state) => state.auth);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [emailLink, setEmailLink] = useState(false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,22 +59,11 @@ const Register = () => {
     setIsSpinning(true);
     await dispatch(register(values));
     setIsSpinning(false);
-    setEmailLink(true);
   };
 
   return (<>
     <div className="form-box">
       <h1>Register</h1>
-      {emailLink ?
-        <h1 className="center-box">
-          <a
-            href={API_URL + "/fakeEmail.html"}
-            target="_blank"
-            rel="noreferrer">
-            ACCESS EMAIL HERE
-          </a>
-        </h1>
-        : null}
       <Form onFinish={onFinish} autoComplete="off">
         <Form.Item
           name="username"
@@ -149,6 +142,21 @@ const Register = () => {
           </Form.Item>
         </div>
       </Form>
+      {confirmLink ?
+        <h1 className="center-box">
+          <Alert
+            type="success"
+            message="Registration successful"
+            description="Your email address is waiting validation. Nodemailer is not working yet. Please confirm your email with the link provided."
+            action={<a
+              href={confirmLink}
+              target="_blank"
+              rel="noreferrer">
+              CONFIRM EMAIL
+            </a>}
+          />
+        </h1>
+        : null}
     </div>
     <Legal />
   </>)

@@ -11,6 +11,7 @@ const initialState = {
   message: "",
   following: [],
   followers: [],
+  confirmLink: "",
 };
 
 export const register = createAsyncThunk(
@@ -127,10 +128,12 @@ export const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.loginData = {};
+        state.confirmLink = "";
       })
       .addCase(register.fulfilled, (state, action) => {
         state.isSuccess = true;
         state.message = action.payload.msg;
+        state.confirmLink = action.payload.url;
       })
       .addCase(register.rejected, (state, action) => {
         state.isError = true;
