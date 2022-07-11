@@ -109,6 +109,7 @@ const GateKeeper = () => {
           theme="light"
           width={350}
           breakpoint="lg"
+          trigger={null}
           collapsedWidth="0"
           onCollapse={(collapsed) => {
             dispatch(setIsCollapsed(collapsed));

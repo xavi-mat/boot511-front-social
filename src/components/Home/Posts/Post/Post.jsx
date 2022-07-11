@@ -12,6 +12,7 @@ const Post = () => {
   const [currentPage, setCurrentPage] = useState(posts.page);
 
   const onPageChange = async (page) => {
+    window.scrollTo(0, 0);
     setCurrentPage(page);
     await dispatch(getAllPosts(page));
     dispatch(reset());
