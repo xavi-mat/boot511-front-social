@@ -20,9 +20,7 @@ const logout = async () => {
     API_URL + "/users/logout",
     { headers: { Authorization: loginData?.token } }
   );
-  if (res.data) {
-    localStorage.removeItem("loginData");
-  }
+  localStorage.removeItem("loginData");
   return res.data;
 }
 

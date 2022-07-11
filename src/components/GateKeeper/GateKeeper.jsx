@@ -12,7 +12,6 @@ import MiniFooter from "../MiniFooter/MiniFooter";
 import { Layout, Space, Spin } from 'antd';
 import RightSider from "../RightSider/RightSider";
 import AdminZone from "../../guards/AdminZone";
-import UnloggedZone from "../../guards/UnloggedZone";
 import PrivateZone from "../../guards/PrivateZone";
 import NotFound from "../NotFound/NotFound";
 import { setIsCollapsed } from "../../features/data/dataSlice";
@@ -100,8 +99,8 @@ const GateKeeper = () => {
                 <Followers />
               </PrivateZone>
             } />
-            <Route path="/login" element={<UnloggedZone><Login /></UnloggedZone>} />
-            <Route path="/register" element={<UnloggedZone><Register /></UnloggedZone>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/admin" element={<AdminZone><Admin /></AdminZone>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
