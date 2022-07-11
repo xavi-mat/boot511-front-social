@@ -16,7 +16,7 @@ const Replacer = ({ text, clickableMention = true }) => {
   if (clickableMention) {
     text = reactStringReplace(text, /(@.{3,40}<[0-9a-f]{24}>)/gi, (match, i) => {
       match.match(/@(.{3,40})<([0-9a-f]{24})>/gi);
-      const username = <><strong>{RegExp.$1}</strong></>;
+      const username = <strong>{RegExp.$1}</strong>;
       const userId = RegExp.$2;
       return (
         <span
@@ -28,21 +28,16 @@ const Replacer = ({ text, clickableMention = true }) => {
           }}>
           @{username}
         </span>
-      )
+      );
     });
 
   } else {
     text = reactStringReplace(text, /(@.{3,40}<[0-9a-f]{24}>)/gi, (match, i) => {
       match.match(/@(.{3,40})<([0-9a-f]{24})>/gi);
-      const username = <>{RegExp.$1}</>;
-      return (
-        <span key={match + i}>
-          @{username}
-        </span>
-      )
+      const username = <strong>{RegExp.$1}</strong>;
+      return (<span key={match + i}>@{username}</span>);
     });
   }
-
 
   return <>{text}</>;
 }

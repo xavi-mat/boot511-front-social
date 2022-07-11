@@ -44,7 +44,6 @@ const UpdaterModal = ({ editorData, setEditorData }) => {
 
   const onFinish = async (values) => {
     setEditorData({ ...editorData, text: text.trim(), loading: true })
-    // const text = values.text.trim();
     values.text = text.trim();
     if ((editorData.isPost && values.text.length < 3) || values.text.length < 1) {
       notification.error({
