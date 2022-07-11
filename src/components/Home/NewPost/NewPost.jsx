@@ -90,7 +90,7 @@ const NewPost = () => {
   return (
     <>
       <div className="post-box">
-        <div className="avatar-box">
+        <div className="avatar-box hide-xsmall">
           <img
             src={loginData.user.avatar}
             className="avatar"
@@ -142,7 +142,7 @@ const NewPost = () => {
               <div className="newpost-right-buttons">
                 <Form.Item>
                   <Button
-                    className="wide-button"
+                    className="wide-button hide-xsmall"
                     htmlType="reset"
                     onClick={handleClearForm}>
                     Clear

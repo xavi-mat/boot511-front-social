@@ -89,7 +89,7 @@ const NewComment = () => {
 
   return (
     <div className="newcomment-box">
-      <div className="avatar-box">
+      <div className="avatar-box hide-xsmall">
         <img
           src={loginData?.user.avatar}
           className="avatar"
@@ -100,18 +100,7 @@ const NewComment = () => {
           name="newComment"
           form={form}
           onFinish={onFinish}
-          // initialValues={{ text: "" }}
           autoComplete="off">
-          {/* <Form.Item
-            name="text"
-            rules={[{ required: true, message: 'Please input a text.' }]}> */}
-            {/* <TextArea
-              showCount
-              maxLength={280}
-              autoSize
-              placeholder="Write an answer"
-              onChange={handleChangeText}
-            /> */}
             <Mentions
               id="mentionable-box"
               maxLength={280}
@@ -151,7 +140,7 @@ const NewComment = () => {
             <div className="newpost-right-buttons">
               <Form.Item>
                 <Button
-                  className="wide-button"
+                  className="wide-button hide-xsmall"
                   htmlType="reset"
                   onClick={handleClear}>
                   Clear

@@ -21,14 +21,14 @@ const Login = () => {
       notification.error({
         message: "Error",
         description: message,
-        placement: "bottomRight",
+        placement: "top",
       });
     }
     if (isSuccess) {
       notification.success({
         message: "Success",
         description: message,
-        placement: "bottomRight",
+        placement: "top",
       });
       navigate("/");
     }

@@ -81,7 +81,7 @@ const PostDetail = () => {
           isDetail={true}
           editorData={editorData}
           setEditorData={setEditorData} />
-        {loginData?.user ? <NewComment /> : null}
+        {loginData?.user?.active ? <NewComment /> : null}
       </>
       <div>
         <InfiniteScroll

@@ -183,7 +183,7 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
           <>
             <div className="post-info-box post-buttons-box">
               <Popconfirm
-                placement="bottomRight"
+                placement="top"
                 title={"Are you sure you want to delete this?"}
                 onConfirm={handleDelete}
                 okText="Delete"

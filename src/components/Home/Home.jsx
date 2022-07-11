@@ -13,7 +13,7 @@ const Home = () => {
         <h1 className="text-header">Home</h1>
         {loginData.user ? null : <LogRegButtons />}
       </div>
-      {loginData.user ? <NewPost /> : null}
+      {loginData.user?.active ? <NewPost /> : null}
       <Posts />
     </div>
   )

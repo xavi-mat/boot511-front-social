@@ -70,7 +70,7 @@ const GateKeeper = () => {
           <Sider
             theme="light"
             breakpoint="xl"
-            className="sider-box">
+            className="sider-left">
             <LeftSider />
           </Sider>
         }
@@ -113,7 +113,7 @@ const GateKeeper = () => {
           onCollapse={(collapsed) => {
             dispatch(setIsCollapsed(collapsed));
           }}
-          className="sider-box">
+          className="sider-right">
           <RightSider />
           <MiniFooter />
         </Sider>

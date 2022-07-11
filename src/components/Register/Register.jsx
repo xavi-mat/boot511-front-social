@@ -22,14 +22,14 @@ const Register = () => {
       notification.success({
         message: "Success",
         description: message,
-        placement: "bottomRight"
+        placement: "top"
       });
     }
     if (isError) {
       notification.error({
         message: "Error",
         description: message,
-        placement: "bottomRight",
+        placement: "top",
       });
     }
     dispatch(reset());
@@ -133,7 +133,9 @@ const Register = () => {
           >
             <Checkbox>I accept the Terms and Conditions.</Checkbox>
           </Form.Item>
-          <Form.Item><Button htmlType="reset">Clear</Button></Form.Item>
+          <Form.Item>
+            <Button htmlType="reset" className="hide-xsmall">Clear</Button>
+          </Form.Item>
           <Form.Item>
             <Button
               id="login-button"
