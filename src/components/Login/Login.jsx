@@ -74,7 +74,7 @@ const Login = () => {
               htmlType="submit"
               className="spin-form-button">
               {isSpinning ? <LoadingOutlined /> : null}
-              Log in
+               Log in
             </Button>
           </Form.Item>
           <Form.Item>
