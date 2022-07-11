@@ -9,6 +9,7 @@ import {
   LoadingOutlined
 } from '@ant-design/icons';
 import Legal from "../Legal/Legal";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const Register = () => {
 
@@ -63,7 +64,7 @@ const Register = () => {
       {emailLink ?
         <h1 className="center-box">
           <a
-            href="http://localhost:8080/fakeEmail.html"
+            href={API_URL + "/fakeEmail.html"}
             target="_blank"
             rel="noreferrer">
             ACCESS EMAIL HERE
