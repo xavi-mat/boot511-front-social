@@ -2,8 +2,7 @@
 
 ![](./public//logo_big.png)
 
-> The bird says tweet, tweet, tweet
->
+> The bird says tweet, tweet, tweet<br>
 > The frog says ribbit, ribbit, ribbit
 
 ## Ejercicio - Red Social
