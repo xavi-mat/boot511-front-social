@@ -1,5 +1,10 @@
 import { Button, Menu, Popconfirm } from "antd";
-import { UserOutlined, CopyOutlined, MessageOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  CopyOutlined,
+  MessageOutlined,
+  ThunderboltOutlined
+} from '@ant-design/icons';
 import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { cleanAll } from "../../features/posts/postsSlice";
@@ -53,7 +58,11 @@ const Admin = () => {
   return (
     <div>
       <div className="home-top"><h1>Admin</h1></div>
-      <Menu onClick={onChangeTab} selectedKeys={[currentTab]} mode="horizontal" items={tabs} />
+      <Menu
+        onClick={onChangeTab}
+        selectedKeys={[currentTab]}
+        mode="horizontal"
+        items={tabs} />
       &nbsp;
       {currentTab === "users" ? <UsersAdmin /> : null}
       {currentTab === "posts" ? <PostsAdmin /> : null}

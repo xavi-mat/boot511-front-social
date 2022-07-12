@@ -133,110 +133,114 @@ export const adminSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(getUsers.fulfilled, (state, action) => {
-      state.usersData.total = action.payload.total;
-      state.usersData.page = action.payload.page;
-      state.usersData.maxPage = action.payload.maxPage;
-      state.usersData.users = state.usersData.users ?? [];
-      state.usersData.users = [...state.usersData.users, ...action.payload.users];
-    })
-    .addCase(getUsers.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(activateUser.fulfilled, (state, action) => {
-      const users = state.usersData.users.map(u => {
-        if (u._id === action.payload._id) {
-          u.active = true;
-        }
-        return u;
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.usersData.total = action.payload.total;
+        state.usersData.page = action.payload.page;
+        state.usersData.maxPage = action.payload.maxPage;
+        state.usersData.users = state.usersData.users ?? [];
+        state.usersData.users = [...state.usersData.users, ...action.payload.users];
       })
-      state.usersData.users = [...users];
-    })
-    .addCase(activateUser.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(deactivateUser.fulfilled, (state, action) => {
-      const users = state.usersData.users.map(u => {
-        if (u._id === action.payload._id) {
-          u.active = false;
-        }
-        return u;
+      .addCase(getUsers.rejected, (_, action) => {
+        notification.error({ message: action.payload });
       })
-      state.usersData.users = [...users];
-    })
-    .addCase(deactivateUser.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(getPosts.fulfilled, (state, action) => {
-      state.postsData.total = action.payload.total;
-      state.postsData.page = action.payload.page;
-      state.postsData.maxPage = action.payload.maxPage;
-      state.postsData.posts = state.postsData.posts ?? [];
-      state.postsData.posts = [...state.postsData.posts, ...action.payload.posts];
-    })
-    .addCase(getPosts.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(activatePost.fulfilled, (state, action) => {
-      const posts = state.postsData.posts.map(p => {
-        if (p._id === action.payload._id) {
-          p.active = true;
-        }
-        return p;
+      .addCase(activateUser.fulfilled, (state, action) => {
+        const users = state.usersData.users.map(u => {
+          if (u._id === action.payload._id) {
+            u.active = true;
+          }
+          return u;
+        })
+        state.usersData.users = [...users];
       })
-      state.postsData.posts = [...posts];
-    })
-    .addCase(activatePost.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(deactivatePost.fulfilled, (state, action) => {
-      const posts = state.postsData.posts.map(p => {
-        if (p._id === action.payload._id) {
-          p.active = false;
-        }
-        return p;
+      .addCase(activateUser.rejected, (_, action) => {
+        notification.error({ message: action.payload });
       })
-      state.postsData.posts = [...posts];
-    })
-    .addCase(deactivatePost.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(getComments.fulfilled, (state, action) => {
-      state.commentsData.total = action.payload.total;
-      state.commentsData.page = action.payload.page;
-      state.commentsData.maxPage = action.payload.maxPage;
-      state.commentsData.comments = state.commentsData.comments ?? [];
-      state.commentsData.comments = [...state.commentsData.comments, ...action.payload.comments];
-    })
-    .addCase(getComments.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(activateComment.fulfilled, (state, action) => {
-      const comments = state.commentsData.comments.map(c => {
-        if (c._id === action.payload._id) {
-          c.active = true;
-        }
-        return c;
+      .addCase(deactivateUser.fulfilled, (state, action) => {
+        const users = state.usersData.users.map(u => {
+          if (u._id === action.payload._id) {
+            u.active = false;
+          }
+          return u;
+        })
+        state.usersData.users = [...users];
       })
-      state.commentsData.comments = [...comments];
-    })
-    .addCase(activateComment.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-    .addCase(deactivateComment.fulfilled, (state, action) => {
-      const comments = state.commentsData.comments.map(c => {
-        if (c._id === action.payload._id) {
-          c.active = false;
-        }
-        return c;
+      .addCase(deactivateUser.rejected, (_, action) => {
+        notification.error({ message: action.payload });
       })
-      state.commentsData.comments = [...comments];
-    })
-    .addCase(deactivateComment.rejected, (_, action) => {
-      notification.error({ message: action.payload });
-    })
-}
+      .addCase(getPosts.fulfilled, (state, action) => {
+        state.postsData.total = action.payload.total;
+        state.postsData.page = action.payload.page;
+        state.postsData.maxPage = action.payload.maxPage;
+        state.postsData.posts = state.postsData.posts ?? [];
+        state.postsData.posts = [...state.postsData.posts, ...action.payload.posts];
+      })
+      .addCase(getPosts.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(activatePost.fulfilled, (state, action) => {
+        const posts = state.postsData.posts.map(p => {
+          if (p._id === action.payload._id) {
+            p.active = true;
+          }
+          return p;
+        })
+        state.postsData.posts = [...posts];
+      })
+      .addCase(activatePost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(deactivatePost.fulfilled, (state, action) => {
+        const posts = state.postsData.posts.map(p => {
+          if (p._id === action.payload._id) {
+            p.active = false;
+          }
+          return p;
+        })
+        state.postsData.posts = [...posts];
+      })
+      .addCase(deactivatePost.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(getComments.fulfilled, (state, action) => {
+        state.commentsData.total = action.payload.total;
+        state.commentsData.page = action.payload.page;
+        state.commentsData.maxPage = action.payload.maxPage;
+        state.commentsData.comments = state.commentsData.comments ?? [];
+        state.commentsData.comments = [...state.commentsData.comments, ...action.payload.comments];
+      })
+      .addCase(getComments.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(activateComment.fulfilled, (state, action) => {
+        const comments = state.commentsData.comments.map(c => {
+          if (c._id === action.payload._id) {
+            c.active = true;
+          }
+          return c;
+        })
+        state.commentsData.comments = [...comments];
+      })
+      .addCase(activateComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+      .addCase(deactivateComment.fulfilled, (state, action) => {
+        const comments = state.commentsData.comments.map(c => {
+          if (c._id === action.payload._id) {
+            c.active = false;
+          }
+          return c;
+        })
+        state.commentsData.comments = [...comments];
+      })
+      .addCase(deactivateComment.rejected, (_, action) => {
+        notification.error({ message: action.payload });
+      })
+  }
 });
 
-export const { resetUsersData, resetPostsData, resetCommentsData } = adminSlice.actions;
+export const {
+  resetUsersData,
+  resetPostsData,
+  resetCommentsData
+} = adminSlice.actions;
 export default adminSlice.reducer;

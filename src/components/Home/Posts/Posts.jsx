@@ -33,11 +33,7 @@ const Posts = () => {
     );
   }
 
-  return (
-    <div>
-      <Post />
-    </div>
-  )
+  return (<Post />)
 }
 
 export default Posts

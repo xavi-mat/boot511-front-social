@@ -28,11 +28,8 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
   const isAuthor = post.author?._id === user?._id;
   const isPost = typeof post === "object" && 'commentsCount' in post;
   const [isDeleting, setIsDeleting] = useState(false);
-  // const [isEditing, setIsEditing] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [isUnliking, setIsUnliking] = useState(false);
-  // const [isEditorOn, setIsEditorOn] = useState(false);
-  // const [postData, setPostData] = useState({ id: post._id, text: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const youLiked = isPost ?
@@ -42,7 +39,13 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
   const date = new Date(post.updatedAt)
     .toLocaleString(
       undefined,
-      { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      }
     );
 
   const handleAuthorClick = (ev) => {
@@ -151,7 +154,9 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
               :
               null}
             <div>
-              <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes</span>
+              <LikeOutlined />
+              &nbsp;{post.likesCount}&nbsp;
+              <span className="tone-down">Likes</span>
             </div>
             {user ?
               <div>
@@ -180,23 +185,24 @@ const PostCommentBox = ({ post, isDetail, editorData, setEditorData }) => {
           </div>
         </div>
         {isAuthor && isDetail ?
-          <>
-            <div className="post-info-box post-buttons-box">
-              <Popconfirm
-                placement="top"
-                title={"Are you sure you want to delete this?"}
-                onConfirm={handleDelete}
-                okText="Delete"
-                okButtonProps={{ danger: true }}>
-                <Button danger>{isDeleting ? <LoadingOutlined /> : <DeleteOutlined />}</Button>
-              </Popconfirm>
-              <Button
-                onClick={openEditForm}>
-                <FormOutlined />
+          <div className="post-info-box post-buttons-box">
+            <Popconfirm
+              placement="top"
+              title={"Are you sure you want to delete this?"}
+              onConfirm={handleDelete}
+              okText="Delete"
+              okButtonProps={{ danger: true }}>
+              <Button danger>
+                {isDeleting ? <LoadingOutlined /> : <DeleteOutlined />}
               </Button>
-            </div>
-          </>
-          : null}
+            </Popconfirm>
+            <Button
+              onClick={openEditForm}>
+              <FormOutlined />
+            </Button>
+          </div>
+          : null
+        }
       </div>
     </div>
   )

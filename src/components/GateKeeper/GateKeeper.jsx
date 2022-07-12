@@ -111,6 +111,7 @@ const GateKeeper = () => {
           breakpoint="lg"
           trigger={null}
           collapsedWidth="0"
+          style={isCollapsed ? {height: 0}: {}}
           onCollapse={(collapsed) => {
             dispatch(setIsCollapsed(collapsed));
           }}

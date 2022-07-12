@@ -32,25 +32,44 @@ const PostAdmin = ({ post }) => {
       <div className="admin-post-top">
         <div>
           <Link to={"/post/" + post._id}>{post._id}</Link>
-          <span>&nbsp;&nbsp;&nbsp;{post.active ? <Tag color="green">ACTIVE</Tag> : <Tag color="red">INACTIVE</Tag>}</span>
+          <span>
+            &nbsp;&nbsp;&nbsp;
+            {post.active ?
+              <Tag color="green">ACTIVE</Tag>
+              :
+              <Tag color="red">INACTIVE</Tag>
+            }
+          </span>
         </div>
         <div>
           {post.active ?
-            <Button danger onClick={handleDeactivate} loading={changing}>Deactivate</Button>
+            <Button danger onClick={handleDeactivate} loading={changing}>
+              Deactivate
+            </Button>
             :
-            <Button onClick={handleActivate} loading={changing}>Activate</Button>
+            <Button onClick={handleActivate} loading={changing}>
+              Activate
+            </Button>
           }
         </div>
       </div>
       <div className="admin-post">
         <div className="admin-post-left">
-          <Link className="post-author" to={"/user/" + post.author._id}>{post.author.username}</Link> &lt;{post.author.email}&gt;
+          <Link className="post-author" to={"/user/" + post.author._id}>
+            {post.author.username}
+          </Link>
+          &nbsp;&lt;{post.author.email}&gt;
           <p>{post.text}</p>
-          <div>Comments: {post.commentsCount}&nbsp;&nbsp;Likes: {post.likesCount}</div>
+          <div>
+            Comments: {post.commentsCount}&nbsp;&nbsp;Likes: {post.likesCount}
+          </div>
           <div>Created: {created}&nbsp;&nbsp;Updated: {updated}</div>
         </div>
         <div>
-          {post.image ? <Image src={post.image} className="admin-post-image" alt="" /> : null}
+          {post.image ?
+            <Image src={post.image} className="admin-post-image" alt="" />
+            : null
+          }
         </div>
       </div>
     </div>

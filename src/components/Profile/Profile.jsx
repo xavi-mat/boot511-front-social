@@ -8,22 +8,43 @@ import {
   SkinOutlined,
   UploadOutlined
 } from '@ant-design/icons';
-import { Button, Col, Pagination, Row, Skeleton, Tooltip, Upload, notification, Space, Popconfirm } from "antd";
-import { changeFollowersNum, getPostsByUserId, getSomeUser, reset } from "../../features/posts/postsSlice";
+import {
+  Button,
+  Col,
+  Pagination,
+  Row,
+  Skeleton,
+  Tooltip,
+  Upload,
+  notification,
+  Space,
+  Popconfirm
+} from "antd";
+import {
+  changeFollowersNum,
+  getPostsByUserId,
+  getSomeUser,
+  reset
+} from "../../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import MiniPost from "./MiniPost/MiniPost";
 import { useParams } from "react-router-dom";
-import { followUser, getRelations, unfollowUser, updateUser } from "../../features/auth/authSlice";
+import {
+  followUser,
+  getRelations,
+  unfollowUser,
+  updateUser
+} from "../../features/auth/authSlice";
 import NotFound from "../NotFound/NotFound";
 
 const Profile = () => {
 
+  const dispatch = useDispatch();
   const { userId } = useParams();
   const { user } = useSelector((state) => state.posts);
   const { following, followers } = useSelector((state) => state.auth);
   const { loginData } = useSelector((state) => state.auth);
   const { posts, isLoading } = useSelector((state) => state.posts);
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(posts.page);
   const [fileList, setFileList] = useState([]);
   const [readyToSend, setReadyToSend] = useState(false);
@@ -160,7 +181,9 @@ const Profile = () => {
           onChange={handleAvatarChange}
           customRequest={(a) => console.log(a)}
           fileList={fileList}>
-          <Button className="action-button" icon={<UploadOutlined />}>Change</Button>
+          <Button className="action-button" icon={<UploadOutlined />}>
+            Change
+          </Button>
         </Upload>
         <Button
           hidden={!readyToSend}
@@ -183,10 +206,9 @@ const Profile = () => {
             title={"Are you sure you want to unfollow this user?"}
             onConfirm={handleUnfollow}
             okText="Unfollow"
-            okButtonProps={{danger:true}}>
+            okButtonProps={{ danger: true }}>
             <Button
               className="action-button"
-              // onClick={handleUnfollow}
               loading={tryingFollow}>
               Unfollow
             </Button>
@@ -223,7 +245,9 @@ const Profile = () => {
           <div><img className="avatar-big" src={userAvatar} alt="" /></div>
           <div>
             <h1 className="username-big">{user.username}</h1>
-            <div className="green-notice">{followsYou ? "Follows you!" : null}</div>
+            <div className="green-notice">
+              {followsYou ? "Follows you!" : null}
+            </div>
           </div>
         </div>
         <div>{actionButton}</div>
@@ -231,26 +255,44 @@ const Profile = () => {
       <div className="profile-data">
         <Row>
           <Col span={12}>
-            <div className="icon-big"><UsergroupAddOutlined /> {user.followingCount} <span className="tone-down">following</span></div>
+            <div className="icon-big">
+              <UsergroupAddOutlined /> {user.followingCount}&nbsp;
+              <span className="tone-down">following</span>
+            </div>
           </Col>
           <Col span={12}>
-            <div className="icon-big"><TeamOutlined /> {user.followersCount} <span className="tone-down">followers</span></div>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
-            <div className="icon-big"><CopyOutlined /> {user.postsCount} <span className="tone-down">posts</span></div>
-          </Col>
-          <Col span={12}>
-            <div className="icon-big"><MessageOutlined /> {user.commentsCount} <span className="tone-down">comments</span></div>
+            <div className="icon-big">
+              <TeamOutlined /> {user.followersCount}&nbsp;
+              <span className="tone-down">followers</span>
+            </div>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
-            <div className="icon-big"><SkinOutlined /> <span className="tone-down">Role:</span> {user.role}</div>
+            <div className="icon-big">
+              <CopyOutlined /> {user.postsCount}&nbsp;
+              <span className="tone-down">posts</span>
+            </div>
           </Col>
           <Col span={12}>
-            <div className="icon-big"><CalendarOutlined /> <span className="tone-down">Joined</span> {date}</div>
+            <div className="icon-big">
+              <MessageOutlined /> {user.commentsCount}&nbsp;
+              <span className="tone-down">comments</span>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <div className="icon-big">
+              <SkinOutlined />&nbsp;
+              <span className="tone-down">Role:</span> {user.role}
+            </div>
+          </Col>
+          <Col span={12}>
+            <div className="icon-big">
+              <CalendarOutlined />&nbsp;
+              <span className="tone-down">Joined</span> {date}
+            </div>
           </Col>
         </Row>
       </div>

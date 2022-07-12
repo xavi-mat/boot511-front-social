@@ -13,7 +13,8 @@ const getPostById = async (id) => {
 
 const searchPostsByText = async (postData) => {
   const res = await axios.get(
-    API_URL + "/posts/search?text=" + postData.postText + "&page=" + postData.page);
+    API_URL + "/posts/search?text=" + postData.postText + "&page=" + postData.page
+  );
   return res.data;
 };
 
@@ -126,7 +127,7 @@ const unlikePost = async (id) => {
   return res.data;
 }
 
-const likeComment  = async (id) => {
+const likeComment = async (id) => {
   const loginData = JSON.parse(localStorage.getItem("loginData"));
   const res = await axios.put(
     API_URL + "/comments/like/" + id,
@@ -146,7 +147,7 @@ const unlikeComment = async (id) => {
 }
 
 const getMoreLiked = async () => {
-  const res = await axios.get(API_URL+"/posts/more-liked");
+  const res = await axios.get(API_URL + "/posts/more-liked");
   return res.data;
 }
 

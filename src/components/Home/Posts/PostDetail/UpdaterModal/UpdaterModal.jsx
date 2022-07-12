@@ -6,8 +6,6 @@ import PostPreviewer from "../../../../PostPreviewer/PostPreviewer";
 import { getUsersByName } from "../../../../../features/data/dataSlice";
 const { Option } = Mentions;
 
-// const { TextArea } = Input;
-
 const UpdaterModal = ({ editorData, setEditorData }) => {
 
   const [form] = Form.useForm();
@@ -74,25 +72,27 @@ const UpdaterModal = ({ editorData, setEditorData }) => {
         autoComplete="off">
         <Form.Item name="id" hidden={true}><Input /></Form.Item>
         <Mentions
-              id="editable-area"
-              maxLength={280}
-              autoSize
-              placeholder="Write here"
-              onSearch={onSearch}
-              onChange={handleChangeText}
-              onSelect={onSelect}
-              defaultValue=""
-              value={text} >
-              {users ?
-                users.map(u => (
-                  <Option key={u._id} value={u.username}>
-                    <img src={u.avatar} alt={u._id} className="mini-avatar" />
-                    <span> {u.username}</span>
-                  </Option>
-                ))
-                : null}
-            </Mentions>
-            <div className="length-counter-box"><span className="tone-down">{text.length} / 280</span></div>
+          id="editable-area"
+          maxLength={280}
+          autoSize
+          placeholder="Write here"
+          onSearch={onSearch}
+          onChange={handleChangeText}
+          onSelect={onSelect}
+          defaultValue=""
+          value={text} >
+          {users ?
+            users.map(u => (
+              <Option key={u._id} value={u.username}>
+                <img src={u.avatar} alt={u._id} className="mini-avatar" />
+                <span> {u.username}</span>
+              </Option>
+            ))
+            : null}
+        </Mentions>
+        <div className="length-counter-box">
+          <span className="tone-down">{text.length} / 280</span>
+        </div>
         <PostPreviewer text={text} />
         <div className="editor-buttons-box">
           <Button
