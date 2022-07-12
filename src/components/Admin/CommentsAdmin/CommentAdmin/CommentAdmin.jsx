@@ -59,7 +59,7 @@ const CommentAdmin = ({ comment }) => {
           <Link className="post-author" to={"/user/" + comment.author._id}>
             {comment.author.username}
           </Link>
-          &npsp;&lt;{comment.author.email}&gt;
+          &nbsp;&lt;{comment.author.email}&gt;
           <p>{comment.text}</p>
           <div>
             Likes: {comment.likesCount}&nbsp;&nbsp;
