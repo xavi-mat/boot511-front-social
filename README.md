@@ -1,5 +1,11 @@
 # Ribbit Social Network
 
+![](./public//logo_big.png)
+
+> The bird says tweet, tweet, tweet
+>
+> The frog says ribbit, ribbit, ribbit
+
 ## Ejercicio - Red Social
 Último proyecto individual para el Bootcamp "Full Stack Developer MERN" en The Bridge - Digital Talent Accelerator.
 
@@ -33,8 +39,33 @@
 * Implementación de guards
 * Que sea responsive
 
-## Autor
-Xavier Matoses [GitHub @xavi-mat](https://github.com/xavi-mat?tab=repositories) [LinkedIn](https://www.linkedin.com/in/xavier-matoses/)
+## Tecnologías y lenguajes utilizados
+### Frontend
+* HTML / CSS / JavaScript / JSON
+* NodeJS
+* react
+* antd
+* axios
+* react
+* react-dom
+* react-infinite-scroll-component
+* react-redux
+* react-router-dom
+* react-string-replace
+* sass
+
+### Backend
+La API se encuentra en https://github.com/xavi-mat/boot511-back-social
+* JavaScript
+* Nodejs
+* express
+* MongoDB
+* Mongoose
+* multer
+* bcryptjs
+* jsonwebtoken
+* nodemailer
+* Atlas
 
 ## Estructura
 El conjunto de la web es *responsive*. En el ancho máximo consiste en tres columnas.
@@ -80,7 +111,7 @@ El cuerpo principal de la página lo ocupan diez *posts* con el avatar y el nomb
 
 Arriba y abajo de la sección de los diez *posts* son visibles las barras de paginación, con los botones para desplazarse entre las distintas páginas, que realizan llamadas a la API y reciben los diez posts correspondientes.
 
-### Vista de *Post* `/post/POST_ID`
+### Vista de *Post* `/post/<POST_ID>`
 ![](./doc/screen4.jpg)
 
 La vista de *post* muestra el avatar y nombre del autor/a, el texto, la imagen opcional y otros datos como el número de comentarios y de *likes*. Aparece, además, la fecha y hora de creación del *post* adaptada al idioma del navegador.
@@ -95,22 +126,91 @@ En esta sección se cargan inicialmente diez comentarios. Al hacer scroll hacia 
 
 Los usuarios logueados ven, en el post y en los comentarios, los botones de Borrar y de Editar. El botón de Editar abre un formulario en una ventana modal en la que es posible cambiar el texto del propio *post*/comentario.
 
-### Vista de usuario `/user/USER_ID`
+### Vista de usuario `/user/<USER_ID>`
 ![](./doc/screen6.jpg)
-%%%
+
+La vista de usuario muestra el avatar y en nombre de usuario en tamaño más grande.
+Debajo del avatar, los usuarios/as logueados encuentran un botón: Seguir/Dejar de seguir, o bien Cambiar Avatar, si están mirando su propio perfil. La opción de *Dejar de seguir* incluye un *Popconfirm*.
+
+A continuación se muestra la información pública del usuario: número de usuarios a los que sigue, de seguidores, de posts, de comentarios, role y fecha de registro (la fecha está adaptada a la lengua del navegador).
+
+Debajo de la caja de información, sigue el espacio de los *posts* del usuario en un formato más reducido a como aparecen en la página de inicio o en la vista de *post*. Con la imagen, si la hay, a la izquierda y los demás datos a la derecha (fecha, adaptada al idioma, texto, número de likes y de comentarios).
+
+Los posts están paginados de diez en diez, como en la página de inicio. Cada *post* es en sí mismo un botón a la vista en detalle de ese *post*, sus comentarios y el formulario para añadir comentario.
 
 ### Vista de Usuarios seguidos y de Seguidores `/following`, `/followers`
+![](./doc/screen7.jpg)
+
+Ambas vistas tienen el mismo formato. Presentan la información mínima del usuario/a seguido o seguidor: El avatar, el nombre de usuario y la última fecha en la que hubo algún cambio en su perfil.
+
+Cada cuadro es un botón que lleva a la vista de ese usuario.
+
+### Vista de búsqueda `/search/<TEXTO BUSCADO>`
+![](./doc/screen12.jpg)
+
+Existe una barra de búsqueda de posts por texto. Está situada en la parte superior de la columna derecha, cuando esta es visible en pantallas anchas, o bien en la parte superior de la columna única en pantallas de menor anchura.
+
+Los resultados de la búsqueda aparecen en el cuerpo central de la página en forma de scroll infinito, cargando 10 posts más en cada llamada a la API. El número total de *posts* encontrados que cumple los requisitos de la búsqueda aparece en la parte superior de la página, bajo el título.
 
 ### Vista de Administrador `/admin`
+![](./doc/screen8.jpg)
+
+La vista de administrador incluye un submenú horizontal con cuatro opciones: usuarios, *posts*, comentarios y *kaboom*.
+
+#### Usuarios
+El administrador/a puede ver, además de los datos públicos, la *id*, el email y las fechas de creación y actualización de cada usuario/a. También puede *Activar/Desactivar* a los usuarios. Los usuarios "desactivados" no pueden escribir nuevos *posts* ni comentarios, pero sí actualizar o borrar sus mensajes anteriores.
+
+El listado de usuarios utiliza también el Scroll Infinito, cargando 10 usuarios más desde la API cada vez que se desliza hasta el final de la página.
+
+#### *Posts* y Comentarios
+![](./doc/screen9.jpg)
+
+*Posts* y comentarios presentan su información (autor,texto, imagen, fechas, likes, etc.). Pueden ser también activados/desactivados por el personal de administración.
+
+#### Kaboom
+![](./doc/screen10.jpg)
+El último elemento del menú del administrador da acceso al *Botón Kaboom*.
+
+Al tratarse de una aplicación de pruebas, existe la opción para borrar todos los usuarios, *posts* y comentarios y rellenar las colecciones con datos generados por *faker*, (avatares y nombres para los usuarios/as, y textos e imágenes para los *posts* y comentarios).
 
 ### Términos y condiciones `/terms`
 Texto de relleno (*Lorem ipsum*) en el que situar los términos y condiciones de uso de la web, las políticas de privacidad y de cookies.
 
 ## Funcionalidades
-* **PopConfirm** antes de hacer logout, de dejar de seguir a un usuario, de borrar un *post* o comentario, y también (para el adminitrador), antes de borrar toda la base de datos.
-* Escritura de *posts* y comentarios.
-* **Negrita** y *cursiva* en los formularios de escritura.
-* **@Menciones** en los formularios de escritura.
-* Adjuntar una **imagen** opcional en los *posts* o comentarios.
-* Cambiar el **avatar** del usuario/a.
-* **Búsqueda** de *posts* por texto.
+
+#### Popconfirm
+Se utiliza un **PopConfirm** antes de hacer logout, de dejar de seguir a un usuario, de borrar un *post* o comentario, y también (para el adminitrador), antes de borrar toda la base de datos. El *Popconfirm* presenta un cuadro de confirmación extra al hacer clic en un botón para evitar acciones indeseadas.
+
+#### Escritura
+![](./doc/screen11.jpg)
+
+La **escritura** de *posts* y comentarios se realiza en los formularios *Nuevo post*, *Nuevo comentario* o *Editar post o comentario*. El usuario/a escribe e una *textarea* con un límite máximo de 280 caracteres, y puede previsualizar el resultado en un cuadro inferior. El texto admite **negrita**, *cursiva* y **@mencionar** a otros usuarios.
+
+* **Negrita** y *cursiva* en los formularios de escritura. Al escribir una palabra entre \*\***dobles asteriscos**\*\*, será visible como negrita; igualmente, será cursiva si está \_\_*entre dobles barras bajas*\_\_.
+
+* **@Menciones** en los formularios de escritura. Al escribir el símbolo **@**, y algunas letras, se lanza una llamada a la API con una búsqueda de usuarios por nombre. A cada tecla pulsada se realiza de nuevo la búsqueda. Es posible seleccionar un usuario/a de la lista; en el *textarea* aparecerá con su *id* interna, pero será visible como un enlace en negrita a la vista de ese usuario.
+
+* **Skeletons**. En gran parte de las pantallas, mientras se realiza una llamada a la API, aparece el *Skeleton* en forma de franjas grises animadas.
+
+![](./doc/screen13.jpg)
+
+#### Imágenes y avatares
+Es posible adjuntar una **imagen** opcional en los *posts* o comentarios. También se puede cambiar el avatar del usuario/a.
+
+> El hosting actual de Heroku es de pruebas, y elimina periódicamente las imágenes cargadas en el servidor.
+
+**Escalabilidad**
+Para evitar la sobrecarga de la API y la obtención de datos excesivos y poco útiles, las colecciones de resultados están siempre paginados de diez en diez elementos (usuarios, *posts* o comentarios). Para acceder a los resultados siguientes, se utiliza la paginación o bien la técnica del Infinite Scroll.
+
+## Despliegue
+La aplicación está desplegada para pruebas en Heroku. Es posible realizar todas las funciones: registro de nuevos usuarios/as, login, escritura de *posts* y comentarios, carga de imágenes y avatares, seguir usuarios, dar y quitar likes y búsquedas. La carga de imágenes está habilitada por tiempo limitado.
+
+Es posible acceder en este link: https://ribbit-front.herokuapp.com/
+
+## Agradecimientos
+* Gracias al equipo de profesores de The Bridge: Sofía, Ger e Iván.
+* Gracias a los compañeros y compañeras, a todos/as y cada uno/a del bootcamp, con los que he compartido la realización de este proyecto.
+
+## Autor
+Xavier Matoses [GitHub @xavi-mat](https://github.com/xavi-mat?tab=repositories) [LinkedIn](https://www.linkedin.com/in/xavier-matoses/)
+
