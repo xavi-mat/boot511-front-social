@@ -401,7 +401,7 @@ export const postsSlice = createSlice({
           return p;
         })
         state.posts.posts = [...posts];
-        const moreLiked = state.posts.posts.map(p => {
+        const moreLiked = state.moreLiked.map(p => {
           if (p._id === _id) { p.likesCount--; }
           return p;
         })
