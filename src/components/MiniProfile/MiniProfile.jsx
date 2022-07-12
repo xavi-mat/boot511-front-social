@@ -7,7 +7,13 @@ const MiniProfile = ({ user }) => {
   const date = new Date(user.updatedAt)
     .toLocaleString(
       undefined,
-      { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      }
     );
 
   const handleAuthorClick = (ev) => {

@@ -12,7 +12,13 @@ const MiniPost = ({ post }) => {
   const date = (new Date(post.updatedAt))
     .toLocaleString(
       undefined,
-      { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      }
     );
 
   const goToPost = () => {
@@ -28,9 +34,11 @@ const MiniPost = ({ post }) => {
         <div className="tone-down go-right">{date}</div>
         <div><Replacer text={post.text} /></div>
         <div className="go-right">
-          <LikeOutlined /> {post.likesCount} <span className="tone-down">Likes </span>
+          <LikeOutlined /> {post.likesCount}&nbsp;
+          <span className="tone-down">Likes </span>
           &nbsp;&nbsp;&nbsp;
-          <MessageOutlined /> {post.commentsCount} <span className="tone-down">Comments</span>
+          <MessageOutlined /> {post.commentsCount}&nbsp;
+          <span className="tone-down">Comments</span>
         </div>
       </div>
     </div>

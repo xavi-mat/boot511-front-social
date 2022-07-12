@@ -69,7 +69,6 @@ const Legal = () => {
       <p>
         Suspendisse condimentum, sem sit amet euismod molestie, metus leo pharetra turpis, eu pellentesque lorem lacus vel urna. Duis blandit placerat purus. Proin at convallis felis. Morbi at elit et dolor congue pulvinar convallis in eros. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum dui lacus, molestie at eleifend ac, efficitur in neque. Pellentesque erat nibh, maximus vitae dolor nec, vulputate iaculis magna. Vestibulum facilisis a ligula ac consectetur. Nulla eleifend varius ipsum.
       </p>
-
     </div>
   )
 }

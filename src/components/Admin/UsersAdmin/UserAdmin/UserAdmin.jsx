@@ -32,19 +32,32 @@ const UserAdmin = ({ user }) => {
       <div className="admin-post-top">
         <div>
           <Link to={"/user/" + user._id}>{user._id}</Link>
-          <span>&nbsp;&nbsp;&nbsp;{user.active ? <Tag color="green">ACTIVE</Tag> : <Tag color="red">INACTIVE</Tag>}</span>
+          <span>
+            &nbsp;&nbsp;&nbsp;
+            {user.active ?
+              <Tag color="green">ACTIVE</Tag>
+              :
+              <Tag color="red">INACTIVE</Tag>
+            }
+          </span>
         </div>
         <div>
           {user.active ?
-            <Button danger onClick={handleDeactivate} loading={changing}>Deactivate</Button>
+            <Button danger onClick={handleDeactivate} loading={changing}>
+              Deactivate
+            </Button>
             :
-            <Button onClick={handleActivate} loading={changing}>Activate</Button>
+            <Button onClick={handleActivate} loading={changing}>
+              Activate
+            </Button>
           }
         </div>
       </div>
       <div className="admin-post">
         <div className="admin-post-left">
-          <Link className="post-author" to={"/user/" + user._id}>{user.username}</Link>&nbsp;
+          <Link className="post-author" to={"/user/" + user._id}>
+            {user.username}
+          </Link>&nbsp;
           &lt;{user.email}&gt;&nbsp;
           Role: {user.role}
           <div>
@@ -56,7 +69,10 @@ const UserAdmin = ({ user }) => {
           <div>Created: {created}&nbsp;&nbsp;Updated: {updated}</div>
         </div>
         <div>
-          {user.avatar ? <Image src={user.avatar} className="avatar" alt="" /> : null}
+          {user.avatar ?
+            <Image src={user.avatar} className="avatar" alt="" />
+            : null
+          }
         </div>
       </div>
     </div>

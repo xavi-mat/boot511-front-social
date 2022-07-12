@@ -290,7 +290,7 @@ export const postsSlice = createSlice({
         notification.error({ message: action.payload });
       })
       .addCase(createPost.fulfilled, (state, action) => {
-        // Just update array if page 1 is showing
+        // Update array only if page 1 is showing
         if (+state.posts.page === 1) {
           state.posts?.posts.pop();
           state.posts?.posts.unshift(action.payload.post);
@@ -441,5 +441,10 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { reset, emptyComments, changeFollowersNum, resetPostsData } = postsSlice.actions;
+export const {
+  reset,
+  emptyComments,
+  changeFollowersNum,
+  resetPostsData
+} = postsSlice.actions;
 export default postsSlice.reducer;

@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
-import { getPostById, getCommentsByPostId, reset, emptyComments } from "../../../../features/posts/postsSlice";
+import {
+  getPostById,
+  getCommentsByPostId,
+  reset,
+  emptyComments
+} from "../../../../features/posts/postsSlice";
 import PostCommentBox from "../../../PostCommentBox/PostCommentBox";
 import LogRegButtons from "../../LogRegButtons/LogRegButtons";
 import NewComment from "./NewComment/NewComment";
@@ -71,18 +76,17 @@ const PostDetail = () => {
 
   return (
     <div>
-      <>
-        <div className="home-top">
-          <h1 className="text-header">Post detail</h1>
-          {loginData?.user ? null : <LogRegButtons />}
-        </div>
-        <PostCommentBox
-          post={post}
-          isDetail={true}
-          editorData={editorData}
-          setEditorData={setEditorData} />
-        {loginData?.user?.active ? <NewComment /> : null}
-      </>
+      <div className="home-top">
+        <h1 className="text-header">Post detail</h1>
+        {loginData?.user ? null : <LogRegButtons />}
+      </div>
+      <PostCommentBox
+        post={post}
+        isDetail={true}
+        editorData={editorData}
+        setEditorData={setEditorData} />
+      <h2 className="top-margin">Comments</h2>
+      {loginData?.user?.active ? <NewComment /> : null}
       <div>
         <InfiniteScroll
           dataLength={comment?.length ?? 0}

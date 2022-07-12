@@ -22,7 +22,11 @@ const Following = () => {
   return (
     <div>
       <h1 className="text-header">Following</h1>
-      {user && user.length ? user : <div className="no-more-box">No results</div>}
+      {user && user.length ?
+        user
+        :
+        <div className="no-more-box">No results</div>
+      }
     </div>
   )
 }

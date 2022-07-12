@@ -53,7 +53,9 @@ const Search = () => {
     return (
       <div>
         <div className="home-top">
-          <h1 className="text-header">Search results for &ldquo;{postText}&rdquo;</h1>
+          <h1 className="text-header">
+            Search results for &ldquo;{postText}&rdquo;
+          </h1>
         </div>
         <div className="total-box">Total: </div>
         <div className="post-box">
@@ -66,7 +68,9 @@ const Search = () => {
   return (
     <div>
       <div className="home-top">
-        <h1 className="text-header">Search results for &ldquo;{postText}&rdquo;</h1>
+        <h1 className="text-header">
+          Search results for &ldquo;{postText}&rdquo;
+        </h1>
         {loginData.user ? null : <LogRegButtons />}
       </div>
       <div className="total-box">Total: {posts.total}</div>

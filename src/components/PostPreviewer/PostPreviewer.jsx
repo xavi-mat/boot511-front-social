@@ -1,6 +1,6 @@
 import Replacer from "../Replacer/Replacer"
 
-const PostPreviewer = ({text}) => {
+const PostPreviewer = ({ text }) => {
   return (<>
     {text ?
       <div>
@@ -10,7 +10,11 @@ const PostPreviewer = ({text}) => {
         <div className="preview-box">
           <Replacer text={text} clickableMention={false} />
         </div>
-        <div className="preview-tip">You can use <strong>@mentions</strong>, **<strong>bold</strong>**, and __<em>italics</em>__.</div>
+        <div className="preview-tip">
+          You can use <strong>@mentions</strong>
+          , **<strong>bold</strong>**
+          , and __<em>italics</em>__.
+        </div>
       </div>
       :
       null

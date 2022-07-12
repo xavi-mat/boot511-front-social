@@ -7,8 +7,6 @@ import { useState } from "react";
 import PostPreviewer from "../../PostPreviewer/PostPreviewer";
 const { Option } = Mentions;
 
-// const { TextArea } = Input;
-
 const NewPost = () => {
 
   const [fileList, setFileList] = useState([]);
@@ -101,7 +99,6 @@ const NewPost = () => {
             name="newPost"
             form={form}
             onFinish={onFinish}
-            // initialValues={{ text: "" }}
             autoComplete="off">
             <Mentions
               id="mentionable-box"
@@ -123,7 +120,9 @@ const NewPost = () => {
                 ))
                 : null}
             </Mentions>
-            <div className="length-counter-box"><span className="tone-down">{text.length} / 280</span></div>
+            <div className="length-counter-box">
+              <span className="tone-down">{text.length} / 280</span>
+            </div>
             <PostPreviewer text={text} />
             <div className="newpost-buttons">
               <Form.Item className="to-front">

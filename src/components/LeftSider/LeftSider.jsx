@@ -42,9 +42,10 @@ const LeftSider = ({ toggleDrawer }) => {
       {
         key: loginData.user._id,
         icon: <UserOutlined />,
-        label: <Link to={"/user/" + loginData.user._id} onClick={toggleDrawer}>
-          {loginData.user.username}
-        </Link>
+        label:
+          <Link to={"/user/" + loginData.user._id} onClick={toggleDrawer}>
+            {loginData.user.username}
+          </Link>
       }
     );
     items.push(

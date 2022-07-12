@@ -101,27 +101,28 @@ const NewComment = () => {
           form={form}
           onFinish={onFinish}
           autoComplete="off">
-            <Mentions
-              id="mentionable-box"
-              maxLength={280}
-              autoSize
-              placeholder="Write an answer"
-              onSearch={onSearch}
-              onChange={handleChangeText}
-              onSelect={onSelect}
-              defaultValue=""
-              value={text} >
-              {users ?
-                users.map(u => (
-                  <Option key={u._id} value={u.username}>
-                    <img src={u.avatar} alt={u._id} className="mini-avatar" />
-                    <span> {u.username}</span>
-                  </Option>
-                ))
-                : null}
-            </Mentions>
-            <div className="length-counter-box"><span className="tone-down">{text.length} / 280</span></div>
-          {/* </Form.Item> */}
+          <Mentions
+            id="mentionable-box"
+            maxLength={280}
+            autoSize
+            placeholder="Write a comment"
+            onSearch={onSearch}
+            onChange={handleChangeText}
+            onSelect={onSelect}
+            defaultValue=""
+            value={text} >
+            {users ?
+              users.map(u => (
+                <Option key={u._id} value={u.username}>
+                  <img src={u.avatar} alt={u._id} className="mini-avatar" />
+                  <span> {u.username}</span>
+                </Option>
+              ))
+              : null}
+          </Mentions>
+          <div className="length-counter-box">
+            <span className="tone-down">{text.length} / 280</span>
+          </div>
           <PostPreviewer text={text} />
           <div className="newpost-buttons">
             <Form.Item className="to-front">

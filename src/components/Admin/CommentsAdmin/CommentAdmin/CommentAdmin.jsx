@@ -33,19 +33,33 @@ const CommentAdmin = ({ comment }) => {
         <div>
           Comment to post:&nbsp;
           <Link to={"/post/" + comment.postId}>{comment.postId}</Link>
-          <span>&nbsp;&nbsp;&nbsp;{comment.active ? <Tag color="green">ACTIVE</Tag> : <Tag color="red">INACTIVE</Tag>}</span>
+          <span>
+            &nbsp;&nbsp;&nbsp;
+            {comment.active ?
+              <Tag color="green">ACTIVE</Tag>
+              :
+              <Tag color="red">INACTIVE</Tag>
+            }
+          </span>
         </div>
         <div>
           {comment.active ?
-            <Button danger onClick={handleDeactivate} loading={changing}>Deactivate</Button>
+            <Button danger onClick={handleDeactivate} loading={changing}>
+              Deactivate
+            </Button>
             :
-            <Button onClick={handleActivate} loading={changing}>Activate</Button>
+            <Button onClick={handleActivate} loading={changing}>
+              Activate
+            </Button>
           }
         </div>
       </div>
       <div className="admin-post">
         <div className="admin-post-left">
-          <Link className="post-author" to={"/user/" + comment.author._id}>{comment.author.username}</Link> &lt;{comment.author.email}&gt;
+          <Link className="post-author" to={"/user/" + comment.author._id}>
+            {comment.author.username}
+          </Link>
+          &npsp;&lt;{comment.author.email}&gt;
           <p>{comment.text}</p>
           <div>
             Likes: {comment.likesCount}&nbsp;&nbsp;
@@ -54,12 +68,12 @@ const CommentAdmin = ({ comment }) => {
           </div>
         </div>
         <div>
-          {comment.image ? <Image src={comment.image} className="admin-post-image" alt="" /> : null}
+          {comment.image ?
+            <Image src={comment.image} className="admin-post-image" alt="" />
+            : null
+          }
         </div>
       </div>
-      {/* <pre>
-        {JSON.stringify(comment, null, 1)}
-      </pre> */}
     </div>
   )
 }
