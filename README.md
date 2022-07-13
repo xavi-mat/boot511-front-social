@@ -200,6 +200,13 @@ Es posible adjuntar una **imagen** opcional en los *posts* o comentarios. Tambi�
 #### Escalabilidad
 Para evitar la sobrecarga de la API y la obtención de datos excesivos y poco útiles, las colecciones de resultados están siempre paginadas de diez en diez elementos (usuarios, *posts* o comentarios). Para acceder a los resultados siguientes, se utiliza la paginación o bien la técnica del Infinite Scroll.
 
+#### Actualización de contadores
+Los contadores de *likes* de los posts y comentarios están situados justo al lado del botón para dar o quitar el *like*, y se actualizan inmediatamente en cuanto se de o quita un *like*.
+
+Cuando se escribe un comentario debajo de un post, el contador de comentarios de ese post se actualiza inmediatamente. Igualmente sucede cuando se borra un comentario.
+
+Si un post se encuentra en la columna derecha, entre los posts con más *likes*, los contadores de comentarios y de likes allí presentes también se actualizan en el momento.
+
 ## Despliegue
 La aplicación está desplegada para pruebas en Heroku. Es posible realizar todas las funciones: registro de nuevos usuarios/as, login, escritura de *posts* y comentarios, carga de imágenes y avatares, seguir usuarios, dar y quitar likes y búsquedas. La carga de imágenes está habilitada por tiempo limitado.
 
@@ -211,4 +218,3 @@ Es posible acceder en este link: https://ribbit-front.herokuapp.com/
 
 ## Autor
 Xavier Matoses | [GitHub @xavi-mat](https://github.com/xavi-mat?tab=repositories) | [LinkedIn](https://www.linkedin.com/in/xavier-matoses/)
-
