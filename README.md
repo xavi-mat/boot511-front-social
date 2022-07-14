@@ -214,7 +214,7 @@ Es posible acceder en este link: https://ribbit-front.herokuapp.com/
 
 ## Agradecimientos
 * Gracias al equipo de profesores de The Bridge: Sofía, Ger e Iván.
-* Gracias a [@Yorch82](https://github.com/Yorch82) por su inestimable ayuda como betatester.
+* Gracias a [@Yorch82](https://github.com/Yorch82) por su inestimable ayuda como betatester y a [@Molerog](https://github.com/Molerog) por sus insistentes esfuerzos en romperlo todo.
 * Gracias a los compañeros y compañeras del bootcamp, a todos/as y cada uno/a, con los que he compartido la realización de este proyecto.
 
 ## Autor
